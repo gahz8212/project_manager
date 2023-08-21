@@ -18,15 +18,17 @@ const ItemContainer = () => {
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     dispatch(changeField({ name, value }));
   };
   const onImageInsert = async (e: any) => {
     const imageArray = e.target.files;
+    console.log(imageArray);
     const formData = new FormData();
     const notConflictImages = [];
-    const ableCount = 6 - imageList.length;
+    const ableCount = 3 - imageList.length;
     if (ableCount > 0) {
       if (imageList.length > 0) {
         for (let image of imageArray) {
@@ -67,7 +69,15 @@ const ItemContainer = () => {
       setImageList((prevState) => ({ ...prevState, ...images }));
     }
   }, [images]);
-  return <InputForm loading={loading}></InputForm>;
+  return (
+    <InputForm
+      loading={loading}
+      onChange={onChange}
+      onImageInsert={onImageInsert}
+      onImageRemove={onImageRemove}
+      images={images}
+    ></InputForm>
+  );
 };
 
 export default ItemContainer;
