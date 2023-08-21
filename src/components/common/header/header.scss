@@ -1,0 +1,38 @@
+.headerWraper {
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // border: 2px solid black;
+  section {
+    display: flex;
+    justify-content: space-between;
+    // padding: 10px 0;
+    width: 80%;
+    article {
+      .btn {
+        border: none;
+        outline: none;
+        background: hwb(219 39% 7%);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font: bold 1.1rem "arial";
+        color: white;
+        cursor: pointer;
+        &:hover {
+          background-color: hwb(219 39% 20%);
+          transition: 0.5s;
+        }
+        &.login {
+          background: hsl(180, 100%, 27%);
+          &:hover {
+            background-color: hsl(180, 100%, 40%);
+            transition: 0.5s;
+          }
+        }
+      }
+    }
+  }
+}
