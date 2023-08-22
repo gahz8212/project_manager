@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
-import { changeField, inputImage } from "../../modules/item";
+import {
+  changeField,
+  inputImage,
+  addImage,
+  initializeForm,
+} from "../../modules/item";
 import { resize } from "../../lib/utils/resize";
 const ItemContainer = () => {
   const dispatch = useDispatch();
@@ -13,6 +18,10 @@ const ItemContainer = () => {
     item: state.item.item,
   }));
   const [imageList, setImageList] = useState([] as { url: string }[]);
+
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheckingBox, setIsCheckingBox] = useState(false);
+  const [checkedArr, setCheckedArr] = useState([]);
 
   const onChange = (
     e:
@@ -25,7 +34,6 @@ const ItemContainer = () => {
   };
   const onImageInsert = async (e: any) => {
     const imageArray = e.target.files;
-    console.log(imageArray);
     const formData = new FormData();
     const notConflictImages = [];
     const ableCount = 3 - imageList.length;
@@ -54,7 +62,11 @@ const ItemContainer = () => {
           formData.append("images", await resize(notConflictImages[i]));
         }
       } else {
-        for (let i = 0; i < imageArray.length; i++) {
+        for (
+          let i = 0;
+          i < (imageArray.length > ableCount ? ableCount : imageArray.length);
+          i++
+        ) {
           formData.append("images", await resize(imageArray[i]));
         }
       }
@@ -62,20 +74,52 @@ const ItemContainer = () => {
     dispatch(inputImage.request(formData));
   };
   const onImageRemove = (url: string) => {
-    setImageList((prevState) => prevState.filter((prev) => prev.url === url));
+    setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
   };
+
+  let departs = [] as string[];
+  // const allDeparts = ["Off", "Dev", "Man", "Pac"];
+  const onSelect = (e: any) => {
+    const { value, checked } = e.target;
+    // console.log(name, value, checked);
+
+    if (checked) {
+      departs.push(value);
+    } else {
+      const index = departs.findIndex(() => value);
+      departs.splice(index - 1, 1);
+    }
+    console.log(departs);
+  };
+
   useEffect(() => {
     if (images) {
-      setImageList((prevState) => ({ ...prevState, ...images }));
+      setImageList((prevState) => [...prevState, ...images]);
     }
   }, [images]);
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      if (images) {
+        console.log(imageList.length);
+        dispatch(addImage(imageList));
+      }
+    }
+  }, [dispatch, images, imageList]);
+
+  useEffect(() => {
+    dispatch(initializeForm());
+  }, [dispatch]);
   return (
     <InputForm
       loading={loading}
       onChange={onChange}
       onImageInsert={onImageInsert}
       onImageRemove={onImageRemove}
-      images={images}
+      item={item}
+      onSelect={onSelect}
     ></InputForm>
   );
 };

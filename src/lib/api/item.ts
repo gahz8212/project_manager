@@ -1,11 +1,11 @@
 import client from "./client";
 export const inputImage = (images: FormData) => {
-  console.log(images);
-  // return client.post("/images", image);
+  // console.log(images);
+  return client.post("/post/images", images);
 };
 export const inputItem = (item: ItemData) => {
   console.log(item);
-  // return client.post("/item", item);
+  // return client.post("/post/item", item);
 };
 export type ItemData = {
   category: string;

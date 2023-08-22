@@ -66,6 +66,9 @@ form {
       width: 100%;
       min-height: 100px;
       border: 1px solid black;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
     }
   }
 }

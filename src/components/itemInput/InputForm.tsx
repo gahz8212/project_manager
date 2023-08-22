@@ -1,6 +1,8 @@
 import React from "react";
 import "./InputForm.scss";
+import { ItemData } from "../../lib/api/item";
 import Loading from "../common/loading/Loading";
+import CheckboxContainer from "../../containers/checkbox/CheckboxContainer";
 type Props = {
   loading: boolean;
   onChange: (
@@ -11,7 +13,9 @@ type Props = {
   ) => void;
   onImageInsert: (e: any) => void;
   onImageRemove: (url: string) => void;
-  images: { url: string }[] | null;
+  onSelect: (e: any) => void;
+  item: ItemData;
+  // images: { url: string }[] | null;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -19,7 +23,9 @@ const InputForm: React.FC<Props> = ({
   onChange,
   onImageInsert,
   onImageRemove,
-  images,
+  item,
+  onSelect,
+  // images,
 }) => {
   return (
     <>
@@ -33,14 +39,25 @@ const InputForm: React.FC<Props> = ({
             <div className="name">
               <select name="category" id="category" onChange={onChange}>
                 <option value="">분류선택</option>
-                <option value="소프트웨어">소프트웨어</option>
-                <option value="하드웨어">하드웨어</option>
+                <option
+                  value="소프트웨어"
+                  // selected={item.category === "소프트웨어"}
+                >
+                  소프트웨어
+                </option>
+                <option
+                  value="하드웨어"
+                  // selected={item.category === "하드웨어"}
+                >
+                  하드웨어
+                </option>
               </select>
               <input
                 type="text"
                 placeholder="Input name"
                 name="name"
                 onChange={onChange}
+                value={item.name}
               />
               <div>
                 <textarea
@@ -49,6 +66,7 @@ const InputForm: React.FC<Props> = ({
                   rows={6}
                   name="description"
                   onChange={onChange}
+                  value={item.description}
                 />
               </div>
             </div>
@@ -67,16 +85,7 @@ const InputForm: React.FC<Props> = ({
               />
             </div>
             <div className="category">
-              <div className="departs">
-                <input type="checkbox" id="Off" onChange={onChange} />
-                <label htmlFor="Off">사무실</label>
-                <input type="checkbox" id="Dev" />
-                <label htmlFor="Dev">개발실</label>
-                <input type="checkbox" id="Man" />
-                <label htmlFor="Man">생산</label>
-                <input type="checkbox" id="Pac" />
-                <label htmlFor="Pac">포장</label>
-              </div>
+              <CheckboxContainer />
             </div>
           </div>
 
@@ -91,12 +100,15 @@ const InputForm: React.FC<Props> = ({
               onChange={onImageInsert}
             />
             <div className="imageFrame">
-              {images &&
-                images.map((image) => (
+              {item &&
+                item.images &&
+                item.images.map((image) => (
                   <img
                     key={image.url}
-                    src={`/img/${image.url}`}
+                    src={`${image.url}`}
                     alt={image.url}
+                    width="120px"
+                    onDoubleClick={() => onImageRemove(image.url)}
                   ></img>
                 ))}
             </div>

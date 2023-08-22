@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { initializeForm, changeField, login } from "../../modules/auth";
 import { check } from "../../modules/user";
 import { RootState } from "../../modules";
+import { Link } from "react-router-dom";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
