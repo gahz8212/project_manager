@@ -7,6 +7,7 @@ import {
   inputImage,
   addImage,
   initializeForm,
+  inputItem,
 } from "../../modules/item";
 import { resize } from "../../lib/utils/resize";
 const ItemContainer = () => {
@@ -18,10 +19,6 @@ const ItemContainer = () => {
     item: state.item.item,
   }));
   const [imageList, setImageList] = useState([] as { url: string }[]);
-
-  const [isCheckAll, setIsCheckAll] = useState(false);
-  const [isCheckingBox, setIsCheckingBox] = useState(false);
-  const [checkedArr, setCheckedArr] = useState([]);
 
   const onChange = (
     e:
@@ -76,22 +73,10 @@ const ItemContainer = () => {
   const onImageRemove = (url: string) => {
     setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
   };
-
-  let departs = [] as string[];
-  // const allDeparts = ["Off", "Dev", "Man", "Pac"];
-  const onSelect = (e: any) => {
-    const { value, checked } = e.target;
-    // console.log(name, value, checked);
-
-    if (checked) {
-      departs.push(value);
-    } else {
-      const index = departs.findIndex(() => value);
-      departs.splice(index - 1, 1);
-    }
-    console.log(departs);
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(inputItem.request(item));
   };
-
   useEffect(() => {
     if (images) {
       setImageList((prevState) => [...prevState, ...images]);
@@ -119,7 +104,7 @@ const ItemContainer = () => {
       onImageInsert={onImageInsert}
       onImageRemove={onImageRemove}
       item={item}
-      onSelect={onSelect}
+      onSubmit={onSubmit}
     ></InputForm>
   );
 };

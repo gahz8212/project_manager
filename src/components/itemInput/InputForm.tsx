@@ -13,9 +13,10 @@ type Props = {
   ) => void;
   onImageInsert: (e: any) => void;
   onImageRemove: (url: string) => void;
-  onSelect: (e: any) => void;
+
   item: ItemData;
   // images: { url: string }[] | null;
+  onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -24,7 +25,7 @@ const InputForm: React.FC<Props> = ({
   onImageInsert,
   onImageRemove,
   item,
-  onSelect,
+  onSubmit,
   // images,
 }) => {
   return (
@@ -33,24 +34,19 @@ const InputForm: React.FC<Props> = ({
         className="space"
         // style={{ height: "6rem", background: "gray" }}
       ></div>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="container">
           <div className="left">
             <div className="name">
-              <select name="category" id="category" onChange={onChange}>
+              <select
+                name="category"
+                id="category"
+                onChange={onChange}
+                defaultValue={"하드웨어"}
+              >
                 <option value="">분류선택</option>
-                <option
-                  value="소프트웨어"
-                  // selected={item.category === "소프트웨어"}
-                >
-                  소프트웨어
-                </option>
-                <option
-                  value="하드웨어"
-                  // selected={item.category === "하드웨어"}
-                >
-                  하드웨어
-                </option>
+                <option value="소프트웨어">소프트웨어</option>
+                <option value="하드웨어">하드웨어</option>
               </select>
               <input
                 type="text"
@@ -71,7 +67,7 @@ const InputForm: React.FC<Props> = ({
               </div>
             </div>
             <div className="price">
-              <select name="unit" onChange={onChange}>
+              <select name="unit" defaultValue="￦" onChange={onChange}>
                 <option value="">unit</option>
                 <option value="$">$</option>
                 <option value="￦">￦</option>
@@ -79,6 +75,8 @@ const InputForm: React.FC<Props> = ({
               </select>
               <input
                 type="number"
+                step="0.001"
+                min="0"
                 placeholder="Input price"
                 name="price"
                 onChange={onChange}
@@ -116,6 +114,7 @@ const InputForm: React.FC<Props> = ({
 
           {loading && <Loading />}
         </div>
+        <button type="submit">입력</button>
       </form>
     </>
   );

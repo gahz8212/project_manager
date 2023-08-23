@@ -10,10 +10,10 @@ const initialState: itemState = {
     category: "",
     name: "",
     description: "",
-    unit: "",
+    unit: "￦",
     price: 0,
-    departs: "",
-    use: false,
+    departs: [],
+    use: "use",
     images: null,
   },
 };

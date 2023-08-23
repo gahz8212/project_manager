@@ -34,7 +34,8 @@ router.post("/images", upload.array("images"), (req, res) => {
   }
 });
 router.post("/item", upload.none(), (req, res) => {
-  const { name, unit, price, departs, images } = req.body;
-  console.log(name, unit, price, departs, images);
+  const { category, name, description, unit, price, departs, images, use } =
+    req.body;
+  console.log(category, name, description, unit, price, departs, images, use);
 });
 module.exports = router;

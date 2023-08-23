@@ -5,7 +5,7 @@ export const inputImage = (images: FormData) => {
 };
 export const inputItem = (item: ItemData) => {
   console.log(item);
-  // return client.post("/post/item", item);
+  return client.post("/post/item", item);
 };
 export type ItemData = {
   category: string;
@@ -13,7 +13,7 @@ export type ItemData = {
   description: string;
   unit: string;
   price: number;
-  departs: string;
-  use: boolean;
+  departs: string[];
+  use: string;
   images: { url: string }[] | null;
 };
