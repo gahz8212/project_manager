@@ -63,7 +63,7 @@ const Checkbox: React.FC<Props> = ({
               />
             )}
           </div>
-          {/* <div>
+          <div>
             <input
               type="checkbox"
               id="Dev"
@@ -85,7 +85,7 @@ const Checkbox: React.FC<Props> = ({
               />
             )}
           </div>
-        </div>
+          {/* </div>
         <div>
           <div>
             <input

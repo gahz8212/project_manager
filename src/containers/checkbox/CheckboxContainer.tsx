@@ -4,6 +4,7 @@ import { changeField } from "../../modules/item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { initializeForm } from "../../modules/item";
+import { ItemData } from "../../lib/api/item";
 
 const CheckboxContainer = () => {
   const [departs, setDeparts] = useState([{ depart: "Off", count: 1 }] as {
@@ -44,11 +45,13 @@ const CheckboxContainer = () => {
   const onSelect_count = (e: React.ChangeEvent<HTMLInputElement>) => {
     // const {name, value, checked } = e.target;
     const { name, value } = e.target;
-    console.log(name, value);
+    console.log(departs);
 
     // if (checked) {
     //   console.log(checked);
-    //   // setDeparts((prev) => [...prev, value]);
+    setDeparts((prev) =>
+      prev.filter((p) => (p.depart === name ? (p.count = +value) : p.count))
+    );
     // } else {
     //   console.log(checked);
     //   // setDeparts((prev) => prev.filter((p) => p !== value));
@@ -61,11 +64,17 @@ const CheckboxContainer = () => {
     dispatch(changeField({ name, value }));
   };
   useEffect(() => {
+    // console.log(depart);
     dispatch(changeField({ name: "departs", value: departs }));
-    console.log(departs);
     setIsCheckAll(departs.length === 4);
   }, [departs, dispatch]);
-
+  const makeDeparts = (item: ItemData) => {
+    const result = item.departs.map((item) => {
+      const { depart } = item;
+      return depart;
+    });
+    return result;
+  };
   useEffect(() => {
     dispatch(initializeForm());
   }, []);
