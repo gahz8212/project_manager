@@ -6,6 +6,7 @@ const initialState: itemState = {
   loading: false,
   images: null,
   error: null,
+  status: "",
   item: {
     category: "",
     name: "",
@@ -47,9 +48,10 @@ const item = createReducer<itemState, itemAction>(initialState, {
     ...state,
     loading: true,
   }),
-  [actions.INPUT_ITEM_SUCCESS]: (state) => ({
+  [actions.INPUT_ITEM_SUCCESS]: (state, { payload: status }) => ({
     ...state,
     loading: false,
+    status,
   }),
   [actions.INPUT_ITEM_FAILURE]: (state, { payload: error }) => ({
     ...state,

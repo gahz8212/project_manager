@@ -3,15 +3,25 @@ module.exports = class Item extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
+        category: {
+          type: Sequelize.ENUM,
+          values: ["소프트웨어", "하드웨어"],
+          defaultValue: "하드웨어",
+        },
         name: { type: Sequelize.STRING(100), unique: true, allowNull: false },
+        description: { type: Sequelize.STRING(200), allowNull: true },
         unit: {
           type: Sequelize.ENUM,
           values: ["$", "￦", "￥"],
           defaultValue: "￦",
         },
         price: { type: Sequelize.FLOAT(11, 4), defaultValue: 0 },
-        departs: { type: Sequelize.ENUM, values: ["Off", "Dev", "Man", "Pac"] },
-        use: { type: Sequelize.BOOLEAN, defaultValue: false },
+        departs: {
+          type: Sequelize.ENUM,
+          values: ["Off", "Dev", "Man", "Pac"],
+          defaultValue: "Off",
+        },
+        use: { type: Sequelize.BOOLEAN, defaultValue: true },
       },
       {
         sequelize,

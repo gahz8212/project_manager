@@ -3,8 +3,13 @@ import Checkbox from "../../components/common/checkbox/CheckBox";
 import { changeField } from "../../modules/item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
+import { initializeForm } from "../../modules/item";
+
 const CheckboxContainer = () => {
-  const [departs, setDeparts] = useState(["Off"] as string[]);
+  const [departs, setDeparts] = useState([{ depart: "Off", count: 1 }] as {
+    depart: string;
+    count: number;
+  }[]);
   const [isCheckAll, setIsCheckAll] = useState(false);
   const dispatch = useDispatch();
   const { item } = useSelector((state: RootState) => ({
@@ -13,21 +18,43 @@ const CheckboxContainer = () => {
   const changeAllCheck = (checked: boolean) => {
     setDeparts([]);
     if (checked) {
-      setDeparts((prev) => [...prev, ...["Off", "Dev", "Man", "Pac"]]);
+      setDeparts((prev) => [
+        ...prev,
+        ...[
+          { depart: "Off", count: 0 },
+          { depart: "Dev", count: 0 },
+          { depart: "Man", count: 0 },
+          { depart: "Pac", count: 0 },
+        ],
+      ]);
       setIsCheckAll(true);
     } else {
       setIsCheckAll(false);
     }
   };
-  const onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-
+  const onSelect_check = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    // console.log(name, checked);
     if (checked) {
-      setDeparts((prev) => [...prev, value]);
+      setDeparts((prev) => [...prev, { depart: name, count: 0 }]);
     } else {
-      setDeparts((prev) => prev.filter((p) => p !== value));
+      setDeparts((prev) => prev.filter((p) => p.depart !== name));
     }
   };
+  const onSelect_count = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const {name, value, checked } = e.target;
+    const { name, value } = e.target;
+    console.log(name, value);
+
+    // if (checked) {
+    //   console.log(checked);
+    //   // setDeparts((prev) => [...prev, value]);
+    // } else {
+    //   console.log(checked);
+    //   // setDeparts((prev) => prev.filter((p) => p !== value));
+    // }
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     // console.log(value);
@@ -35,12 +62,18 @@ const CheckboxContainer = () => {
   };
   useEffect(() => {
     dispatch(changeField({ name: "departs", value: departs }));
+    console.log(departs);
     setIsCheckAll(departs.length === 4);
   }, [departs, dispatch]);
+
+  useEffect(() => {
+    dispatch(initializeForm());
+  }, []);
   return (
     <Checkbox
       isCheckAll={isCheckAll}
-      onSelect={onSelect}
+      onSelect_check={onSelect_check}
+      onSelect_count={onSelect_count}
       changeAllCheck={changeAllCheck}
       onChange={onChange}
       item={item}

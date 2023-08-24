@@ -33,4 +33,4 @@ export const inputItem = createAsyncAction(
   INPUT_ITEM,
   INPUT_ITEM_SUCCESS,
   INPUT_ITEM_FAILURE
-)<ItemData, undefined, Error>();
+)<ItemData, string, Error>();

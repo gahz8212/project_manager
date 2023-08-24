@@ -21,8 +21,11 @@ function* inputImageSaga(
 }
 function* inputItemSaga(action: ReturnType<typeof actions.inputItem.request>) {
   try {
-    yield call(itemAPI.inputItem, action.payload);
-    // yield put(actions.inputItem.success(response.data));
+    const response: { data: string } = yield call(
+      itemAPI.inputItem,
+      action.payload
+    );
+    yield put(actions.inputItem.success(response.data));
   } catch (e: any) {
     console.error(e);
     yield put(actions.inputItem.failure(e));

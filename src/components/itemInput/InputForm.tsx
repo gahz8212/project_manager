@@ -17,6 +17,7 @@ type Props = {
   item: ItemData;
   // images: { url: string }[] | null;
   onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
+  error: Error | null;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -26,14 +27,18 @@ const InputForm: React.FC<Props> = ({
   onImageRemove,
   item,
   onSubmit,
-  // images,
+  error,
 }) => {
   return (
     <>
       <div
         className="space"
         // style={{ height: "6rem", background: "gray" }}
-      ></div>
+      >
+        {error?.message === "Request failed with status code 411"
+          ? "로그인필요"
+          : ""}
+      </div>
       <form onSubmit={onSubmit}>
         <div className="container">
           <div className="left">

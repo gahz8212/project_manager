@@ -13,7 +13,7 @@ export type ItemData = {
   description: string;
   unit: string;
   price: number;
-  departs: string[];
+  departs: { depart: string; count: number }[];
   use: string;
   images: { url: string }[] | null;
 };

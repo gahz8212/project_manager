@@ -100,6 +100,7 @@ const ItemContainer = () => {
   return (
     <InputForm
       loading={loading}
+      error={error}
       onChange={onChange}
       onImageInsert={onImageInsert}
       onImageRemove={onImageRemove}

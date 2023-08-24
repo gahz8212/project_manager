@@ -5,6 +5,7 @@ export type itemState = {
   loading: boolean;
   item: ItemData;
   error: Error | null;
+  status: string;
   images: { url: string }[] | null;
 };
 export type itemAction = ActionType<typeof actions>;

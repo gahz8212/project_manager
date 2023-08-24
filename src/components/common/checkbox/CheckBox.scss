@@ -1,0 +1,15 @@
+.wraper {
+  width: 100%;
+  .departs {
+    width: 100%;
+    background: yellow;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    text-align: center;
+    label {
+      margin: 0 10px;
+    }
+  }
+}
