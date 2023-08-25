@@ -14,6 +14,6 @@ export type ItemData = {
   unit: string;
   price: number;
   departs: { depart: string; count: number }[];
-  use: string;
+  use: boolean;
   images: { url: string }[] | null;
 };

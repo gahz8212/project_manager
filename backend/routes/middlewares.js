@@ -2,6 +2,9 @@ exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
+    req.logout(() => {
+      req.session.destroy();
+    });
     return res.status(411).json("로그인 필요");
   }
 };

@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 const { isLoggedIn } = require("./middlewares");
+const { Item } = require("../models");
 try {
   fs.readdirSync("uploads");
 } catch (e) {
@@ -23,7 +24,7 @@ const upload = multer({
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-router.post("/images", isLoggedIn, upload.array("images"), (req, res) => {
+router.post("/images", upload.array("images"), (req, res) => {
   try {
     const images = req.files.map((image) => ({
       url: `/img/${image.filename}`,
@@ -34,21 +35,27 @@ router.post("/images", isLoggedIn, upload.array("images"), (req, res) => {
     return res.status(400).json(e);
   }
 });
-router.post("/item", isLoggedIn, upload.none(), (req, res) => {
+router.post("/item", upload.none(), (req, res) => {
   try {
     const { category, name, description, unit, price, departs, images, use } =
       req.body;
-    console.log(
-      category,
-      name,
-      description,
-      unit,
-      price,
-      departs.length > 0 ? departs.toString() : departs,
-      images,
-      use
-    );
-
+    departs.map(async (depart) => {
+      const item = await Item.create({
+        category,
+        name,
+        description,
+        depart,
+        unit,
+        price,
+        use,
+      });
+      if (images) {
+        images.map(
+          async (image) =>
+            await Image.create({ url: image.url, ItemId: item.id })
+        );
+      }
+    });
     return res.status(200).json("item write ok");
   } catch (e) {
     console.log(e);

@@ -14,7 +14,7 @@ const initialState: itemState = {
     unit: "￦",
     price: 0,
     departs: [],
-    use: "use",
+    use: true,
     images: null,
   },
 };

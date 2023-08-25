@@ -4,10 +4,14 @@ import { changeField } from "../../modules/item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { initializeForm } from "../../modules/item";
-import { ItemData } from "../../lib/api/item";
 
 const CheckboxContainer = () => {
-  const [departs, setDeparts] = useState([{ depart: "Off", count: 1 }] as {
+  const [departs, setDeparts] = useState([
+    { depart: "Off", count: 1 },
+    { depart: "Dev", count: 0 },
+    { depart: "Fac", count: 0 },
+    { depart: "Pac", count: 0 },
+  ] as {
     depart: string;
     count: number;
   }[]);
@@ -22,59 +26,66 @@ const CheckboxContainer = () => {
       setDeparts((prev) => [
         ...prev,
         ...[
-          { depart: "Off", count: 0 },
-          { depart: "Dev", count: 0 },
-          { depart: "Man", count: 0 },
-          { depart: "Pac", count: 0 },
+          { depart: "Off", count: 1 },
+          { depart: "Dev", count: 1 },
+          { depart: "Fac", count: 1 },
+          { depart: "Pac", count: 1 },
         ],
       ]);
       setIsCheckAll(true);
     } else {
+      setDeparts([
+        { depart: "Off", count: 0 },
+        { depart: "Dev", count: 0 },
+        { depart: "Fac", count: 0 },
+        { depart: "Pac", count: 0 },
+      ]);
       setIsCheckAll(false);
     }
   };
   const onSelect_check = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    // console.log(name, checked);
     if (checked) {
-      setDeparts((prev) => [...prev, { depart: name, count: 0 }]);
+      const nextData = departs.map((depart) =>
+        depart.depart === name
+          ? { depart: depart.depart, count: (depart.count = 1) }
+          : { depart: depart.depart, count: depart.count }
+      );
+      setDeparts(nextData);
     } else {
-      setDeparts((prev) => prev.filter((p) => p.depart !== name));
+      const nextData = departs.map((depart) =>
+        depart.depart === name
+          ? { depart: depart.depart, count: (depart.count = 0) }
+          : { depart: depart.depart, count: depart.count }
+      );
+      setDeparts(nextData);
     }
   };
   const onSelect_count = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const {name, value, checked } = e.target;
     const { name, value } = e.target;
-    console.log(departs);
-
-    // if (checked) {
-    //   console.log(checked);
-    setDeparts((prev) =>
-      prev.filter((p) => (p.depart === name ? (p.count = +value) : p.count))
+    const nextData = departs.map((depart) =>
+      depart.depart === name
+        ? { depart: depart.depart, count: +value }
+        : { depart: depart.depart, count: depart.count }
     );
-    // } else {
-    //   console.log(checked);
-    //   // setDeparts((prev) => prev.filter((p) => p !== value));
-    // }
+    setDeparts(nextData);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    // console.log(value);
-    dispatch(changeField({ name, value }));
+    const { name, checked } = e.target;
+    dispatch(changeField({ name, value: checked }));
   };
   useEffect(() => {
-    // console.log(depart);
     dispatch(changeField({ name: "departs", value: departs }));
-    setIsCheckAll(departs.length === 4);
+    let result = true;
+    for (let i = 0; i < 4; i++) {
+      console.log(departs[i]);
+      result = departs[i].count > 0;
+    }
+
+    setIsCheckAll(result);
   }, [departs, dispatch]);
-  const makeDeparts = (item: ItemData) => {
-    const result = item.departs.map((item) => {
-      const { depart } = item;
-      return depart;
-    });
-    return result;
-  };
+
   useEffect(() => {
     dispatch(initializeForm());
   }, []);

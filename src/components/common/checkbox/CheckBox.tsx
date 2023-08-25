@@ -17,15 +17,9 @@ const Checkbox: React.FC<Props> = ({
   onChange,
   item,
 }) => {
-  const checkConfirm = (item: ItemData, value: string) => {
-    const { departs } = item;
-    let result;
-    for (let i = 0; i < departs.length; i++) {
-      result = Object.values(departs[i]).includes(value);
-      if (result) break;
-    }
-    return result;
-  };
+  // const departNames = item.departs.map((item) => item.depart);
+  const departCounts = item.departs.map((item) => item.count);
+
   return (
     <div className="wraper">
       <input
@@ -37,100 +31,92 @@ const Checkbox: React.FC<Props> = ({
         }}
         checked={isCheckAll}
       />
-      <label htmlFor="Off">전체</label>
+      <label htmlFor="All">전체</label>
 
       <div className="departs">
-        <div>
-          <div>
+        <div className="left">
+          <div className="office">
             <input
               type="checkbox"
               id="Off"
               name="Off"
-              value="Off"
-              checked={checkConfirm(item, "Off")}
+              checked={departCounts[0] > 0}
               onChange={onSelect_check}
             />
             <label htmlFor="Off">사무실</label>
-            {checkConfirm(item, "Off") && (
+            {departCounts[0] > 0 && (
               <input
                 type="number"
                 name="Off"
                 id=""
                 min={0}
-                defaultValue={0}
-                style={{ textAlign: "right", width: "20%" }}
+                value={departCounts[0]}
                 onChange={onSelect_count}
               />
             )}
           </div>
-          <div>
+          <div className="development">
             <input
               type="checkbox"
               id="Dev"
               name="Dev"
-              value="Dev"
-              checked={checkConfirm(item, "Dev")}
+              checked={departCounts[1] > 0}
               onChange={onSelect_check}
             />
             <label htmlFor="Dev">개발실</label>
-            {checkConfirm(item, "Dev") && (
+            {departCounts[1] > 0 && (
               <input
                 type="number"
                 name="Dev"
                 id=""
                 min={0}
-                defaultValue={0}
-                style={{ textAlign: "right", width: "20%" }}
+                value={departCounts[1]}
                 onChange={onSelect_count}
               />
             )}
           </div>
-          {/* </div>
-        <div>
-          <div>
+        </div>
+        <div className="right">
+          <div className="factory">
             <input
               type="checkbox"
-              id="Man"
-              name="Man"
-              value="Man"
-              checked={checkConfirm(item, "Man")}
+              id="Fac"
+              name="Fac"
+              checked={departCounts[2] > 0}
               onChange={onSelect_check}
             />
             <label htmlFor="Man">생산</label>
-            {checkConfirm(item, "Man") && (
+            {departCounts[2] > 0 && (
               <input
                 type="number"
-                name="Man"
+                name="Fac"
                 id=""
                 min={0}
-                defaultValue={0}
-                style={{ textAlign: "right", width: "20%" }}
+                value={departCounts[2]}
                 onChange={onSelect_count}
               />
             )}
           </div>
-          <div>
+          <div className="package">
             <input
               type="checkbox"
               id="Pac"
               name="Pac"
-              value="Pac"
-              checked={checkConfirm(item, "Pac")}
+              checked={departCounts[3] > 0}
               onChange={onSelect_check}
             />
             <label htmlFor="Pac">포장</label>
-            {checkConfirm(item, "Pac") && (
+            {departCounts[3] > 0 && (
               <input
                 type="number"
                 name="Pac"
                 id=""
                 min={0}
-                defaultValue={0}
-                style={{ textAlign: "right", width: "20%" }}
+                value={departCounts[3]}
                 onChange={onSelect_count}
               />
             )}
-          </div>*/}
+          </div>
         </div>
       </div>
       <div>
@@ -139,16 +125,18 @@ const Checkbox: React.FC<Props> = ({
           type="radio"
           id="use"
           name="use"
-          value="use"
+          value={"true"}
+          checked={item.use}
           onChange={onChange}
-          defaultChecked
+          // defaultChecked
         />
         <label htmlFor="no-use">미사용</label>
         <input
           type="radio"
           id="no-use"
           name="use"
-          value="not-use"
+          value={"false"}
+          checked={!item.use}
           onChange={onChange}
         />
       </div>
