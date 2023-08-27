@@ -13,7 +13,8 @@ function* loginSaga(action: ReturnType<typeof actions.login.request>) {
     );
     yield put(actions.login.success(response.data));
   } catch (e: any) {
-    yield put(actions.login.failure(e));
+    console.log(e);
+    yield put(actions.login.failure(e.response.data));
   }
 }
 function* joinSaga(action: ReturnType<typeof actions.join.request>) {
@@ -21,6 +22,6 @@ function* joinSaga(action: ReturnType<typeof actions.join.request>) {
     const response: { data: string } = yield call(authAPI.join, action.payload);
     yield put(actions.join.success(response.data));
   } catch (e: any) {
-    yield put(actions.join.failure(e));
+    yield put(actions.join.failure(e.response.data));
   }
 }

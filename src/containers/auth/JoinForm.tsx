@@ -7,10 +7,11 @@ import { RootState } from "../../modules";
 const JoinForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { auth, loading, form } = useSelector((state: RootState) => ({
+  const { auth, loading, form, error } = useSelector((state: RootState) => ({
     auth: state.auth.auth,
     loading: state.auth.loading,
     form: state.auth.join,
+    error: state.auth.error,
   }));
   const onChange = (
     e:
@@ -40,6 +41,7 @@ const JoinForm = () => {
       type="join"
       loading={loading}
       form={form}
+      error={error}
       onChange={onChange}
       onSubmit={onSubmit}
     ></AuthForm>

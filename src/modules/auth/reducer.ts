@@ -3,7 +3,7 @@ import { authState, authAction } from "./type";
 import * as actions from "./actions";
 const initialState: authState = {
   loading: false,
-  error: null,
+  error: "",
   auth: "",
   login: { email: "", password: "" },
   join: { email: "", password: "", name: "", rank: "" },
@@ -13,7 +13,7 @@ const auth = createReducer<authState, authAction>(initialState, {
     ...state,
     [form]: initialState[form],
     auth: "",
-    error: null,
+    error: "",
   }),
   [actions.CHANGE_FIELD]: (state, { payload: { form, key, value } }) => ({
     ...state,
@@ -26,7 +26,7 @@ const auth = createReducer<authState, authAction>(initialState, {
   [actions.LOGIN_SUCCESS]: (state, { payload: auth }) => ({
     ...state,
     auth,
-    error: null,
+    error: "",
     loading: false,
   }),
   [actions.LOGIN_FAILURE]: (state, { payload: error }) => ({
@@ -42,7 +42,7 @@ const auth = createReducer<authState, authAction>(initialState, {
   [actions.JOIN_SUCCESS]: (state, { payload: auth }) => ({
     ...state,
     auth,
-    error: null,
+    error: "",
     loading: false,
   }),
   [actions.JOIN_FAILURE]: (state, { payload: error }) => ({

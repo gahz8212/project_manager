@@ -1,6 +1,7 @@
 import React from "react";
 import { ItemData } from "../../../lib/api/item";
 import "./CheckBox.scss";
+
 type Props = {
   isCheckAll: boolean;
   onSelect_check: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -85,7 +86,7 @@ const Checkbox: React.FC<Props> = ({
               checked={departCounts[2] > 0}
               onChange={onSelect_check}
             />
-            <label htmlFor="Man">생산</label>
+            <label htmlFor="Fac">생산</label>
             {departCounts[2] > 0 && (
               <input
                 type="number"
@@ -119,24 +120,25 @@ const Checkbox: React.FC<Props> = ({
           </div>
         </div>
       </div>
+
       <div>
         <label htmlFor="use">사용</label>
         <input
           type="radio"
           id="use"
           name="use"
-          value={"true"}
-          checked={item.use}
+          value="true"
+          // checked={item.use === false}
           onChange={onChange}
-          // defaultChecked
+          defaultChecked
         />
         <label htmlFor="no-use">미사용</label>
         <input
           type="radio"
           id="no-use"
           name="use"
-          value={"false"}
-          checked={!item.use}
+          value="false"
+          // checked={item.use === true}
           onChange={onChange}
         />
       </div>

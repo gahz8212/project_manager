@@ -12,8 +12,15 @@ type Props = {
       | React.ChangeEvent<HTMLSelectElement>
   ) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  error: string;
 };
-const AuthForm: React.FC<Props> = ({ type, loading, onChange, onSubmit }) => {
+const AuthForm: React.FC<Props> = ({
+  type,
+  loading,
+  onChange,
+  onSubmit,
+  error,
+}) => {
   const textMap: { [key: string]: string } = {
     login: "로그인",
     join: "회원가입",
@@ -64,6 +71,7 @@ const AuthForm: React.FC<Props> = ({ type, loading, onChange, onSubmit }) => {
         autoComplete="off"
         onChange={onChange}
       />
+      {error && <div>{error}</div>}
       <button type="submit">{text}</button>
       <footer>
         {text === "로그인" ? (

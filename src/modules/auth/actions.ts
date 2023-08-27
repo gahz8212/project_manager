@@ -1,5 +1,5 @@
 import { createAction, createAsyncAction } from "typesafe-actions";
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
 import { authData } from "../../lib/api/auth";
 export const INITIALIZE_FORM = "auth/INITIALIZE_FORM";
 export const CHANGE_FIELD = "auth/CHANGE_FIELD";
@@ -17,10 +17,10 @@ export const changeField = createAction(
 export const login = createAsyncAction(LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE)<
   authData,
   string,
-  AxiosError
+  string
 >();
 export const join = createAsyncAction(JOIN, JOIN_SUCCESS, JOIN_FAILURE)<
   authData,
   string,
-  AxiosError
+  string
 >();

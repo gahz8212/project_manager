@@ -9,12 +9,15 @@ import { Link } from "react-router-dom";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { auth, loading, form, user } = useSelector((state: RootState) => ({
-    auth: state.auth.auth,
-    loading: state.auth.loading,
-    form: state.auth.login,
-    user: state.user.user,
-  }));
+  const { auth, loading, form, user, error } = useSelector(
+    (state: RootState) => ({
+      auth: state.auth.auth,
+      loading: state.auth.loading,
+      form: state.auth.login,
+      user: state.user.user,
+      error: state.auth.error,
+    })
+  );
   const onChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -55,6 +58,7 @@ const LoginForm = () => {
       type="login"
       loading={loading}
       form={form}
+      error={error}
       onChange={onChange}
       onSubmit={onSubmit}
     ></AuthForm>

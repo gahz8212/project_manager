@@ -72,8 +72,13 @@ const CheckboxContainer = () => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    dispatch(changeField({ name, value: checked }));
+    const { name, value } = e.target;
+
+    if (value === "true") {
+      dispatch(changeField({ name, value: true }));
+    } else {
+      dispatch(changeField({ name, value: false }));
+    }
   };
   useEffect(() => {
     dispatch(changeField({ name: "departs", value: departs }));
