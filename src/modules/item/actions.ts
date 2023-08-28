@@ -28,9 +28,9 @@ export const inputImage = createAsyncAction(
   INPUT_IMAGE,
   INPUT_IMAGE_SUCCESS,
   INPUT_IMAGE_FAILURE
-)<FormData, { url: string }[], Error>();
+)<FormData, { url: string }[], string>();
 export const inputItem = createAsyncAction(
   INPUT_ITEM,
   INPUT_ITEM_SUCCESS,
   INPUT_ITEM_FAILURE
-)<ItemData, string, Error>();
+)<ItemData, string, string>();

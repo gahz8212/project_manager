@@ -4,7 +4,7 @@ import * as actions from "./actions";
 export type itemState = {
   loading: boolean;
   item: ItemData;
-  error: Error | null;
+  error: string;
   status: string;
   images: { url: string }[] | null;
 };

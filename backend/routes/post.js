@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 const { isLoggedIn } = require("./middlewares");
-const { Item } = require("../models");
+const { Item, Image } = require("../models");
 try {
   fs.readdirSync("uploads");
 } catch (e) {
@@ -24,7 +24,7 @@ const upload = multer({
   }),
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-router.post("/images", upload.array("images"), (req, res) => {
+router.post("/images", isLoggedIn, upload.array("images"), (req, res) => {
   try {
     const images = req.files.map((image) => ({
       url: `/img/${image.filename}`,
@@ -35,16 +35,28 @@ router.post("/images", upload.array("images"), (req, res) => {
     return res.status(400).json(e);
   }
 });
-router.post("/item", upload.none(), (req, res) => {
+router.post("/item", isLoggedIn, upload.none(), (req, res) => {
   try {
     const { category, name, description, unit, price, departs, images, use } =
       req.body;
-    departs.map(async (depart) => {
+    const nextDeparts = departs.filter((depart) => depart.count > 0);
+    console.log(
+      category,
+      name,
+      description,
+      unit,
+      price,
+      nextDeparts,
+      images,
+      use
+    );
+    nextDeparts.map(async (depart) => {
       const item = await Item.create({
         category,
         name,
         description,
-        depart,
+        departs: depart.depart,
+        count: depart.count,
         unit,
         price,
         use,
@@ -59,7 +71,7 @@ router.post("/item", upload.none(), (req, res) => {
     return res.status(200).json("item write ok");
   } catch (e) {
     console.log(e);
-    return res.status(400).json(e);
+    return res.status(400).json(e.message);
   }
 });
 module.exports = router;

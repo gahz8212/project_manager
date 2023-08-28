@@ -65,7 +65,7 @@ const AuthForm: React.FC<Props> = ({
         </div>
       )}
       <input
-        type="text"
+        type="password"
         name="password"
         placeholder="Input password"
         autoComplete="off"

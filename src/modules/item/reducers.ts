@@ -5,7 +5,7 @@ import * as actions from "./actions";
 const initialState: itemState = {
   loading: false,
   images: null,
-  error: null,
+  error: "",
   status: "",
   item: {
     category: "",
@@ -20,7 +20,7 @@ const initialState: itemState = {
 };
 const item = createReducer<itemState, itemAction>(initialState, {
   [actions.INITIALIZE_FORM]: (state) => ({
-    ...state,
+    ...initialState,
   }),
   [actions.CHANGE_FIELD]: (state, { payload: { name, value } }) => ({
     ...state,

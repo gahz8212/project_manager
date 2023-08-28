@@ -16,7 +16,7 @@ function* inputImageSaga(
     yield put(actions.inputImage.success(response.data));
   } catch (e: any) {
     console.error(e);
-    yield put(actions.inputImage.failure(e));
+    yield put(actions.inputImage.failure(e.response.data));
   }
 }
 function* inputItemSaga(action: ReturnType<typeof actions.inputItem.request>) {
@@ -28,6 +28,7 @@ function* inputItemSaga(action: ReturnType<typeof actions.inputItem.request>) {
     yield put(actions.inputItem.success(response.data));
   } catch (e: any) {
     console.error(e);
-    yield put(actions.inputItem.failure(e));
+
+    yield put(actions.inputItem.failure(e.response.data));
   }
 }

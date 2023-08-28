@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
+
 import {
   changeField,
   inputImage,
@@ -12,6 +14,7 @@ import {
 import { resize } from "../../lib/utils/resize";
 const ItemContainer = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, images, error, item } = useSelector((state: RootState) => ({
     loading: state.item.loading,
     images: state.item.images,
@@ -93,7 +96,15 @@ const ItemContainer = () => {
       }
     }
   }, [dispatch, images, imageList]);
-
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      if (error === "로그인이 필요 합니다.") {
+        navigate("/");
+      }
+    }
+  }, [error, navigate, dispatch]);
   useEffect(() => {
     dispatch(initializeForm());
   }, [dispatch]);

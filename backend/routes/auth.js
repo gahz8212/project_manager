@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { User } = require("../models");
-const CustomerError = require("./CustomError");
+// const CustomerError = require("./CustomError");
 
 router.post("/join", async (req, res) => {
   try {
@@ -12,7 +12,7 @@ router.post("/join", async (req, res) => {
 
     const exUser = await User.findOne({ where: { email } });
     if (exUser) {
-      throw new CustomerError("이미 사용중인 이메일 입니다.");
+      throw new Error("이미 사용중인 이메일 입니다.");
     }
     const hash = await bcrypt.hash(password, 12);
     await User.create({ email, password: hash, name, rank });
@@ -25,14 +25,14 @@ router.post("/login", async (req, res) => {
   passport.authenticate("local", (authError, user, info) => {
     try {
       if (authError) {
-        throw new CustomerError(authError);
+        throw new Error(authError);
       }
       if (!user) {
-        throw new CustomerError(info.message);
+        throw new Error(info.message);
       }
       return req.login(user, (loginError) => {
         if (loginError) {
-          throw new CustomerError(loginError);
+          throw new Error(loginError);
         } else {
           return res.status(200).json("login_ok");
         }
