@@ -10,6 +10,9 @@ const ListContainer = () => {
     list: state.list.list,
     error: state.list.error,
   }));
+  useEffect(() => {
+    dispatch(getList.request());
+  }, [dispatch]);
   return (
     <ListComponents
       loading={loading}
