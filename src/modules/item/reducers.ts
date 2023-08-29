@@ -13,13 +13,13 @@ const initialState: itemState = {
     description: "",
     unit: "￦",
     price: 0,
-    departs: [],
+    departs: [] as { depart: ""; count: 0 }[],
     use: true,
     images: null,
   },
 };
 const item = createReducer<itemState, itemAction>(initialState, {
-  [actions.INITIALIZE_FORM]: (state) => ({
+  [actions.INITIALIZE_FORM]: () => ({
     ...initialState,
   }),
   [actions.CHANGE_FIELD]: (state, { payload: { name, value } }) => ({

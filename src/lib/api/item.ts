@@ -12,8 +12,8 @@ export type ItemData = {
   name: string;
   description: string;
   unit: string;
-  price: number;
+  price?: number;
   departs: { depart: string; count: number }[];
   use: boolean;
-  images: { url: string }[] | null;
+  images?: { url: string }[] | null;
 };
