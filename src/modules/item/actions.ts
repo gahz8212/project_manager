@@ -20,10 +20,7 @@ export const addImage = createAction(
   ADD_IMAGE,
   (image: { url: string }[]) => image
 )();
-export const removeImage = createAction(
-  REMOVE_IMAGE,
-  (image: { url: string }) => image
-)();
+// export const removeImage = createAction(REMOVE_IMAGE, (url) => url)();
 export const inputImage = createAsyncAction(
   INPUT_IMAGE,
   INPUT_IMAGE_SUCCESS,

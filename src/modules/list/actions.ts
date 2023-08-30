@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { ItemData } from "../../lib/api/item";
+import { ListData } from "../../lib/api/list";
 import { SearchData } from "../../lib/api/list";
 export const INITIALIZE_FORM = "list/INITIALIZE_FORM";
 export const CHANGE_FIELD = "list/CHANGE_FIELD";
@@ -21,14 +21,14 @@ export const getList = createAsyncAction(
   GET_LIST,
   GET_LIST_SUCCESS,
   GET_LIST_FAILURE
-)<undefined, ItemData[] | null, Error>();
+)<undefined, ListData, Error>();
 export const searchList = createAsyncAction(
   SEARCH_LIST,
   SEARCH_LIST_SUCCESS,
   SEARCH_LIST_FAILURE
-)<SearchData, ItemData[] | null, Error>();
+)<SearchData, ListData, Error>();
 export const readItem = createAsyncAction(
   READ_ITEM,
   READ_ITEM_SUCCESS,
   READ_ITEM_FAILURE
-)<number, ItemData, Error>();
+)<number, ListData, Error>();

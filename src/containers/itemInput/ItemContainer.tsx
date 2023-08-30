@@ -8,6 +8,7 @@ import {
   changeField,
   inputImage,
   addImage,
+  // removeImage,
   initializeForm,
   inputItem,
 } from "../../modules/item";
@@ -15,12 +16,15 @@ import { resize } from "../../lib/utils/resize";
 const ItemContainer = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, images, error, item } = useSelector((state: RootState) => ({
-    loading: state.item.loading,
-    images: state.item.images,
-    error: state.item.error,
-    item: state.item.item,
-  }));
+  const { loading, images, error, item, status } = useSelector(
+    (state: RootState) => ({
+      loading: state.item.loading,
+      images: state.item.images,
+      error: state.item.error,
+      status: state.item.status,
+      item: state.item.item,
+    })
+  );
   const [imageList, setImageList] = useState([] as { url: string }[]);
 
   const onChange = (
@@ -75,6 +79,7 @@ const ItemContainer = () => {
   };
   const onImageRemove = (url: string) => {
     setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
+    // dispatch(removeImage(url));
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,6 +110,11 @@ const ItemContainer = () => {
       }
     }
   }, [error, navigate, dispatch]);
+  useEffect(() => {
+    if (status === "item_write_ok") {
+      navigate("/list");
+    }
+  });
   useEffect(() => {
     dispatch(initializeForm());
   }, [dispatch]);

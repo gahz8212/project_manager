@@ -8,7 +8,7 @@ const initialState: itemState = {
   error: "",
   status: "",
   item: {
-    category: "",
+    category: "소프트웨어",
     name: "",
     description: "",
     unit: "￦",
@@ -30,6 +30,7 @@ const item = createReducer<itemState, itemAction>(initialState, {
     ...state,
     item: { ...state.item, images },
   }),
+
   [actions.INPUT_IMAGE]: (state) => ({
     ...state,
     loading: true,

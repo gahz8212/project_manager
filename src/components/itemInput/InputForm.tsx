@@ -44,7 +44,7 @@ const InputForm: React.FC<Props> = ({
                 name="category"
                 id="category"
                 onChange={onChange}
-                defaultValue={"하드웨어"}
+                defaultValue="소프트웨어"
               >
                 <option value="">분류선택</option>
                 <option value="소프트웨어">소프트웨어</option>

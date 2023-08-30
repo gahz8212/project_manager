@@ -5,7 +5,7 @@ import * as actions from "./actions";
 const initialState: listState = {
   loading: false,
   error: null,
-  list: null,
+  list: [],
   item: null,
   search: {
     category: "",
@@ -38,7 +38,7 @@ const list = createReducer<listState, listAction>(initialState, {
     ...state,
     loading: false,
     error,
-    list: null,
+    list: [],
   }),
   [actions.SEARCH_LIST]: (state) => ({
     ...state,
@@ -54,7 +54,7 @@ const list = createReducer<listState, listAction>(initialState, {
     ...state,
     loading: false,
     error,
-    list: null,
+    list: [],
   }),
 });
 export default list;

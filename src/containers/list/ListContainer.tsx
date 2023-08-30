@@ -16,8 +16,8 @@ const ListContainer = () => {
   return (
     <ListComponents
       loading={loading}
-      list={list}
       error={error}
+      list={list}
     ></ListComponents>
   );
 };

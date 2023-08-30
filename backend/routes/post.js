@@ -39,6 +39,7 @@ router.post("/item", isLoggedIn, upload.none(), (req, res) => {
   try {
     const { category, name, description, unit, price, departs, images, use } =
       req.body;
+    // console.log(category, name);
     const nextDeparts = departs.filter((depart) => depart.count > 0);
     console.log(
       category,
@@ -68,7 +69,7 @@ router.post("/item", isLoggedIn, upload.none(), (req, res) => {
         );
       }
     });
-    return res.status(200).json("item write ok");
+    return res.status(200).json("item_write_ok");
   } catch (e) {
     console.log(e);
     return res.status(400).json(e.message);
