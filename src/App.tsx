@@ -1,4 +1,6 @@
 import React from "react";
+// import "./index.css";
+import "./components/styles/style.scss";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/LoginPage";
 import Join from "./pages/JoinPage";

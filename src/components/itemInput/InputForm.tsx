@@ -1,8 +1,10 @@
 import React from "react";
-import "./InputForm.scss";
+
 import { ItemData } from "../../lib/api/item";
 import Loading from "../common/loading/Loading";
+
 import CheckboxContainer from "../../containers/checkbox/CheckboxContainer";
+
 type Props = {
   loading: boolean;
   onChange: (
@@ -30,12 +32,9 @@ const InputForm: React.FC<Props> = ({
   error,
 }) => {
   return (
-    <>
-      <div
-        className="space"
-        // style={{ height: "6rem", background: "gray" }}
-      ></div>
-      {/* {error ? alert("로그인 화면으로 이동 합니다.") : undefined} */}
+    <div>
+      <div className="space"></div>
+
       <form onSubmit={onSubmit}>
         <div className="container">
           <div className="left">
@@ -116,9 +115,11 @@ const InputForm: React.FC<Props> = ({
 
           {loading && <Loading />}
         </div>
-        <button type="submit">입력</button>
+        <div className="btn">
+          <button type="submit">입력</button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

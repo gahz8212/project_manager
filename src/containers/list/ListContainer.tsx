@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getList, searchList } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
 import { RootState } from "../../modules";
-const ListContainer = () => {
+type Props = {
+  children: React.ReactNode;
+};
+const ListContainer: React.FC<Props> = ({ children }) => {
   const dispatch = useDispatch();
   const { loading, list, error } = useSelector((state: RootState) => ({
     loading: state.list.loading,
@@ -18,6 +21,7 @@ const ListContainer = () => {
       loading={loading}
       error={error}
       list={list}
+      children={children}
     ></ListComponents>
   );
 };
