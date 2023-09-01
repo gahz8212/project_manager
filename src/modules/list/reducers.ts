@@ -20,10 +20,13 @@ const list = createReducer<listState, listAction>(initialState, {
   [actions.INITIALIZE_FORM]: () => ({
     ...initialState,
   }),
-  [actions.CHANGE_FIELD]: (state, { payload: { name, value } }) => ({
-    ...state,
-    search: { ...state.search, [name]: value },
-  }),
+  [actions.CHANGE_FIELD]: (state, { payload: { name, value } }) => {
+    console.log(name, value);
+    return {
+      ...state,
+      search: { ...state.search, [name]: value },
+    };
+  },
   [actions.GET_LIST]: (state) => ({
     ...state,
     loading: true,
