@@ -20,6 +20,10 @@
     position: fixed;
     bottom: 40px;
     right: 15%;
+    transition: 1s;
+    &.rotate {
+      transform: rotate(360deg);
+    }
     button {
       background-color: aqua;
       border-radius: 50%;
@@ -32,12 +36,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font: normal 40px "arial";
-      transition: 1s;
+      font: normal 50px "arial";
+      transition: 0.4s;
       &:hover {
         background: darkcyan;
         color: white;
-        transform: rotate(360deg);
       }
     }
   }
@@ -86,14 +89,15 @@
 }
 
 .inputForm {
-  background: white;
-  position: absolute;
+  position: fixed;
   width: 400px;
   transform: translateX(10%) translateY(-50%);
+  background: white;
   opacity: 0;
   transition: 0.5s;
   &.open {
     transform: translateX(10%) translateY(22%);
+
     opacity: 1;
   }
 
@@ -179,10 +183,11 @@
     }
   }
 }
+
 @media screen and (max-width: 768px) {
   .inputForm {
-    margin-left: 50%;
-    transform: translateX(-50%);
-    left: auto;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
   }
 }

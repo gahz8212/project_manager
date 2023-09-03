@@ -115,7 +115,7 @@ const ItemContainer: React.FC<Props> = ({ open }) => {
   }, [error, navigate, dispatch]);
   useEffect(() => {
     if (status === "item_write_ok") {
-      navigate("/list");
+      navigate("/main");
     }
   });
   useEffect(() => {

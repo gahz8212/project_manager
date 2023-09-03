@@ -66,7 +66,7 @@ const ListComponents: React.FC<Props> = ({
           );
         })}
       </div>
-      <div className="write">
+      <div className={`write ${open ? "rotate" : ""}`}>
         <button onClick={formOpen}>+</button>
       </div>
     </div>
