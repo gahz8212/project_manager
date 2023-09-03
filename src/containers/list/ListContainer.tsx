@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getList, searchList } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
@@ -13,6 +13,11 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     list: state.list.list,
     error: state.list.error,
   }));
+  const [open, setOpen] = useState(false);
+  const formOpen = () => {
+    setOpen(!open);
+    console.log("open", open);
+  };
   useEffect(() => {
     dispatch(getList.request());
   }, [dispatch]);
@@ -22,6 +27,8 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       error={error}
       list={list}
       children={children}
+      formOpen={formOpen}
+      open={open}
     ></ListComponents>
   );
 };

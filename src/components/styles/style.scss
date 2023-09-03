@@ -35,9 +35,9 @@
       font: normal 40px "arial";
       transition: 1s;
       &:hover {
-        transform: rotate(360deg);
         background: darkcyan;
         color: white;
+        transform: rotate(360deg);
       }
     }
   }
@@ -68,7 +68,6 @@
         }
         .right {
           width: 70%;
-
           textarea {
             width: 100%;
             resize: none;
@@ -85,7 +84,19 @@
     }
   }
 }
-form {
+
+.inputForm {
+  background: white;
+  position: absolute;
+  width: 400px;
+  transform: translateX(10%) translateY(-50%);
+  opacity: 0;
+  transition: 0.5s;
+  &.open {
+    transform: translateX(10%) translateY(22%);
+    opacity: 1;
+  }
+
   .btn {
     text-align: right;
     button[type="submit"] {
@@ -101,8 +112,6 @@ form {
       }
     }
   }
-  width: 400px;
-  margin: 0 auto;
   .container {
     border: 1px solid green;
     // display: flex;
@@ -168,5 +177,12 @@ form {
       justify-content: space-around;
       align-items: center;
     }
+  }
+}
+@media screen and (max-width: 768px) {
+  .inputForm {
+    margin-left: 50%;
+    transform: translateX(-50%);
+    left: auto;
   }
 }

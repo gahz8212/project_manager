@@ -1,12 +1,16 @@
 import React from "react";
 import HeaderContainer from "../containers/common/HeaderContainer";
 // import MainContainer from "../containers/main/MainContainer";
-import ItemContainer from "../containers/itemInput/ItemContainer";
+import ListContainer from "../containers/list/ListContainer";
+import SearchContainer from "../containers/list/SearchContainer";
+
 const MainPage = () => {
   return (
     <div>
       <HeaderContainer />
-      <ItemContainer />
+      <ListContainer>
+        <SearchContainer />
+      </ListContainer>
     </div>
   );
 };

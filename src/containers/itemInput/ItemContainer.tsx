@@ -13,7 +13,10 @@ import {
   inputItem,
 } from "../../modules/item";
 import { resize } from "../../lib/utils/resize";
-const ItemContainer = () => {
+type Props = {
+  open: boolean;
+};
+const ItemContainer: React.FC<Props> = ({ open }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, images, error, item, status } = useSelector(
@@ -127,6 +130,7 @@ const ItemContainer = () => {
       onImageRemove={onImageRemove}
       item={item}
       onSubmit={onSubmit}
+      open={open}
     ></InputForm>
   );
 };

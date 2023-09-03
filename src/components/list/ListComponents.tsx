@@ -1,26 +1,33 @@
 import React from "react";
 import { ListData } from "../../lib/api/list";
 import Loading from "../common/loading/Loading";
-
+import ItemContainer from "../../containers/itemInput/ItemContainer";
 type Props = {
   loading: boolean;
   list: ListData | [];
   error: Error | null;
   children: React.ReactNode;
+  formOpen: () => void;
+  open: boolean;
 };
 const ListComponents: React.FC<Props> = ({
   loading,
   list,
   error,
   children,
+  open,
+  formOpen,
 }) => {
   if (!list) return null;
   if (error) return null;
+
   return (
     <div className="list-container">
       <div className="space"></div>
+
       {children}
       {loading && <Loading />}
+      <ItemContainer open={open} />
       <div className="list-wrapper">
         {list.map((item) => {
           return (
@@ -60,7 +67,7 @@ const ListComponents: React.FC<Props> = ({
         })}
       </div>
       <div className="write">
-        <button>+</button>
+        <button onClick={formOpen}>+</button>
       </div>
     </div>
   );

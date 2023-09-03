@@ -1,8 +1,6 @@
 import React from "react";
-
 import { ItemData } from "../../lib/api/item";
 import Loading from "../common/loading/Loading";
-
 import CheckboxContainer from "../../containers/checkbox/CheckboxContainer";
 
 type Props = {
@@ -20,6 +18,7 @@ type Props = {
   // images: { url: string }[] | null;
   onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
   error: string;
+  open: boolean;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -30,12 +29,14 @@ const InputForm: React.FC<Props> = ({
   item,
   onSubmit,
   error,
+  open,
 }) => {
+  // console.log(open);
   return (
-    <div>
-      <div className="space"></div>
+    <div className={`inputForm ${open ? "open" : ""}`}>
+      {/* <div className="space"></div> */}
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="form">
         <div className="container">
           <div className="left">
             <div className="name">
