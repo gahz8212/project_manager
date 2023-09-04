@@ -19,9 +19,6 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     setOpen(!open);
     console.log("open", open);
   };
-  useEffect(() => {
-    dispatch(getList.request());
-  }, [dispatch]);
   const onRead = (id: number) => {
     console.log(id);
   };
@@ -32,6 +29,14 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     console.log(id);
     dispatch(removeItem.request(id));
   };
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
+  useEffect(() => {
+    dispatch(getList.request());
+  }, [dispatch]);
   return (
     <ListComponents
       loading={loading}

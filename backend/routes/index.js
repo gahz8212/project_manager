@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const Op = Sequelize.Op;
 const { Item, Image } = require("../models");
+const { isLoggedIn } = require("./middlewares");
 router.get("/list", async (req, res) => {
   try {
     const list = await Item.findAll({ where: {}, include: { model: Image } });
@@ -37,7 +38,7 @@ router.post("/search", async (req, res) => {
   // // console.log(searchSplit[0]);
   // return res.status(200);
 });
-router.delete("/remove/:id", async (req, res) => {
+router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     console.log(id);
