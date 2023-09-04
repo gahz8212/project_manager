@@ -2,10 +2,14 @@ import client from "./client";
 
 export const getList = () => client.get("/list");
 export const searchList = (conditions: SearchData) => {
-  console.log("conditions", conditions);
+  // console.log("conditions", conditions);
   return client.post(`/search/`, conditions);
 };
-export const readItem = (id: number) => client.get(`/search/${id}`);
+export const readItem = (id: number) => client.get(`/read/${id}`);
+export const removeItem = (id: number) => {
+  console.log("id", id);
+  return client.delete(`/remove/${id}`);
+};
 export type SearchData = {
   category: string;
   name: string;

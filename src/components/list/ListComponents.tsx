@@ -2,6 +2,7 @@ import React from "react";
 import { ListData } from "../../lib/api/list";
 import Loading from "../common/loading/Loading";
 import ItemContainer from "../../containers/itemInput/ItemContainer";
+import ButtonsComponents from "../common/ButtonsComponents";
 type Props = {
   loading: boolean;
   list: ListData | [];
@@ -9,6 +10,10 @@ type Props = {
   children: React.ReactNode;
   formOpen: () => void;
   open: boolean;
+  onRead: (id: number) => void;
+  onUpdate: (id: number) => void;
+  onRemove: (id: number) => void;
+  // Buttons: React.JSX.Element;
 };
 const ListComponents: React.FC<Props> = ({
   loading,
@@ -17,6 +22,9 @@ const ListComponents: React.FC<Props> = ({
   children,
   open,
   formOpen,
+  onRead,
+  onUpdate,
+  onRemove,
 }) => {
   if (!list) return null;
   if (error) return null;
@@ -49,6 +57,12 @@ const ListComponents: React.FC<Props> = ({
                   </div>
                 </div>
                 <div className="right">
+                  <ButtonsComponents
+                    onRead={() => onRead(item.id)}
+                    onUpdate={() => onUpdate(item.id)}
+                    onDelete={() => onRemove(item.id)}
+                  />
+
                   <textarea value={item.description} readOnly></textarea>
                 </div>
               </div>

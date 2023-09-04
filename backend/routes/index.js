@@ -37,4 +37,16 @@ router.post("/search", async (req, res) => {
   // // console.log(searchSplit[0]);
   // return res.status(200);
 });
+router.delete("/remove/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    console.log(id);
+    await Item.destroy({ where: { id } });
+    await Image.destroy({ where: { ItemId: id } });
+    const list = await Item.findAll({ include: { model: Image } });
+    return res.status(200).json(list);
+  } catch (e) {
+    console.error(e);
+  }
+});
 module.exports = router;

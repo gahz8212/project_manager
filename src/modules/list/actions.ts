@@ -12,6 +12,9 @@ export const SEARCH_LIST_FAILURE = "list/SEARCH_LIST_FAILURE";
 export const READ_ITEM = "list/READ_ITEM";
 export const READ_ITEM_SUCCESS = "list/READ_ITEM_SUCCESS";
 export const READ_ITEM_FAILURE = "list/READ_ITEM_FAILURE";
+export const REMOVE_ITEM = "list/REMOVE_ITEM";
+export const REMOVE_ITEM_SUCCESS = "list/REMOVE_ITEM_SUCCESS";
+export const REMOVE_ITEM_FAILURE = "list/REMOVE_ITEM_FAILURE";
 export const initializeForm = createAction(INITIALIZE_FORM)();
 export const changeField = createAction(CHANGE_FIELD, ({ name, value }) => ({
   name,
@@ -31,4 +34,9 @@ export const readItem = createAsyncAction(
   READ_ITEM,
   READ_ITEM_SUCCESS,
   READ_ITEM_FAILURE
+)<number, ListData, Error>();
+export const removeItem = createAsyncAction(
+  REMOVE_ITEM,
+  REMOVE_ITEM_SUCCESS,
+  REMOVE_ITEM_FAILURE
 )<number, ListData, Error>();

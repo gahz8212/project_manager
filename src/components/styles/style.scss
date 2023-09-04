@@ -56,6 +56,7 @@
 
     .list-item {
       padding: 20px;
+      background-color: rgba(0, 0, 0, 0.1);
       &:nth-child(2n) {
         background-color: rgba(0, 0, 0, 0.2);
       }
@@ -65,7 +66,7 @@
       .item-textarea {
         display: flex;
         width: 100%;
-        align-items: center;
+        align-items: flex-start;
         .left {
           width: 30%;
         }
@@ -77,6 +78,10 @@
             height: 100px;
             border-radius: 8px;
           }
+          .buttons {
+            text-align: right;
+            padding: 0 10px 10px 0;
+          }
         }
       }
     }
@@ -87,12 +92,12 @@
     }
   }
 }
-
 .inputForm {
   position: fixed;
   width: 400px;
-  transform: translateX(10%) translateY(-50%);
+  transform: translateX(10%) translateY(-100%);
   background: white;
+
   opacity: 0;
   transition: 0.5s;
   &.open {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getList, searchList } from "../../modules/list";
+import { getList, removeItem } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
+
 import { RootState } from "../../modules";
 type Props = {
   children: React.ReactNode;
@@ -21,6 +22,16 @@ const ListContainer: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     dispatch(getList.request());
   }, [dispatch]);
+  const onRead = (id: number) => {
+    console.log(id);
+  };
+  const onUpdate = (id: number) => {
+    console.log(id);
+  };
+  const onRemove = (id: number) => {
+    console.log(id);
+    dispatch(removeItem.request(id));
+  };
   return (
     <ListComponents
       loading={loading}
@@ -29,6 +40,9 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       children={children}
       formOpen={formOpen}
       open={open}
+      onRead={onRead}
+      onUpdate={onUpdate}
+      onRemove={onRemove}
     ></ListComponents>
   );
 };

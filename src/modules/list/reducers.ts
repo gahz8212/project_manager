@@ -59,5 +59,21 @@ const list = createReducer<listState, listAction>(initialState, {
     error,
     list: [],
   }),
+  [actions.REMOVE_ITEM]: (state) => ({
+    ...state,
+    loading: true,
+  }),
+  [actions.REMOVE_ITEM_SUCCESS]: (state, { payload: list }) => ({
+    ...state,
+    loading: false,
+    list,
+    error: null,
+  }),
+  [actions.REMOVE_ITEM_FAILURE]: (state, { payload: error }) => ({
+    ...state,
+    loading: false,
+    error,
+    list: [],
+  }),
 });
 export default list;
