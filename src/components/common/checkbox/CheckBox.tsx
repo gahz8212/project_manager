@@ -18,7 +18,6 @@ const Checkbox: React.FC<Props> = ({
   onChange,
   item,
 }) => {
-  // const departNames = item.departs.map((item) => item.depart);
   const departCounts = item.departs.map((item) => item.count);
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getList } from "../../modules/list";
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
 
@@ -15,8 +16,9 @@ import {
 import { resize } from "../../lib/utils/resize";
 type Props = {
   open: boolean;
+  formOpen: () => void;
 };
-const ItemContainer: React.FC<Props> = ({ open }) => {
+const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, images, error, item, status } = useSelector(
@@ -115,12 +117,15 @@ const ItemContainer: React.FC<Props> = ({ open }) => {
   }, [error, navigate, dispatch]);
   useEffect(() => {
     if (status === "item_write_ok") {
-      navigate("/main");
+      dispatch(getList.request());
+      formOpen();
     }
-  });
+  }, [dispatch, status, formOpen]);
   useEffect(() => {
-    dispatch(initializeForm());
-  }, [dispatch]);
+    if (open) {
+      dispatch(initializeForm());
+    }
+  }, [open, dispatch]);
   return (
     <InputForm
       loading={loading}

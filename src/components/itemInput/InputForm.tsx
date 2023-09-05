@@ -82,6 +82,7 @@ const InputForm: React.FC<Props> = ({
                 placeholder="Input price"
                 name="price"
                 onChange={onChange}
+                value={item.price}
               />
             </div>
             <div className="category">

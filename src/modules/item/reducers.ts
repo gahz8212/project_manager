@@ -13,7 +13,12 @@ const initialState: itemState = {
     description: "",
     unit: "￦",
     price: 0,
-    departs: [] as { depart: ""; count: 0 }[],
+    departs: [
+      { depart: "Off", count: 1 },
+      { depart: "Dev", count: 0 },
+      { depart: "Fac", count: 0 },
+      { depart: "Pac", count: 0 },
+    ],
     use: true,
     images: null,
   },

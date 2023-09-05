@@ -3,18 +3,22 @@ import { ListData } from "../../lib/api/list";
 import Loading from "../common/loading/Loading";
 import ItemContainer from "../../containers/itemInput/ItemContainer";
 import ButtonsComponents from "../common/ButtonsComponents";
+import Viewer from "../common/Viewer";
 type Props = {
   loading: boolean;
   list: ListData | [];
   error: Error | null;
   children: React.ReactNode;
-  formOpen: () => void;
   open: boolean;
+  visibleModal: boolean;
+  formOpen: () => void;
   onRead: (id: number) => void;
   onUpdate: (id: number) => void;
-  onRemove: (id: number) => void;
-  // Buttons: React.JSX.Element;
+  onRemove: () => void;
+  toggleModal: () => void;
+  onRemoveClick: (id: number) => void;
 };
+
 const ListComponents: React.FC<Props> = ({
   loading,
   list,
@@ -25,6 +29,9 @@ const ListComponents: React.FC<Props> = ({
   onRead,
   onUpdate,
   onRemove,
+  toggleModal,
+  visibleModal,
+  onRemoveClick,
 }) => {
   if (!list) return null;
   if (error) return null;
@@ -35,7 +42,8 @@ const ListComponents: React.FC<Props> = ({
 
       {children}
       {loading && <Loading />}
-      <ItemContainer open={open} />
+      <ItemContainer open={open} formOpen={formOpen} />
+
       <div className="list-wrapper">
         {list.map((item) => {
           return (
@@ -44,6 +52,7 @@ const ListComponents: React.FC<Props> = ({
                 <div className="left">
                   <b>분류:{item.category}</b>
                   <div>
+                    ID:{item.id}
                     <b>품명:{item.name}</b>
                     <div>
                       <b>단가:{item.unit}</b>
@@ -60,7 +69,7 @@ const ListComponents: React.FC<Props> = ({
                   <ButtonsComponents
                     onRead={() => onRead(item.id)}
                     onUpdate={() => onUpdate(item.id)}
-                    onDelete={() => onRemove(item.id)}
+                    onDelete={onRemove}
                   />
 
                   <textarea value={item.description} readOnly></textarea>

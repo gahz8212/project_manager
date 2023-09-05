@@ -20,6 +20,7 @@ const CheckboxContainer = () => {
   const { item } = useSelector((state: RootState) => ({
     item: state.item.item,
   }));
+
   const changeAllCheck = (checked: boolean) => {
     setDeparts([]);
     if (checked) {
@@ -80,14 +81,18 @@ const CheckboxContainer = () => {
       dispatch(changeField({ name, value: false }));
     }
   };
+
   useEffect(() => {
     dispatch(changeField({ name: "departs", value: departs }));
     let result = true;
     for (let i = 0; i < 4; i++) {
-      console.log(departs[i]);
+      // console.log(departs[i]);
       result = departs[i].count > 0;
+      if (result === false) {
+        break;
+      }
     }
-
+    console.log(result);
     setIsCheckAll(result);
   }, [departs, dispatch]);
 
