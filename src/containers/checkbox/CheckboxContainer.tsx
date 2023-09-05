@@ -15,11 +15,11 @@ const CheckboxContainer = () => {
     depart: string;
     count: number;
   }[]);
-  const [isCheckAll, setIsCheckAll] = useState(false);
   const dispatch = useDispatch();
   const { item } = useSelector((state: RootState) => ({
     item: state.item.item,
   }));
+  const [isCheckAll, setIsCheckAll] = useState(false);
 
   const changeAllCheck = (checked: boolean) => {
     setDeparts([]);
@@ -35,11 +35,14 @@ const CheckboxContainer = () => {
       ]);
       setIsCheckAll(true);
     } else {
-      setDeparts([
-        { depart: "Off", count: 0 },
-        { depart: "Dev", count: 0 },
-        { depart: "Fac", count: 0 },
-        { depart: "Pac", count: 0 },
+      setDeparts((prev) => [
+        ...prev,
+        ...[
+          { depart: "Off", count: 0 },
+          { depart: "Dev", count: 0 },
+          { depart: "Fac", count: 0 },
+          { depart: "Pac", count: 0 },
+        ],
       ]);
       setIsCheckAll(false);
     }
@@ -86,13 +89,11 @@ const CheckboxContainer = () => {
     dispatch(changeField({ name: "departs", value: departs }));
     let result = true;
     for (let i = 0; i < 4; i++) {
-      // console.log(departs[i]);
       result = departs[i].count > 0;
       if (result === false) {
         break;
       }
     }
-    console.log(result);
     setIsCheckAll(result);
   }, [departs, dispatch]);
 
