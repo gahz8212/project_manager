@@ -18,6 +18,8 @@ type Props = {
   onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
   error: string;
   open: boolean;
+  isCheckAll: boolean;
+  setIsCheckAll: (check: boolean) => void;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -29,6 +31,8 @@ const InputForm: React.FC<Props> = ({
   onSubmit,
   error,
   open,
+  isCheckAll,
+  setIsCheckAll,
 }) => {
   // console.log(open);
   return (
@@ -83,7 +87,10 @@ const InputForm: React.FC<Props> = ({
               />
             </div>
             <div className="category">
-              <CheckboxContainer />
+              <CheckboxContainer
+                isCheckAll={isCheckAll}
+                setIsCheckAll={setIsCheckAll}
+              />
             </div>
           </div>
 
@@ -112,7 +119,7 @@ const InputForm: React.FC<Props> = ({
             </div>
           </div>
 
-          {loading && <Loading />}
+          {isCheckAll && <Loading />}
         </div>
         <div className="btn">
           <button type="submit">입력</button>

@@ -31,7 +31,7 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     })
   );
   const [imageList, setImageList] = useState([] as { url: string }[]);
-
+  const [isCheckAll, setIsCheckAll] = useState(false);
   const onChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -119,6 +119,7 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
   useEffect(() => {
     if (open) {
       dispatch(initializeForm());
+      setIsCheckAll(false);
     }
   }, [open, dispatch]);
 
@@ -138,10 +139,12 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
       error={error}
       item={item}
       open={open}
+      isCheckAll={isCheckAll}
       onChange={onChange}
       onImageInsert={onImageInsert}
       onImageRemove={onImageRemove}
       onSubmit={onSubmit}
+      setIsCheckAll={setIsCheckAll}
     ></InputForm>
   );
 };

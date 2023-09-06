@@ -3,16 +3,16 @@ import Checkbox from "../../components/common/checkbox/CheckBox";
 import { changeField } from "../../modules/item";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
-// import { initializeForm } from "../../modules/item";
-// type Props = {
-//   departsment: { depart: string; count: number }[];
-// };
-const CheckboxContainer = () => {
+type Props = {
+  isCheckAll: boolean;
+  setIsCheckAll: (check: boolean) => void;
+};
+const CheckboxContainer: React.FC<Props> = ({ isCheckAll, setIsCheckAll }) => {
   const dispatch = useDispatch();
   const { item } = useSelector((state: RootState) => ({
     item: state.item.item,
   }));
-  const [isCheckAll, setIsCheckAll] = useState(false);
+
   const [departs, setDeparts] = useState(item.departs);
 
   const changeAllCheck = (checked: boolean) => {
