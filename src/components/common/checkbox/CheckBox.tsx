@@ -19,7 +19,7 @@ const Checkbox: React.FC<Props> = ({
   item,
 }) => {
   const departCounts = item.departs.map((item) => item.count);
-  console.log(departCounts);
+
   return (
     <div className="wraper">
       <input

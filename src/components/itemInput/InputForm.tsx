@@ -15,7 +15,6 @@ type Props = {
   onImageRemove: (url: string) => void;
 
   item: ItemData;
-  // images: { url: string }[] | null;
   onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
   error: string;
   open: boolean;
