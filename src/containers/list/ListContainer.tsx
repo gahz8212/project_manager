@@ -18,24 +18,17 @@ const ListContainer: React.FC<Props> = ({ children }) => {
   const [visibleModal, setVisibleModal] = useState(false);
   const formOpen = () => {
     setOpen(!open);
-    console.log("open", open);
   };
 
   const toggleModal = () => {
     setVisibleModal(!visibleModal);
   };
-  const onRead = (id: number) => {
-    console.log(id);
-  };
-  const onUpdate = (id: number) => {
-    console.log(id);
-  };
+  const onRead = (id: number) => {};
+  const onUpdate = (id: number) => {};
   const onRemove = () => {
-    // console.log(id);
     toggleModal();
   };
   const onRemoveClick = (id: number) => {
-    console.log(id);
     toggleModal();
     // dispatch(removeItem.request(id));
   };
@@ -44,9 +37,11 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       console.log(error);
     }
   }, [error]);
+
   useEffect(() => {
     dispatch(getList.request());
   }, [dispatch]);
+
   return (
     <ListComponents
       loading={loading}

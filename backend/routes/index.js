@@ -6,7 +6,11 @@ const { Item, Image } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 router.get("/list", async (req, res) => {
   try {
-    const list = await Item.findAll({ where: {}, include: { model: Image } });
+    const list = await Item.findAll({
+      where: {},
+      include: { model: Image },
+      order: [["id", "DESC"]],
+    });
     return res.status(200).json(list);
   } catch (e) {
     return res.status(400).json(e.message);

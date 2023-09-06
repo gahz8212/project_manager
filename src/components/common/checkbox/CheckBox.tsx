@@ -19,7 +19,7 @@ const Checkbox: React.FC<Props> = ({
   item,
 }) => {
   const departCounts = item.departs.map((item) => item.count);
-
+  console.log(departCounts);
   return (
     <div className="wraper">
       <input
@@ -127,9 +127,8 @@ const Checkbox: React.FC<Props> = ({
           id="use"
           name="use"
           value="true"
-          // checked={item.use === false}
+          checked={item.use}
           onChange={onChange}
-          defaultChecked
         />
         <label htmlFor="no-use">미사용</label>
         <input
@@ -137,7 +136,7 @@ const Checkbox: React.FC<Props> = ({
           id="no-use"
           name="use"
           value="false"
-          // checked={item.use === true}
+          checked={!item.use}
           onChange={onChange}
         />
       </div>

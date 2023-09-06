@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getList } from "../../modules/list";
+
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
 
@@ -115,27 +115,33 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
       }
     }
   }, [error, navigate, dispatch]);
-  useEffect(() => {
-    if (status === "item_write_ok") {
-      dispatch(getList.request());
-      formOpen();
-    }
-  }, [dispatch, status, formOpen]);
+
   useEffect(() => {
     if (open) {
       dispatch(initializeForm());
     }
   }, [open, dispatch]);
+
+  useEffect(() => {
+    if (status === "item_write_ok") {
+      formOpen();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  }, [navigate, status, formOpen]);
+
   return (
     <InputForm
       loading={loading}
       error={error}
+      item={item}
+      open={open}
       onChange={onChange}
       onImageInsert={onImageInsert}
       onImageRemove={onImageRemove}
-      item={item}
       onSubmit={onSubmit}
-      open={open}
     ></InputForm>
   );
 };

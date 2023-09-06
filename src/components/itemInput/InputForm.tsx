@@ -34,9 +34,7 @@ const InputForm: React.FC<Props> = ({
   // console.log(open);
   return (
     <div className={`inputForm ${open ? "open" : ""}`}>
-      {/* <div className="space"></div> */}
-
-      <form onSubmit={onSubmit} className="form">
+      <form className="form" onSubmit={onSubmit}>
         <div className="container">
           <div className="left">
             <div className="name">
@@ -69,7 +67,7 @@ const InputForm: React.FC<Props> = ({
               </div>
             </div>
             <div className="price">
-              <select name="unit" defaultValue="￦" onChange={onChange}>
+              <select name="unit" defaultValue={item.unit} onChange={onChange}>
                 <option value="">unit</option>
                 <option value="$">$</option>
                 <option value="￦">￦</option>

@@ -11,7 +11,7 @@ const initialState: itemState = {
     category: "소프트웨어",
     name: "",
     description: "",
-    unit: "￦",
+    unit: "$",
     price: 0,
     departs: [
       { depart: "Off", count: 1 },
