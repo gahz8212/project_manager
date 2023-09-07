@@ -28,7 +28,11 @@ const Viewer: React.FC<Props> = ({
       <div>{item.category}</div>
       <div>{item.name}</div>
       <div>
-        <textarea value={item.description} onChange={onChange}></textarea>
+        <textarea
+          name="description"
+          value={item.description}
+          onChange={onChange}
+        ></textarea>
       </div>
       <div>
         {item.unit}

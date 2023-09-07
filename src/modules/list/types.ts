@@ -3,7 +3,7 @@ import { ItemData, ListData, SearchData } from "../../lib/api/list";
 import * as actions from "./actions";
 export type listState = {
   list: ListData;
-  item: ItemData | null;
+  item: ItemData;
   loading: boolean;
   error: Error | null;
   search: SearchData;

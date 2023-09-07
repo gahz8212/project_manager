@@ -5,7 +5,17 @@ import * as actions from "./actions";
 const initialState: listState = {
   loading: false,
   error: null,
-  item: null,
+  item: {
+    id: 0,
+    category: "",
+    name: "",
+    description: "",
+    unit: "",
+    price: 0,
+    departs: "",
+    count: 0,
+    use: true,
+  },
   list: [],
   search: {
     category: "",
@@ -27,13 +37,13 @@ const list = createReducer<listState, listAction>(initialState, {
       search: { ...state.search, [name]: value },
     };
   },
-  [actions.UPDATE_FIELD]: (state, { payload: { name, value } }) => {
-    console.log(name, value);
-    return {
-      ...state,
-      item: { ...state.item, [name]: value },
-    };
-  },
+  // [actions.UPDATE_FIELD]: (state, { payload: { name, value } }) => {
+  //   console.log(name, value);
+  //   return {
+  //     ...state,
+  //     item: { ...state.item, [name]: value },
+  //   };
+  // },
   [actions.GET_LIST]: (state) => ({
     ...state,
     loading: true,

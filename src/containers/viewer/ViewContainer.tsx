@@ -21,13 +21,16 @@ const ViewContainer: React.FC<Props> = ({
   const { item } = useSelector((state: RootState) => ({
     item: state.list.item,
   }));
-  const [newTextValue, setNewTextValue] = useState("");
+  const [newItem, setNewItem] = useState(item);
+  // const [newTextValue, setNewTextValue] = useState("");
   const onChange = (e: any) => {
-    // console.log(e.target.value);
-    setNewTextValue(e.target.value);
-    console.log(newTextValue);
-    dispatch(updateField({ name: "item", value: newTextValue }));
+    const { name, value } = e.target;
+    console.log("name:", name, "value:", value);
+    // setNewTextValue(e.target.value);
+    // console.log(newTextValue);
+    // dispatch(updateField({ name: "item", value: newTextValue }));
   };
+  // console.log(item);
   return (
     <Viewer
       show={open}
