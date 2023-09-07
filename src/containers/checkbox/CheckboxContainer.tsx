@@ -85,7 +85,7 @@ const CheckboxContainer: React.FC<Props> = ({ isCheckAll, setIsCheckAll }) => {
       }
     }
     setIsCheckAll(result);
-  }, [departs, dispatch]);
+  }, [departs, dispatch, setIsCheckAll]);
 
   // useEffect(() => {
   //   dispatch(initializeForm());

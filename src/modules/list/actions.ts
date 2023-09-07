@@ -1,8 +1,9 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { ListData } from "../../lib/api/list";
+import { ListData, ItemData } from "../../lib/api/list";
 import { SearchData } from "../../lib/api/list";
 export const INITIALIZE_FORM = "list/INITIALIZE_FORM";
 export const CHANGE_FIELD = "list/CHANGE_FIELD";
+export const UPDATE_FIELD = "list/UPDATE_FIELD";
 export const GET_LIST = "list/GET_LIST";
 export const GET_LIST_SUCCESS = "list/GET_LIST_SUCCESS";
 export const GET_LIST_FAILURE = "list/GET_LIST_FAILURE";
@@ -20,6 +21,10 @@ export const changeField = createAction(CHANGE_FIELD, ({ name, value }) => ({
   name,
   value,
 }))();
+export const updateField = createAction(UPDATE_FIELD, ({ name, value }) => ({
+  name,
+  value,
+}))();
 export const getList = createAsyncAction(
   GET_LIST,
   GET_LIST_SUCCESS,
@@ -34,7 +39,7 @@ export const readItem = createAsyncAction(
   READ_ITEM,
   READ_ITEM_SUCCESS,
   READ_ITEM_FAILURE
-)<number, ListData, Error>();
+)<number, ItemData, Error>();
 export const removeItem = createAsyncAction(
   REMOVE_ITEM,
   REMOVE_ITEM_SUCCESS,

@@ -118,8 +118,6 @@ const InputForm: React.FC<Props> = ({
                 ))}
             </div>
           </div>
-
-          {isCheckAll && <Loading />}
         </div>
         <div className="btn">
           <button type="submit">입력</button>

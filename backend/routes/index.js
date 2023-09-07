@@ -42,6 +42,20 @@ router.post("/search", async (req, res) => {
   // // console.log(searchSplit[0]);
   // return res.status(200);
 });
+router.get("/read/:id", async (req, res) => {
+  try {
+    const itemId = parseInt(req.params.id, 10);
+    console.log(itemId);
+    const item = await Item.findOne({
+      where: { id: itemId },
+      include: { model: Image },
+    });
+    return res.status(200).json(item);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json(e.message);
+  }
+});
 router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);

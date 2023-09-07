@@ -195,15 +195,67 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: rgba(171, 240, 171, 0.1);
+  background-color: rgba(171, 240, 171, 0.2);
   display: flex;
   justify-content: center;
   align-items: center;
+  .confirm {
+    background-color: white;
+    padding: 50px;
+    border-radius: 8px;
+    .btns {
+      margin-top: 10px;
+      text-align: right;
+      button {
+        & {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 }
 @media screen and (max-width: 768px) {
   .inputForm {
     margin: 0 auto;
     left: 0;
     right: 0;
+  }
+}
+.viewerBlock {
+  position: fixed;
+  top: 30%;
+  left: -70%;
+  transform: translateX(-20%);
+  width: 400px;
+  border-radius: 8px;
+  padding: 10px;
+  opacity: 0;
+  border: 1px solid black;
+  background-color: white;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // opacity: 0;
+  transition: 0.7s;
+  &.toRight {
+    opacity: 1;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .image-area {
+    display: flex;
+    justify-content: center;
+    .images {
+      display: flex;
+      justify-content: space-between;
+      width: 250px;
+      img {
+        width: 80px;
+      }
+    }
+  }
+
+  .buttons {
+    text-align: right;
   }
 }

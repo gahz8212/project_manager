@@ -5,8 +5,8 @@ import * as actions from "./actions";
 const initialState: listState = {
   loading: false,
   error: null,
-  list: [],
   item: null,
+  list: [],
   search: {
     category: "",
     name: "",
@@ -25,6 +25,13 @@ const list = createReducer<listState, listAction>(initialState, {
     return {
       ...state,
       search: { ...state.search, [name]: value },
+    };
+  },
+  [actions.UPDATE_FIELD]: (state, { payload: { name, value } }) => {
+    console.log(name, value);
+    return {
+      ...state,
+      item: { ...state.item, [name]: value },
     };
   },
   [actions.GET_LIST]: (state) => ({
@@ -58,6 +65,22 @@ const list = createReducer<listState, listAction>(initialState, {
     loading: false,
     error,
     list: [],
+  }),
+  [actions.READ_ITEM]: (state) => ({
+    ...state,
+    loading: true,
+  }),
+  [actions.READ_ITEM_SUCCESS]: (state, { payload: item }) => ({
+    ...state,
+    loading: false,
+    item,
+    error: null,
+  }),
+  [actions.READ_ITEM_FAILURE]: (state, { payload: error }) => ({
+    ...state,
+    loading: false,
+    error,
+    item: null,
   }),
   [actions.REMOVE_ITEM]: (state) => ({
     ...state,

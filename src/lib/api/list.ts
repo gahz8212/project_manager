@@ -30,3 +30,15 @@ export type ListData = {
   use: boolean;
   Images?: { url: string }[] | null;
 }[];
+export type ItemData = {
+  id: number;
+  category: string;
+  name: string;
+  description: string;
+  unit: string;
+  price: number;
+  departs: string;
+  count: number;
+  use: boolean;
+  Images?: { url: string }[] | null;
+} | null;
