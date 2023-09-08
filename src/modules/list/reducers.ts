@@ -6,18 +6,6 @@ const initialState: listState = {
   loading: false,
   error: null,
   item: null,
-  originalItem: {
-    id: 0,
-    category: "",
-    name: "",
-    description: "",
-    unit: "",
-    price: 0,
-    departs: "",
-    count: 0,
-    use: true,
-    Images: null,
-  },
   list: [],
   search: {
     category: "",

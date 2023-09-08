@@ -29,6 +29,7 @@ const Viewer: React.FC<Props> = ({
     <div className={`viewerBlock ${show ? "toRight" : ""}`}>
       {/* select와 checkbox의 초기화 정리하고 확인할 것 */}
       <div>
+<<<<<<< HEAD
         <select name="category" onChange={onChange}>
           <option value="소프트웨어" selected={item.category === "소프트웨어"}>
             소프트웨어
@@ -37,6 +38,13 @@ const Viewer: React.FC<Props> = ({
             하드웨어
           </option>
         </select>
+=======
+        <textarea
+          name="description"
+          value={item.description}
+          onChange={onChange}
+        ></textarea>
+>>>>>>> 53ae2baee5eaaed2996bcbf657a328e7a2282e7c
       </div>
       <div>
         <input type="text" name="name" value={item.name} onChange={onChange} />
