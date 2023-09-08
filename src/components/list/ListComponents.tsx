@@ -108,7 +108,6 @@ const ListComponents: React.FC<Props> = ({
             </div>
           );
         })}
-        M
       </div>
       <div className={`write ${open ? "rotate" : ""}`}>
         <button onClick={formOpen}>+</button>

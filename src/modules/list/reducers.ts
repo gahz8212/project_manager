@@ -6,6 +6,18 @@ const initialState: listState = {
   loading: false,
   error: null,
   item: null,
+  originalItem: {
+    id: 0,
+    category: "",
+    name: "",
+    description: "",
+    unit: "",
+    price: 0,
+    departs: "",
+    count: 0,
+    use: true,
+    Images: null,
+  },
   list: [],
   search: {
     category: "",
@@ -20,18 +32,32 @@ const list = createReducer<listState, listAction>(initialState, {
   [actions.INITIALIZE_FORM]: () => ({
     ...initialState,
   }),
-  [actions.CHANGE_FIELD]: (state, { payload: { name, value } }) => {
+  [actions.CHANGE_FIELD]: (state, { payload: { option, name, value } }) => {
     console.log(name, value);
     return {
       ...state,
-      search: { ...state.search, [name]: value },
+      [option]: { ...state[option], [name]: value },
     };
   },
-  [actions.UPDATE_FIELD]: (state, { payload: { name, value } }) => {
-    console.log(name, value);
+  [actions.UPDATE_FIELD]: (state, { payload: item }) => {
     return {
       ...state,
-      item: { ...state.item, [name]: value },
+      originalItem: item,
+    };
+  },
+  [actions.UPDATE_FIELD_CLEAN]: (state) => {
+    return {
+      ...state,
+      item: null,
+      // originalItem: null,
+    };
+  },
+  [actions.ORIGIN_FIELD_CLEAN]: (state) => {
+    return {
+      ...state,
+      originalItem: initialState.originalItem,
+      // ...state,
+      // originalItem: null,
     };
   },
   [actions.GET_LIST]: (state) => ({

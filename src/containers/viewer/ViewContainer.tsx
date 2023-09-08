@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeField, updateField } from "../../modules/list";
+import {
+  changeField,
+  originFieldClean,
+  updateField,
+  updateFieldClean,
+} from "../../modules/list";
 import Viewer from "../../components/viewer/Viewer";
 import { RootState } from "../../modules";
 type Props = {
@@ -18,21 +23,37 @@ const ViewContainer: React.FC<Props> = ({
   onRemove,
 }) => {
   const dispatch = useDispatch();
-  const { item } = useSelector((state: RootState) => ({
+  const { item, originalItem } = useSelector((state: RootState) => ({
     item: state.list.item,
+    originalItem: state.list.originalItem,
   }));
-  const [newTextValue, setNewTextValue] = useState("");
+
   const onChange = (e: any) => {
-    // console.log(e.target.value);
-    setNewTextValue(e.target.value);
-    console.log(newTextValue);
-    dispatch(updateField({ name: "item", value: newTextValue }));
+    const { name, value } = e.target;
+    dispatch(changeField({ option: "originalItem", name, value }));
   };
+  const onImageRemove = (url: string) =>
+    // console.log("url", url);
+
+    {
+      return {
+        ...originalItem,
+        image: originalItem?.Images?.filter((image) => image.url !== url),
+      };
+    };
+  useEffect(() => {
+    if (item) {
+      dispatch(updateField(item));
+      dispatch(updateFieldClean());
+    }
+  }, [item, dispatch]);
+
   return (
     <Viewer
       show={open}
       id={itemId}
-      item={item}
+      item={originalItem}
+      onImageRemove={onImageRemove}
       onChange={onChange}
       onRead={onRead}
       onUpdate={onUpdate}

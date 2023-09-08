@@ -3,7 +3,11 @@ import { ListData, ItemData } from "../../lib/api/list";
 import { SearchData } from "../../lib/api/list";
 export const INITIALIZE_FORM = "list/INITIALIZE_FORM";
 export const CHANGE_FIELD = "list/CHANGE_FIELD";
+
 export const UPDATE_FIELD = "list/UPDATE_FIELD";
+export const UPDATE_FIELD_CLEAN = "list/UPDATE_FIELD_CLEAN";
+export const ORIGIN_FIELD_CLEAN = "list/ORIGIN_FIELD_CLEAN";
+
 export const GET_LIST = "list/GET_LIST";
 export const GET_LIST_SUCCESS = "list/GET_LIST_SUCCESS";
 export const GET_LIST_FAILURE = "list/GET_LIST_FAILURE";
@@ -17,14 +21,17 @@ export const REMOVE_ITEM = "list/REMOVE_ITEM";
 export const REMOVE_ITEM_SUCCESS = "list/REMOVE_ITEM_SUCCESS";
 export const REMOVE_ITEM_FAILURE = "list/REMOVE_ITEM_FAILURE";
 export const initializeForm = createAction(INITIALIZE_FORM)();
-export const changeField = createAction(CHANGE_FIELD, ({ name, value }) => ({
-  name,
-  value,
-}))();
-export const updateField = createAction(UPDATE_FIELD, ({ name, value }) => ({
-  name,
-  value,
-}))();
+export const changeField = createAction(
+  CHANGE_FIELD,
+  ({ option, name, value }) => ({
+    option,
+    name,
+    value,
+  })
+)();
+export const updateField = createAction(UPDATE_FIELD, (item) => item)();
+export const updateFieldClean = createAction(UPDATE_FIELD_CLEAN)();
+export const originFieldClean = createAction(ORIGIN_FIELD_CLEAN)();
 export const getList = createAsyncAction(
   GET_LIST,
   GET_LIST_SUCCESS,

@@ -42,7 +42,7 @@ const SearchContainer = () => {
   const onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     // console.log(name, value);
-    dispatch(changeField({ name, value: value === "true" }));
+    dispatch(changeField({ option: "search", name, value: value === "true" }));
   };
   const onChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -52,7 +52,7 @@ const SearchContainer = () => {
   const onInputName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     // console.log(name, value);
-    dispatch(changeField({ name, value }));
+    dispatch(changeField({ option: "search", name, value }));
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,7 +65,9 @@ const SearchContainer = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(changeField({ name: "departs", value: departList }));
+    dispatch(
+      changeField({ option: "search", name: "departs", value: departList })
+    );
     // console.log(departList);
     if (departList.length >= 4) {
       setIsAllCheck(true);

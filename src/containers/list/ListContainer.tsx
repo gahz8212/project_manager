@@ -5,6 +5,8 @@ import {
   removeItem,
   readItem,
   initializeForm,
+  updateFieldClean,
+  originFieldClean,
 } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
 
@@ -31,15 +33,16 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     setVisibleModal(!visibleModal);
   };
   const onRead = (id: number) => {
+    setShow(!show);
     if (!show) {
       setItemId(id);
       dispatch(readItem.request(id));
+    } else {
+      dispatch(originFieldClean());
     }
-    setShow(!show);
   };
   const onUpdate = (id: number) => {};
   const onRemove = () => {
-    console.log("toggleModal 어딨어");
     toggleModal();
   };
   const onRemoveClick = (id: number) => {
