@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ItemData } from "../../lib/api/list";
 import {
   changeField,
   // originFieldClean,
@@ -38,25 +39,25 @@ const ViewContainer: React.FC<Props> = ({
       departs: string;
       count: number;
       use: boolean;
-      Images: { url: string }[] | null;
-    } | null
+      Images?: { url: string }[] | null;
+    }
   );
   const onChange = (e: any) => {
     const { name, value } = e.target;
     dispatch(changeField({ option: "originalItem", name, value }));
   };
-  const onImageRemove = (url: string) =>
-    // console.log("url", url);
 
-    {
-      console.log(originalItem?.Images?.filter((image) => image.url !== url));
-      // const result = {
-      //   ...originalItem,
-      //   image: originalItem?.Images?.filter((image) => image.url === url),
-      // };
-      // console.log(result);
-      // return result;
+  const onImageRemove = (url: string) => {
+    // console.log(Item);
+    const newData = {
+      ...Item,
+      Images: Item.Images?.filter((image) => image.url !== url),
     };
+    // const newImages = Item?.Images?.filter((image) => image.url !== url);
+    // console.log(newImages);
+    // const nextData={...Item?.Images,{...Item.Images.filter(image=>image.url!==url)}}
+    setItem(newData);
+  };
   useEffect(() => {
     if (item) {
       dispatch(updateField(item));
@@ -67,12 +68,13 @@ const ViewContainer: React.FC<Props> = ({
     if (originalItem) {
       setItem(originalItem);
     }
-  }, []);
+  }, [originalItem]);
+
   return (
     <Viewer
       show={open}
       id={itemId}
-      item={originalItem}
+      item={Item}
       onImageRemove={onImageRemove}
       onChange={onChange}
       onRead={onRead}

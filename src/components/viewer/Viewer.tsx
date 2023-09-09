@@ -9,7 +9,18 @@ type Props = {
   onRead: (id: number) => void;
   onUpdate: (id: number) => void;
   onRemove: () => void;
-  item: ItemData;
+  item: {
+    id: number;
+    category: string;
+    name: string;
+    description: string;
+    unit: string;
+    price: number;
+    departs: string;
+    count: number;
+    use: boolean;
+    Images?: { url: string }[] | null;
+  };
 };
 const Viewer: React.FC<Props> = ({
   show,
@@ -71,7 +82,14 @@ const Viewer: React.FC<Props> = ({
           step="0.001"
         ></input>
       </div>
-
+      <div
+        className="imageAdd"
+        onClick={() => {
+          alert("파일열기");
+        }}
+      >
+        이미지 선택
+      </div>
       <div className="image-area">
         <div className="images">
           {item.Images?.map((image) => (
