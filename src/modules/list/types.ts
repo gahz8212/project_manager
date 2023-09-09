@@ -8,6 +8,6 @@ export type listState = {
   loading: boolean;
   error: Error | null;
   search: SearchData;
-  originalItem: ItemData | null;
+  originalItem: ItemData;
 };
 export type listAction = ActionType<typeof actions>;

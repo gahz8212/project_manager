@@ -28,7 +28,7 @@ export type ListData = {
   departs: string;
   count: number;
   use: boolean;
-  Images?: { url: string }[] | null;
+  Images: { url: string }[] | null;
 }[];
 export type ItemData = {
   id: number;
@@ -40,5 +40,5 @@ export type ItemData = {
   departs: string;
   count: number;
   use: boolean;
-  Images?: { url: string }[] | null;
+  Images: { url: string }[] | null;
 } | null;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeField,
-  originFieldClean,
+  // originFieldClean,
   updateField,
   updateFieldClean,
 } from "../../modules/list";
@@ -27,8 +27,20 @@ const ViewContainer: React.FC<Props> = ({
     item: state.list.item,
     originalItem: state.list.originalItem,
   }));
-<<<<<<< HEAD
-
+  const [Item, setItem] = useState(
+    {} as {
+      id: number;
+      category: string;
+      name: string;
+      description: string;
+      unit: string;
+      price: number;
+      departs: string;
+      count: number;
+      use: boolean;
+      Images: { url: string }[] | null;
+    } | null
+  );
   const onChange = (e: any) => {
     const { name, value } = e.target;
     dispatch(changeField({ option: "originalItem", name, value }));
@@ -37,10 +49,13 @@ const ViewContainer: React.FC<Props> = ({
     // console.log("url", url);
 
     {
-      return {
-        ...originalItem,
-        image: originalItem?.Images?.filter((image) => image.url !== url),
-      };
+      console.log(originalItem?.Images?.filter((image) => image.url !== url));
+      // const result = {
+      //   ...originalItem,
+      //   image: originalItem?.Images?.filter((image) => image.url === url),
+      // };
+      // console.log(result);
+      // return result;
     };
   useEffect(() => {
     if (item) {
@@ -48,19 +63,11 @@ const ViewContainer: React.FC<Props> = ({
       dispatch(updateFieldClean());
     }
   }, [item, dispatch]);
-
-=======
-  const [newItem, setNewItem] = useState(item);
-  // const [newTextValue, setNewTextValue] = useState("");
-  const onChange = (e: any) => {
-    const { name, value } = e.target;
-    console.log("name:", name, "value:", value);
-    // setNewTextValue(e.target.value);
-    // console.log(newTextValue);
-    // dispatch(updateField({ name: "item", value: newTextValue }));
-  };
-  // console.log(item);
->>>>>>> 53ae2baee5eaaed2996bcbf657a328e7a2282e7c
+  useEffect(() => {
+    if (originalItem) {
+      setItem(originalItem);
+    }
+  }, []);
   return (
     <Viewer
       show={open}

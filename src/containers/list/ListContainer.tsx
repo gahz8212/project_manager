@@ -36,9 +36,12 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     setShow(!show);
     if (!show) {
       setItemId(id);
+      dispatch(originFieldClean());
       dispatch(readItem.request(id));
     } else {
-      dispatch(originFieldClean());
+      // dispatch(originFieldClean());
+      // setTimeout(() => {
+      // }, 1000);
     }
   };
   const onUpdate = (id: number) => {};

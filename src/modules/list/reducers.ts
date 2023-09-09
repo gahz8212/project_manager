@@ -5,6 +5,18 @@ import * as actions from "./actions";
 const initialState: listState = {
   loading: false,
   error: null,
+  originalItem: {
+    id: 0,
+    category: "",
+    name: "",
+    description: "",
+    unit: "",
+    price: 0,
+    departs: "",
+    count: 0,
+    use: true,
+    Images: null,
+  },
   item: null,
   list: [],
   search: {
@@ -44,8 +56,6 @@ const list = createReducer<listState, listAction>(initialState, {
     return {
       ...state,
       originalItem: initialState.originalItem,
-      // ...state,
-      // originalItem: null,
     };
   },
   [actions.GET_LIST]: (state) => ({
