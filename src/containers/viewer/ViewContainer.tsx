@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ItemData } from "../../lib/api/list";
+import { ItemData_list } from "../../lib/api/list";
 import {
   changeField,
   // originFieldClean,
@@ -28,35 +28,24 @@ const ViewContainer: React.FC<Props> = ({
     item: state.list.item,
     originalItem: state.list.originalItem,
   }));
-  const [Item, setItem] = useState(
-    {} as {
-      id: number;
-      category: string;
-      name: string;
-      description: string;
-      unit: string;
-      price: number;
-      departs: string;
-      count: number;
-      use: boolean;
-      Images?: { url: string }[] | null;
-    }
-  );
+  const [Item, setItem] = useState({} as ItemData_list);
+  // const [text, setText] = useState("");
   const onChange = (e: any) => {
     const { name, value } = e.target;
+    // setText(value);
     dispatch(changeField({ option: "originalItem", name, value }));
   };
 
   const onImageRemove = (url: string) => {
     // console.log(Item);
-    const newData = {
-      ...Item,
-      Images: Item.Images?.filter((image) => image.url !== url),
-    };
+
     // const newImages = Item?.Images?.filter((image) => image.url !== url);
     // console.log(newImages);
     // const nextData={...Item?.Images,{...Item.Images.filter(image=>image.url!==url)}}
-    setItem(newData);
+    setItem({
+      ...Item,
+      Images: Item?.Images?.filter((image) => image.url !== url),
+    });
   };
   useEffect(() => {
     if (item) {

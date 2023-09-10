@@ -1,5 +1,5 @@
 import { createAsyncAction, createAction } from "typesafe-actions";
-import { ListData, ItemData } from "../../lib/api/list";
+import { ListData, ItemData_list } from "../../lib/api/list";
 import { SearchData } from "../../lib/api/list";
 export const INITIALIZE_FORM = "list/INITIALIZE_FORM";
 export const CHANGE_FIELD = "list/CHANGE_FIELD";
@@ -46,7 +46,7 @@ export const readItem = createAsyncAction(
   READ_ITEM,
   READ_ITEM_SUCCESS,
   READ_ITEM_FAILURE
-)<number, ItemData, Error>();
+)<number, ItemData_list, Error>();
 export const removeItem = createAsyncAction(
   REMOVE_ITEM,
   REMOVE_ITEM_SUCCESS,

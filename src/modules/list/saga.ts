@@ -1,7 +1,7 @@
 import { put, call, takeLatest } from "redux-saga/effects";
 import * as actions from "./actions";
 import * as listAPI from "../../lib/api/list";
-import { ListData, ItemData } from "../../lib/api/list";
+import { ListData, ItemData_list } from "../../lib/api/list";
 export function* listSaga() {
   yield takeLatest(actions.READ_ITEM, readItemSaga);
   yield takeLatest(actions.GET_LIST, getListSaga);
@@ -24,7 +24,7 @@ function* removeItemSaga(
 }
 function* readItemSaga(action: ReturnType<typeof actions.readItem.request>) {
   try {
-    const response: { data: ItemData } = yield call(
+    const response: { data: ItemData_list } = yield call(
       listAPI.readItem,
       action.payload
     );

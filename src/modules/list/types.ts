@@ -1,13 +1,13 @@
 import { ActionType } from "typesafe-actions";
-import { ItemData, ListData, SearchData } from "../../lib/api/list";
+import { ItemData_list, ListData, SearchData } from "../../lib/api/list";
 import * as actions from "./actions";
 export type listState = {
   [key: string]: {} | null;
   list: ListData;
-  item: ItemData;
+  item: ItemData_list | null;
   loading: boolean;
   error: Error | null;
   search: SearchData;
-  originalItem: ItemData;
+  originalItem: ItemData_list;
 };
 export type listAction = ActionType<typeof actions>;

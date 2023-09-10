@@ -1,6 +1,6 @@
 import React from "react";
 import ButtonsComponents from "../common/ButtonsComponents";
-import { ItemData } from "../../lib/api/list";
+import { ItemData_list } from "../../lib/api/list";
 type Props = {
   show: boolean;
   id: number;
@@ -9,18 +9,7 @@ type Props = {
   onRead: (id: number) => void;
   onUpdate: (id: number) => void;
   onRemove: () => void;
-  item: {
-    id: number;
-    category: string;
-    name: string;
-    description: string;
-    unit: string;
-    price: number;
-    departs: string;
-    count: number;
-    use: boolean;
-    Images?: { url: string }[] | null;
-  };
+  item: ItemData_list;
 };
 const Viewer: React.FC<Props> = ({
   show,
@@ -82,14 +71,18 @@ const Viewer: React.FC<Props> = ({
           step="0.001"
         ></input>
       </div>
-      <div
-        className="imageAdd"
-        onClick={() => {
-          alert("파일열기");
-        }}
-      >
-        이미지 선택
-      </div>
+      <form>
+        <div className="images">
+          <label htmlFor="file">이미지 선택</label>
+          <input
+            type="file"
+            accept="image/*"
+            id="file"
+            multiple
+            // onChange={}
+          />
+        </div>
+      </form>
       <div className="image-area">
         <div className="images">
           {item.Images?.map((image) => (

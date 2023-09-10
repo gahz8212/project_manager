@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
-
+import { imageInsert } from "../../lib/utils/onImageInsert";
 import {
   changeField,
   inputImage,
@@ -42,45 +42,46 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     dispatch(changeField({ name, value }));
   };
   const onImageInsert = async (e: any) => {
-    const imageArray = e.target.files;
-    const formData = new FormData();
-    const notConflictImages = [];
-    const ableCount = 3 - imageList.length;
-    if (ableCount > 0) {
-      if (imageList.length > 0) {
-        for (let image of imageArray) {
-          let isConflict = false;
-          for (let i = 0; i < imageList.length; i++) {
-            if (imageList[i].url.slice(5) === image.name) {
-              isConflict = true;
-              break;
-            }
-          }
-          if (!isConflict) {
-            notConflictImages.push(image);
-          }
-        }
-        for (
-          let i = 0;
-          i <
-          (notConflictImages.length > ableCount
-            ? ableCount
-            : notConflictImages.length);
-          i++
-        ) {
-          formData.append("images", await resize(notConflictImages[i]));
-        }
-      } else {
-        for (
-          let i = 0;
-          i < (imageArray.length > ableCount ? ableCount : imageArray.length);
-          i++
-        ) {
-          formData.append("images", await resize(imageArray[i]));
-        }
-      }
-    }
-    dispatch(inputImage.request(formData));
+    const formData = imageInsert(e, imageList);
+    // const imageArray = e.target.files;
+    // const formData = new FormData();
+    // const notConflictImages = [];
+    // const ableCount = 3 - imageList.length;
+    // if (ableCount > 0) {
+    //   if (imageList.length > 0) {
+    //     for (let image of imageArray) {
+    //       let isConflict = false;
+    //       for (let i = 0; i < imageList.length; i++) {
+    //         if (imageList[i].url.slice(5) === image.name) {
+    //           isConflict = true;
+    //           break;
+    //         }
+    //       }
+    //       if (!isConflict) {
+    //         notConflictImages.push(image);
+    //       }
+    //     }
+    //     for (
+    //       let i = 0;
+    //       i <
+    //       (notConflictImages.length > ableCount
+    //         ? ableCount
+    //         : notConflictImages.length);
+    //       i++
+    //     ) {
+    //       formData.append("images", await resize(notConflictImages[i]));
+    //     }
+    //   } else {
+    //     for (
+    //       let i = 0;
+    //       i < (imageArray.length > ableCount ? ableCount : imageArray.length);
+    //       i++
+    //     ) {
+    //       formData.append("images", await resize(imageArray[i]));
+    //     }
+    //   }
+    // }
+    dispatch(inputImage.request(await formData));
   };
   const onImageRemove = (url: string) => {
     setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
