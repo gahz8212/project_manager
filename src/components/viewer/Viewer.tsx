@@ -39,11 +39,16 @@ const Viewer: React.FC<Props> = ({
         </select>
       </div>
       <div>
-        <input type="text" name="name" value={item.name} onChange={onChange} />
+        <input
+          type="text"
+          name="name"
+          defaultValue={item.name}
+          onChange={onChange}
+        />
       </div>
       <div>
         <textarea
-          value={item.description}
+          defaultValue={item.description}
           onChange={onChange}
           name="description"
         ></textarea>
