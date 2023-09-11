@@ -52,13 +52,14 @@ const ViewContainer: React.FC<Props> = ({
   const onImageUpdate = async (e: any) => {
     // console.log(e);
     console.log(imageList.length);
-    // const formData = imageInsert(e, imageList);
-    // dispatch(updateImage.request(await formData));
+    const formData = imageInsert(e, imageList);
+    dispatch(updateImage.request(await formData));
   };
   useEffect(() => {
     if (item) {
       dispatch(updateField(item));
       dispatch(updateFieldClean());
+      setImageList([]);
     }
   }, [item, dispatch]);
 
@@ -68,23 +69,22 @@ const ViewContainer: React.FC<Props> = ({
     }
   }, [originalItem]);
   useEffect(() => {
+    if (updateImages) {
+      const nextItem = {
+        ...originalItem,
+        Images: originalItem.Images?.concat(updateImages),
+      };
+
+      setItem(nextItem);
+    }
+  }, [updateImages, originalItem]);
+
+  useEffect(() => {
     if (Item.Images) {
-      console.log(Item.Images);
+      // console.log(Item.Images);
       setImageList(Item.Images);
     }
   }, [Item]);
-  // useEffect(() => {
-  //   // console.log(updateImages);
-  //   if (updateImages) {
-  //     setImageList(updateImages);
-  //     const nextItem = {
-  //       ...originalItem,
-  //       Images: originalItem.Images?.concat(imageList),
-  //     };
-  //     // console.log(nextItem);
-  //     setItem(nextItem);
-  //   }
-  // }, [updateImages, originalItem, imageList]);
   return (
     <Viewer
       show={open}
