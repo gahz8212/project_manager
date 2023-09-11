@@ -98,7 +98,6 @@ const InputForm: React.FC<Props> = ({
             <label htmlFor="file">이미지 선택</label>
             <input
               type="file"
-              // name="image"
               id="file"
               multiple
               accept="image/*"

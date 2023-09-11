@@ -9,5 +9,6 @@ export type listState = {
   error: Error | null;
   search: SearchData;
   originalItem: ItemData_list;
+  updateImages: { url: string }[] | null;
 };
 export type listAction = ActionType<typeof actions>;

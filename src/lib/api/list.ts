@@ -10,6 +10,10 @@ export const removeItem = (id: number) => {
   console.log("id", id);
   return client.delete(`/remove/${id}`);
 };
+export const updateImage = (images: FormData) => {
+  console.log(images);
+  return client.post("/update", images);
+};
 export type SearchData = {
   category: string;
   name: string;

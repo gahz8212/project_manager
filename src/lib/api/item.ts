@@ -1,6 +1,6 @@
 import client from "./client";
 export const inputImage = (images: FormData) => {
-  // console.log(images);
+  console.log(images);
   return client.post("/post/images", images);
 };
 export const inputItem = (item: ItemData) => {

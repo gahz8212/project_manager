@@ -8,6 +8,20 @@ export function* listSaga() {
   yield takeLatest(actions.SEARCH_LIST, searchListSaga);
   yield takeLatest(actions.READ_ITEM, readItemSaga);
   yield takeLatest(actions.REMOVE_ITEM, removeItemSaga);
+  yield takeLatest(actions.UPDATE_IMAGE, updateImageSaga);
+}
+function* updateImageSaga(
+  action: ReturnType<typeof actions.updateImage.request>
+) {
+  try {
+    const response: { data: { url: string }[] } = yield call(
+      listAPI.updateImage,
+      action.payload
+    );
+    yield put(actions.updateImage.success(response.data));
+  } catch (e: any) {
+    yield put(actions.updateImage.failure(e.response));
+  }
 }
 function* removeItemSaga(
   action: ReturnType<typeof actions.removeItem.request>
@@ -41,18 +55,7 @@ function* getListSaga() {
     yield put(actions.getList.failure(e.response));
   }
 }
-// function* readItemSaga(action: ReturnType<typeof actions.readItem.request>) {
-//   try {
-//     const response: { data: ListData } = yield call(
-//       listAPI.readItem,
-//       action.payload
-//     );
-//     yield put(actions.readItem.success(response.data));
-//   } catch (e: any) {
-//     console.error(e);
-//     yield put(actions.readItem.failure(e));
-//   }
-// }
+
 function* searchListSaga(
   action: ReturnType<typeof actions.searchList.request>
 ) {

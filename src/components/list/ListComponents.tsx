@@ -66,45 +66,45 @@ const ListComponents: React.FC<Props> = ({
         {list.map((item) => {
           return (
             <div className="list-item" key={item.id}>
-              <div className="item-textarea">
-                <div className="left">
-                  <b>분류:{item.category}</b>
-                  <div>
-                    <b>
-                      <Link
-                        to="#"
-                        onClick={() => {
-                          onRead(item.id);
-                        }}
-                      >
-                        품명:{item.name}
-                      </Link>
-                    </b>
-                    <div>
-                      <b>단가:{item.unit}</b>
-                      {item.price}
+              <Link
+                to="#"
+                onClick={() => {
+                  onRead(item.id);
+                }}
+              >
+                <div>
+                  <div className="item-textarea">
+                    <div className="left">
+                      <b>분류:{item.category}</b>
+                      <div>
+                        <b>품명:{item.name}</b>
+                        <div>
+                          <b>단가:{item.unit}</b>
+                          {item.price}
+                        </div>
+                        <b>갯수:{item.count}</b>
+                      </div>
+                      <div>
+                        {item.departs}
+                        {/* {item.use} */}
+                      </div>
                     </div>
-                    <b>갯수:{item.count}</b>
+                    <div className="right">
+                      <textarea value={item.description} readOnly></textarea>
+                    </div>
                   </div>
-                  <div>
-                    {item.departs}
-                    {/* {item.use} */}
+                  <div className="imageFrame">
+                    {item.Images?.map((image) => (
+                      <img
+                        src={image.url}
+                        alt=""
+                        key={image.url}
+                        width="100px"
+                      ></img>
+                    ))}
                   </div>
                 </div>
-                <div className="right">
-                  <textarea value={item.description} readOnly></textarea>
-                </div>
-              </div>
-              <div className="imageFrame">
-                {item.Images?.map((image) => (
-                  <img
-                    src={image.url}
-                    alt=""
-                    key={image.url}
-                    width="100px"
-                  ></img>
-                ))}
-              </div>
+              </Link>
             </div>
           );
         })}

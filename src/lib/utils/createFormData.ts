@@ -1,4 +1,4 @@
-import { resize } from "../../lib/utils/resize";
+import { resize } from "./resize";
 export const imageInsert = async (e: any, imageList: { url: string }[]) => {
   const imageArray = e.target.files;
   const formData = new FormData();

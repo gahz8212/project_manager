@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import InputForm from "../../components/itemInput/InputForm";
 import { RootState } from "../../modules";
-import { imageInsert } from "../../lib/utils/onImageInsert";
+import { imageInsert } from "../../lib/utils/createFormData";
 import {
   changeField,
   inputImage,
@@ -13,7 +13,7 @@ import {
   initializeForm,
   inputItem,
 } from "../../modules/item";
-import { resize } from "../../lib/utils/resize";
+// import { resize } from "../../lib/utils/resize";
 type Props = {
   open: boolean;
   formOpen: () => void;
@@ -41,7 +41,12 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     const { name, value } = e.target;
     dispatch(changeField({ name, value }));
   };
+  const onImageRemove = (url: string) => {
+    setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
+    // dispatch(removeImage(url));
+  };
   const onImageInsert = async (e: any) => {
+    // console.log(e);
     const formData = imageInsert(e, imageList);
     // const imageArray = e.target.files;
     // const formData = new FormData();
@@ -82,10 +87,6 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     //   }
     // }
     dispatch(inputImage.request(await formData));
-  };
-  const onImageRemove = (url: string) => {
-    setImageList((prevState) => prevState.filter((prev) => prev.url !== url));
-    // dispatch(removeImage(url));
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

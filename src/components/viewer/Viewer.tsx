@@ -4,12 +4,13 @@ import { ItemData_list } from "../../lib/api/list";
 type Props = {
   show: boolean;
   id: number;
+  item: ItemData_list;
   onImageRemove: (url: string) => void;
   onChange: (e: any) => void;
   onRead: (id: number) => void;
   onUpdate: (id: number) => void;
   onRemove: () => void;
-  item: ItemData_list;
+  onImageUpdate: (e: any) => void;
 };
 const Viewer: React.FC<Props> = ({
   show,
@@ -20,6 +21,7 @@ const Viewer: React.FC<Props> = ({
   onRead,
   onUpdate,
   onRemove,
+  onImageUpdate,
 }) => {
   if (!item) {
     return null;
@@ -76,18 +78,18 @@ const Viewer: React.FC<Props> = ({
           step="0.001"
         ></input>
       </div>
-      <form>
-        <div className="images">
-          <label htmlFor="file">이미지 선택</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="file"
-            multiple
-            // onChange={}
-          />
-        </div>
-      </form>
+      {/* <form> */}
+      <div className="images">
+        <label htmlFor="file">이미지 선택</label>
+        <input
+          type="file"
+          id="file"
+          multiple
+          accept="image/*"
+          onChange={onImageUpdate}
+        />
+      </div>
+      {/* </form> */}
       <div className="image-area">
         <div className="images">
           {item.Images?.map((image) => (

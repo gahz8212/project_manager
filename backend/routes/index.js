@@ -4,6 +4,21 @@ const router = express.Router();
 const Op = Sequelize.Op;
 const { Item, Image } = require("../models");
 const { isLoggedIn } = require("./middlewares");
+const multer = require("multer");
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, "uploads/");
+    },
+    filename(req, file, cb) {
+      file.originalname = Buffer.from(file.originalname, "latin1").toString(
+        "utf8"
+      );
+      cb(null, file.originalname);
+    },
+  }),
+  limite: { fileSize: 5 * 1024 * 1024 },
+});
 router.get("/list", async (req, res) => {
   try {
     const list = await Item.findAll({
@@ -66,6 +81,19 @@ router.delete("/remove/:id", isLoggedIn, async (req, res) => {
     return res.status(200).json(list);
   } catch (e) {
     console.error(e);
+  }
+});
+router.post("/update", upload.array("images"), async (req, res) => {
+  // console.log(req.files);
+  try {
+    const images = req.files.map((image) => ({
+      url: `/img/${image.filename}`,
+    }));
+    console.log(images);
+    return res.status(200).json(images);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json(e);
   }
 });
 module.exports = router;

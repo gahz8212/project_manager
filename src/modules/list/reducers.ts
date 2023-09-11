@@ -18,6 +18,7 @@ const initialState: listState = {
     Images: null,
   },
   item: null,
+  updateImages: null,
   list: [],
   search: {
     category: "",
@@ -49,7 +50,7 @@ const list = createReducer<listState, listAction>(initialState, {
     return {
       ...state,
       item: null,
-      // originalItem: null,
+      updateImages: null,
     };
   },
   [actions.ORIGIN_FIELD_CLEAN]: (state) => {
@@ -121,6 +122,21 @@ const list = createReducer<listState, listAction>(initialState, {
     loading: false,
     error,
     list: [],
+  }),
+  [actions.UPDATE_IMAGE]: (state) => ({
+    ...state,
+    loading: true,
+  }),
+  [actions.UPDATE_IMAGE_SUCCESS]: (state, { payload: updateImages }) => ({
+    ...state,
+    loading: false,
+    updateImages: updateImages,
+  }),
+  [actions.UPDATE_IMAGE_FAILURE]: (state, { payload: error }) => ({
+    ...state,
+    loading: false,
+    updateImages: null,
+    error,
   }),
 });
 export default list;
