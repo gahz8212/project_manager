@@ -1,5 +1,6 @@
 import React from "react";
 import { ListData } from "../../lib/api/list";
+import { ItemData_list } from "../../lib/api/list";
 import Loading from "../common/loading/Loading";
 import ItemContainer from "../../containers/itemInput/ItemContainer";
 
@@ -19,7 +20,7 @@ type Props = {
   toggleModal: () => void;
   onRemoveClick: (id: number) => void;
   onRead: (id: number) => void;
-  onUpdate: (id: number) => void;
+  onUpdate: (item: ItemData_list) => void;
   onRemove: () => void;
 };
 
@@ -65,14 +66,14 @@ const ListComponents: React.FC<Props> = ({
       <div className="list-wrapper">
         {list.map((item) => {
           return (
-            <div className="list-item" key={item.id}>
+            <div className="list-items" key={item.id}>
               <Link
                 to="#"
                 onClick={() => {
                   onRead(item.id);
                 }}
               >
-                <div>
+                <div className="list-item">
                   <div className="item-textarea">
                     <div className="left">
                       <b>분류:{item.category}</b>

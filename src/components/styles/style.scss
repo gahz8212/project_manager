@@ -55,14 +55,20 @@
     margin: 95px auto;
     width: 600px;
 
-    .list-item {
-      padding: 20px;
+    .list-items {
       background-color: rgba(0, 0, 0, 0.1);
       &:nth-child(2n) {
         background-color: rgba(0, 0, 0, 0.2);
       }
       & {
         border-bottom: 1px solid black;
+      }
+      .list-item {
+        padding: 20px;
+        transition: 0.4s;
+        &:hover {
+          background: lightyellow;
+        }
       }
       .item-textarea {
         display: flex;

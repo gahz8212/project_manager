@@ -18,15 +18,18 @@
     align-content: center;
     border-radius: 8px;
     .logo-area {
-      letter-spacing: 4px;
-      font: 700 22px "arial";
+      // letter-spacing: 4px;
+      width: 100%;
+      font: 700 20px "arial";
+      display: flex;
+      align-items: flex-start;
     }
     .authFormWrap {
-      padding: 20px;
-      h4 {
-        font: normal 20px "arial";
-        margin: auto;
-      }
+      padding: 0 20px 20px;
+      // h4 {
+      //   font: normal 20px "arial";
+      //   margin: auto;
+      // }
       .join-only {
         display: flex;
         align-items: baseline;
@@ -57,7 +60,7 @@
         border-bottom: 2px solid green;
 
         width: 92%;
-        padding: 8px;
+        padding: 5px;
 
         font: normal 18px "arial";
         &:focus {

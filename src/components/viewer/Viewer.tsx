@@ -8,9 +8,10 @@ type Props = {
   onImageRemove: (url: string) => void;
   onChange: (e: any) => void;
   onRead: (id: number) => void;
-  onUpdate: (id: number) => void;
+  onUpdate: (item: ItemData_list) => void;
   onRemove: () => void;
   onImageUpdate: (e: any) => void;
+  inputRef: React.RefObject<HTMLInputElement>;
 };
 const Viewer: React.FC<Props> = ({
   show,
@@ -22,6 +23,7 @@ const Viewer: React.FC<Props> = ({
   onUpdate,
   onRemove,
   onImageUpdate,
+  inputRef,
 }) => {
   if (!item) {
     return null;
@@ -31,13 +33,9 @@ const Viewer: React.FC<Props> = ({
     <div className={`viewerBlock ${show ? "toRight" : ""}`}>
       {/* select와 checkbox의 초기화 정리하고 확인할 것 */}
       <div>
-        <select name="category" onChange={onChange}>
-          <option value="소프트웨어" selected={item.category === "소프트웨어"}>
-            소프트웨어
-          </option>
-          <option value="하드웨어" selected={item.category === "하드웨어"}>
-            하드웨어
-          </option>
+        <select name="category" value={item.category} onChange={onChange}>
+          <option value="소프트웨어">소프트웨어</option>
+          <option value="하드웨어">하드웨어</option>
         </select>
       </div>
       <div>
@@ -45,12 +43,14 @@ const Viewer: React.FC<Props> = ({
           type="text"
           name="name"
           defaultValue={item.name}
+          value={item.name}
           onChange={onChange}
         />
       </div>
       <div>
         <textarea
           defaultValue={item.description}
+          value={item.description}
           onChange={onChange}
           name="description"
         ></textarea>
@@ -58,15 +58,9 @@ const Viewer: React.FC<Props> = ({
       <div>
         <select name="unit" value={item.unit} onChange={onChange}>
           {/* <option value="">==unit==</option> */}
-          <option value="$" selected={item.unit === "$"}>
-            $
-          </option>
-          <option value="￦" selected={item.unit === "￦"}>
-            ￦
-          </option>
-          <option value="￥" selected={item.unit === "￥"}>
-            ￥
-          </option>
+          <option value="$">$</option>
+          <option value="￦">￦</option>
+          <option value="￥">￥</option>
         </select>
 
         <input
@@ -74,6 +68,7 @@ const Viewer: React.FC<Props> = ({
           min={0}
           name="price"
           value={item.price}
+          defaultValue={item.price}
           onChange={onChange}
           step="0.001"
         ></input>
@@ -87,6 +82,7 @@ const Viewer: React.FC<Props> = ({
           multiple
           accept="image/*"
           onChange={onImageUpdate}
+          ref={inputRef}
         />
       </div>
       {/* </form> */}
@@ -109,7 +105,7 @@ const Viewer: React.FC<Props> = ({
       <div className="buttons">
         <ButtonsComponents
           onRead={() => onRead(id)}
-          onUpdate={() => onUpdate(id)}
+          onUpdate={() => onUpdate(item)}
           onDelete={onRemove}
         />
       </div>

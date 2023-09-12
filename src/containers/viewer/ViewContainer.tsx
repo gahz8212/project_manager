@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ItemData_list } from "../../lib/api/list";
 import { imageInsert } from "../../lib/utils/createFormData";
@@ -14,7 +14,7 @@ type Props = {
   open: boolean;
   itemId: number;
   onRead: (id: number) => void;
-  onUpdate: (id: number) => void;
+  onUpdate: (item: ItemData_list) => void;
   onRemove: () => void;
 };
 const ViewContainer: React.FC<Props> = ({
@@ -34,57 +34,56 @@ const ViewContainer: React.FC<Props> = ({
   );
   const [Item, setItem] = useState({} as ItemData_list);
   const [imageList, setImageList] = useState([] as { url: string }[]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
-
+    console.log(value);
+    setItem({ ...Item, [name]: value });
     dispatch(changeField({ option: "originalItem", name, value }));
   };
 
   const onImageRemove = (url: string) => {
-    // originalItem.Images = null;
     setItem({
-      ...originalItem,
-      Images: originalItem.Images?.filter((image) => image.url !== url),
+      ...Item,
+      Images: Item.Images?.filter((image) => image.url !== url),
     });
-    // console.log(Item.Images);
   };
   const onImageUpdate = async (e: any) => {
-    // console.log(e);
-    console.log(imageList.length);
     const formData = imageInsert(e, imageList);
     dispatch(updateImage.request(await formData));
   };
   useEffect(() => {
     if (item) {
-      dispatch(updateField(item));
       dispatch(updateFieldClean());
+      dispatch(updateField(item));
       setImageList([]);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     }
-  }, [item, dispatch]);
+  }, [item, dispatch, imageList]);
 
   useEffect(() => {
     if (originalItem) {
       setItem(originalItem);
     }
   }, [originalItem]);
+
   useEffect(() => {
     if (updateImages) {
-      const nextItem = {
-        ...originalItem,
-        Images: originalItem.Images?.concat(updateImages),
-      };
-
-      setItem(nextItem);
+      setItem({
+        ...Item,
+        Images: Item.Images?.concat(updateImages),
+      });
     }
-  }, [updateImages, originalItem]);
+  }, [updateImages]);
 
   useEffect(() => {
     if (Item.Images) {
-      // console.log(Item.Images);
       setImageList(Item.Images);
     }
-  }, [Item]);
+  }, [Item, imageList]);
   return (
     <Viewer
       show={open}
@@ -96,6 +95,7 @@ const ViewContainer: React.FC<Props> = ({
       onUpdate={onUpdate}
       onRemove={onRemove}
       onImageUpdate={onImageUpdate}
+      inputRef={inputRef}
     ></Viewer>
   );
 };

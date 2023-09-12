@@ -9,7 +9,7 @@ import {
   originFieldClean,
 } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
-
+import { ItemData_list } from "../../lib/api/list";
 import { RootState } from "../../modules";
 type Props = {
   children: React.ReactNode;
@@ -44,7 +44,9 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       // }, 1000);
     }
   };
-  const onUpdate = (id: number) => {};
+  const onUpdate = (item: ItemData_list) => {
+    console.log(item);
+  };
   const onRemove = () => {
     toggleModal();
   };

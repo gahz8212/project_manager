@@ -7,7 +7,10 @@ const AuthTemplate: React.FC<Props> = ({ children }) => {
   return (
     <div className="authTemplateWrap">
       <div className="white-box">
-        <div className="logo-area">REACTER</div>
+        <div className="logo-area">
+          <img src="/symbol.png" alt="" />
+          <p>EUNKI</p>
+        </div>
         {children}
       </div>
     </div>

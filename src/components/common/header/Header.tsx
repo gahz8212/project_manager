@@ -11,7 +11,9 @@ const Header: React.FC<Props> = ({ user, onClick }) => {
     <div className="headerWraper">
       <section>
         <article className="logo">
-          <div>REACT</div>
+          <div>
+            <img src="/logo.png" alt="logo" width="90%" />
+          </div>
         </article>
         <article className="auth">
           {user ? (

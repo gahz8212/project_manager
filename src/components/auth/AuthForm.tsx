@@ -28,7 +28,7 @@ const AuthForm: React.FC<Props> = ({
   const text = textMap[type];
   return (
     <form className="authFormWrap" onSubmit={onSubmit}>
-      <h4>{text}</h4>
+      {/* <h4>{text}</h4> */}
       <input
         type="text"
         name="email"
