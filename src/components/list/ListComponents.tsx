@@ -16,12 +16,17 @@ type Props = {
   show: boolean;
   visibleModal: boolean;
   itemId: number;
+  item: ItemData_list;
   formOpen: () => void;
   toggleModal: () => void;
-  onRemoveClick: (id: number) => void;
   onRead: (id: number) => void;
-  onUpdate: (item: ItemData_list) => void;
+  onRemoveClick: (id: number) => void;
+  onUpdateClick: (
+    item: ItemData_list
+    // options: { option: string; name: string; value: any }
+  ) => void;
   onRemove: () => void;
+  onUpdate: (item: ItemData_list) => void;
 };
 
 const ListComponents: React.FC<Props> = ({
@@ -32,13 +37,15 @@ const ListComponents: React.FC<Props> = ({
   open,
   show,
   itemId,
+  item,
+  visibleModal,
   formOpen,
   onRead,
-  onUpdate,
-  onRemove,
   toggleModal,
-  visibleModal,
+  onRemove,
   onRemoveClick,
+  onUpdate,
+  onUpdateClick,
 }) => {
   if (!list) return null;
   if (error) return null;
@@ -59,14 +66,19 @@ const ListComponents: React.FC<Props> = ({
       />
       <ModalForm
         id={itemId}
+        item={item}
         visible={visibleModal}
         toggleModal={toggleModal}
         onRemoveClick={onRemoveClick}
+        onUpdateClick={onUpdateClick}
       />
       <div className="list-wrapper">
         {list.map((item) => {
           return (
-            <div className="list-items" key={item.id}>
+            <div
+              className={`list-items ${item.id === itemId ? "select" : ""}`}
+              key={item.id}
+            >
               <Link
                 to="#"
                 onClick={() => {

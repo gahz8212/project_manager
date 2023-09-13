@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { ItemData_list } from "../../lib/api/list";
 import { imageInsert } from "../../lib/utils/createFormData";
 import {
-  changeField,
   updateImage,
-  updateField,
+  // updateField,
   updateFieldClean,
+  changeField,
 } from "../../modules/list";
 import Viewer from "../../components/viewer/Viewer";
 import { RootState } from "../../modules";
@@ -14,7 +14,10 @@ type Props = {
   open: boolean;
   itemId: number;
   onRead: (id: number) => void;
-  onUpdate: (item: ItemData_list) => void;
+  onUpdate: (
+    item: ItemData_list
+    // options: { option: string; name: string; value: any }
+  ) => void;
   onRemove: () => void;
 };
 const ViewContainer: React.FC<Props> = ({
@@ -25,22 +28,21 @@ const ViewContainer: React.FC<Props> = ({
   onRemove,
 }) => {
   const dispatch = useDispatch();
-  const { item, originalItem, updateImages } = useSelector(
-    (state: RootState) => ({
-      item: state.list.item,
-      originalItem: state.list.originalItem,
-      updateImages: state.list.updateImages,
-    })
-  );
+  const { originalItem, updateImages } = useSelector((state: RootState) => ({
+    // item: state.list.item,
+    originalItem: state.list.originalItem,
+    updateImages: state.list.updateImages,
+  }));
   const [Item, setItem] = useState({} as ItemData_list);
   const [imageList, setImageList] = useState([] as { url: string }[]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(value);
+
     setItem({ ...Item, [name]: value });
-    dispatch(changeField({ option: "originalItem", name, value }));
+    // onUpdate(Item, { option: "originalItem", name, value });
+    // dispatch(changeField({ option: "originalItem", name, value }));
   };
 
   const onImageRemove = (url: string) => {
@@ -54,15 +56,15 @@ const ViewContainer: React.FC<Props> = ({
     dispatch(updateImage.request(await formData));
   };
   useEffect(() => {
-    if (item) {
+    if (originalItem) {
       dispatch(updateFieldClean());
-      dispatch(updateField(item));
+      // dispatch(updateField(item));
       setImageList([]);
       if (inputRef.current) {
         inputRef.current.value = "";
       }
     }
-  }, [item, dispatch, imageList]);
+  }, [dispatch, imageList, originalItem]);
 
   useEffect(() => {
     if (originalItem) {

@@ -9,6 +9,16 @@ export function* listSaga() {
   yield takeLatest(actions.READ_ITEM, readItemSaga);
   yield takeLatest(actions.REMOVE_ITEM, removeItemSaga);
   yield takeLatest(actions.UPDATE_IMAGE, updateImageSaga);
+  yield takeLatest(actions.UPDATE_ITEM, updateItemSaga);
+}
+function* updateItemSaga(
+  action: ReturnType<typeof actions.updateItem.request>
+) {
+  try {
+    yield call(listAPI.updateItem, action.payload);
+  } catch (e: any) {
+    yield put(actions.updateImage.failure(e));
+  }
 }
 function* updateImageSaga(
   action: ReturnType<typeof actions.updateImage.request>

@@ -4,9 +4,8 @@ import {
   getList,
   removeItem,
   readItem,
-  initializeForm,
-  updateFieldClean,
   originFieldClean,
+  updateItem,
 } from "../../modules/list";
 import ListComponents from "../../components/list/ListComponents";
 import { ItemData_list } from "../../lib/api/list";
@@ -24,6 +23,7 @@ const ListContainer: React.FC<Props> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [itemID, setItemId] = useState(0);
+  const [item, setItem] = useState({} as ItemData_list);
   const [visibleModal, setVisibleModal] = useState(false);
   const formOpen = () => {
     setOpen(!open);
@@ -44,9 +44,15 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       // }, 1000);
     }
   };
+
   const onUpdate = (item: ItemData_list) => {
-    console.log(item);
+    setItem(item);
+    toggleModal();
   };
+  const onUpdateClick = (item: ItemData_list) => {
+    dispatch(updateItem.request(item));
+  };
+
   const onRemove = () => {
     toggleModal();
   };
@@ -55,6 +61,7 @@ const ListContainer: React.FC<Props> = ({ children }) => {
     toggleModal();
     dispatch(removeItem.request(id));
   };
+
   useEffect(() => {
     if (error) {
       console.log(error);
@@ -75,8 +82,10 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       open={open}
       show={show}
       itemId={itemID}
+      item={item}
       onRead={onRead}
       onUpdate={onUpdate}
+      onUpdateClick={onUpdateClick}
       onRemove={onRemove}
       onRemoveClick={onRemoveClick}
       visibleModal={visibleModal}

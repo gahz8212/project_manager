@@ -4,7 +4,7 @@ import * as actions from "./actions";
 export type listState = {
   [key: string]: {} | null;
   list: ListData;
-  item: ItemData_list | null;
+  // item: ItemData_list | null;
   loading: boolean;
   error: Error | null;
   search: SearchData;

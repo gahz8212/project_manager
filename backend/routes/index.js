@@ -74,7 +74,7 @@ router.get("/read/:id", async (req, res) => {
 router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
-    console.log(id);
+    // console.log(id);
     await Item.destroy({ where: { id } });
     await Image.destroy({ where: { ItemId: id } });
     const list = await Item.findAll({ include: { model: Image } });
@@ -89,11 +89,15 @@ router.post("/update", upload.array("images"), async (req, res) => {
     const images = req.files.map((image) => ({
       url: `/img/${image.filename}`,
     }));
-    console.log(images);
+    // console.log(images);
     return res.status(200).json(images);
   } catch (e) {
     console.error(e);
     return res.status(400).json(e);
   }
+});
+router.patch("/update/:id", async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  console.log(id, req.body);
 });
 module.exports = router;

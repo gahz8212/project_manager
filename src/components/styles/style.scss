@@ -63,12 +63,15 @@
       & {
         border-bottom: 1px solid black;
       }
+      &.select {
+        background: lightyellow;
+      }
       .list-item {
         padding: 20px;
         transition: 0.4s;
-        &:hover {
-          background: lightyellow;
-        }
+        // &:hover {
+        //   background: lightyellow;
+        // }
       }
       .item-textarea {
         display: flex;

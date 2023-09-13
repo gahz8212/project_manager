@@ -73,7 +73,23 @@ const Viewer: React.FC<Props> = ({
           step="0.001"
         ></input>
       </div>
-      {/* <form> */}
+
+      <div>
+        <input
+          name="count"
+          type="number"
+          defaultValue={item.count}
+          value={item.count}
+          onChange={onChange}
+        />
+        <select name="departs" value={item.departs} onChange={onChange}>
+          <option value="Off">사무실</option>
+          <option value="Dev">개발실</option>
+          <option value="Fac">생산</option>
+          <option value="Pac">포장</option>
+        </select>
+      </div>
+
       <div className="images">
         <label htmlFor="file">이미지 선택</label>
         <input
@@ -85,7 +101,7 @@ const Viewer: React.FC<Props> = ({
           ref={inputRef}
         />
       </div>
-      {/* </form> */}
+
       <div className="image-area">
         <div className="images">
           {item.Images?.map((image) => (

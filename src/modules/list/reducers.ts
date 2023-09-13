@@ -17,7 +17,7 @@ const initialState: listState = {
     use: true,
     Images: null,
   },
-  item: null,
+  // item: null,
   updateImages: null,
   list: [],
   search: {
@@ -40,16 +40,10 @@ const list = createReducer<listState, listAction>(initialState, {
       [option]: { ...state[option], [name]: value },
     };
   },
-  [actions.UPDATE_FIELD]: (state, { payload: item }) => {
-    return {
-      ...state,
-      originalItem: item,
-    };
-  },
+
   [actions.UPDATE_FIELD_CLEAN]: (state) => {
     return {
       ...state,
-      item: null,
       updateImages: null,
     };
   },
@@ -95,10 +89,10 @@ const list = createReducer<listState, listAction>(initialState, {
     ...state,
     loading: true,
   }),
-  [actions.READ_ITEM_SUCCESS]: (state, { payload: item }) => ({
+  [actions.READ_ITEM_SUCCESS]: (state, { payload: originalItem }) => ({
     ...state,
     loading: false,
-    item,
+    originalItem,
     error: null,
   }),
   [actions.READ_ITEM_FAILURE]: (state, { payload: error }) => ({
@@ -136,6 +130,20 @@ const list = createReducer<listState, listAction>(initialState, {
     ...state,
     loading: false,
     updateImages: null,
+    error,
+  }),
+  [actions.UPDATE_ITEM]: (state) => ({
+    ...state,
+    loading: true,
+  }),
+  [actions.UPDATE_ITEM_SUCCESS]: (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  }),
+  [actions.UPDATE_ITEM_FAILURE]: (state, { payload: error }) => ({
+    ...state,
+    loading: false,
     error,
   }),
 });

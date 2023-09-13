@@ -1,14 +1,17 @@
 import React from "react";
-// import { ItemData } from "../../lib/api/item";
+import { ItemData_list } from "../../lib/api/list";
 type Props = {
   id: number;
+  item: ItemData_list;
   visible: boolean;
   toggleModal: () => void;
   onRemoveClick: (id: number) => void;
+  onUpdateClick: (item: ItemData_list) => void;
   // data: ItemData;
 };
 const ModalForm: React.FC<Props> = ({
   id,
+  item,
   visible,
   toggleModal,
   onRemoveClick,
@@ -19,7 +22,8 @@ const ModalForm: React.FC<Props> = ({
       {visible && (
         <div className="modalblock">
           <div className="confirm">
-            <div>선택한 아이템이 삭제됩니다.</div>
+            <div>{id}</div>
+            <div>{item.name}</div>
             <div className="btns">
               <button onClick={() => onRemoveClick(id)}>삭제</button>
               <button onClick={toggleModal}>취소</button>

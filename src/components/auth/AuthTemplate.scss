@@ -20,9 +20,13 @@
     .logo-area {
       // letter-spacing: 4px;
       width: 100%;
-      font: 700 20px "arial";
+      font: 700 18px "arial";
       display: flex;
-      align-items: flex-start;
+      align-items: flex-end;
+      p {
+        color: #333;
+        margin-bottom: 10px;
+      }
     }
     .authFormWrap {
       padding: 0 20px 20px;

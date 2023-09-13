@@ -9,7 +9,7 @@ const AuthTemplate: React.FC<Props> = ({ children }) => {
       <div className="white-box">
         <div className="logo-area">
           <img src="/symbol.png" alt="" />
-          <p>EUNKI</p>
+          <p>EUNKI ELECTRONIC</p>
         </div>
         {children}
       </div>

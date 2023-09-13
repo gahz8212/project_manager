@@ -24,6 +24,11 @@ export const REMOVE_ITEM_FAILURE = "list/REMOVE_ITEM_FAILURE";
 export const UPDATE_IMAGE = "list/UPDATE_IMAGE";
 export const UPDATE_IMAGE_SUCCESS = "list/UPDATE_IMAGE_SUCCESS";
 export const UPDATE_IMAGE_FAILURE = "list/UPDATE_IMAGE_FAILURE";
+
+export const UPDATE_ITEM = "list/UPDATE_ITEM";
+export const UPDATE_ITEM_SUCCESS = "list/UPDATE_ITEM_SUCCESS";
+export const UPDATE_ITEM_FAILURE = "list/UPDATE_ITEM_FAILURE";
+
 export const initializeForm = createAction(INITIALIZE_FORM)();
 export const changeField = createAction(
   CHANGE_FIELD,
@@ -33,7 +38,7 @@ export const changeField = createAction(
     value,
   })
 )();
-export const updateField = createAction(UPDATE_FIELD, (item) => item)();
+
 export const updateFieldClean = createAction(UPDATE_FIELD_CLEAN)();
 export const originFieldClean = createAction(ORIGIN_FIELD_CLEAN)();
 export const getList = createAsyncAction(
@@ -61,3 +66,8 @@ export const updateImage = createAsyncAction(
   UPDATE_IMAGE_SUCCESS,
   UPDATE_IMAGE_FAILURE
 )<FormData, { url: string }[] | null, Error>();
+export const updateItem = createAsyncAction(
+  UPDATE_ITEM,
+  UPDATE_ITEM_SUCCESS,
+  UPDATE_ITEM_FAILURE
+)<ItemData_list, undefined, Error>();
