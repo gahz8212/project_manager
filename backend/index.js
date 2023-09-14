@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const path = require("path");
+const http = require("http");
 const passportConfig = require("./passport");
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
@@ -39,7 +40,8 @@ app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
-const server = app.listen(app.get("port"), () => {
+const httpServer = http.createServer(app);
+WebServer(httpServer, app);
+httpServer.listen(app.get("port"), () => {
   console.log(`${app.get("port")}번 포트에서 서버 대기 중.`);
 });
-WebServer(server, app);

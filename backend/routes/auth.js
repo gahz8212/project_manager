@@ -34,7 +34,10 @@ router.post("/login", async (req, res) => {
         if (loginError) {
           throw new Error(loginError);
         } else {
-          req.app.io.emit("login", "login_ok");
+          // req.app.io.on("login", (data) => {
+          //   console.log(data);
+          // });
+          // req.app.get("io").emit("login", "asdfd");
           return res.status(200).json("login_ok");
         }
       });
