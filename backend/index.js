@@ -9,6 +9,7 @@ const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
+const WebServer = require("./socket");
 const app = express();
 passportConfig();
 sequelize
@@ -38,6 +39,7 @@ app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log(`${app.get("port")}번 포트에서 서버 대기 중.`);
 });
+WebServer(server, app);
