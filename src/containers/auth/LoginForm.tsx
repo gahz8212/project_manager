@@ -6,8 +6,7 @@ import { initializeForm, changeField, login } from "../../modules/auth";
 import { check } from "../../modules/user";
 import { RootState } from "../../modules";
 import { Link } from "react-router-dom";
-import io from "socket.io-client";
-const socket = io("http://localhost:4000");
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ const LoginForm = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // console.log(form);
-    socket.emit("login", "김성현");
+
     dispatch(login.request(form));
   };
   useEffect(() => {

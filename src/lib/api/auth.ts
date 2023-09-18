@@ -9,6 +9,7 @@ export const join = (data: authData) => {
 };
 export const check = () => client.get("/auth/check");
 export const logout = () => client.get("/auth/logout");
+export const getUsers = () => client.get("/getUsers");
 export type authData = {
   email: string;
   password: string;

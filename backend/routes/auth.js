@@ -21,7 +21,7 @@ router.post("/join", async (req, res) => {
     return res.status(400).json(e.message);
   }
 });
-router.post("/login", async (req, res) => {
+router.post("/login", (req, res) => {
   passport.authenticate("local", (authError, user, info) => {
     try {
       if (authError) {
@@ -34,10 +34,8 @@ router.post("/login", async (req, res) => {
         if (loginError) {
           throw new Error(loginError);
         } else {
-          // req.app.io.on("login", (data) => {
-          //   console.log(data);
-          // });
-          // req.app.get("io").emit("login", "asdfd");
+          req.app.get("io").emit("login_user", user.name);
+          User.update({ status: true }, { where: { id: user.id } });
           return res.status(200).json("login_ok");
         }
       });
@@ -56,12 +54,19 @@ router.get("/check", (req, res) => {
   }
 });
 router.get("/logout", (req, res) => {
-  return req.logout((e) => {
-    if (e) {
-      return;
-    }
-    req.session.destroy();
-    return res.send("logout_ok");
-  });
+  try {
+    const { id } = req.user;
+
+    return req.logout((e) => {
+      if (e) {
+        return;
+      }
+      req.session.destroy();
+      User.update({ status: false }, { where: { id } });
+      return res.send("logout_ok");
+    });
+  } catch (e) {
+    console.error(e);
+  }
 });
 module.exports = router;

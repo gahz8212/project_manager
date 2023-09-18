@@ -4,6 +4,7 @@ import { userState, userAction } from "./type";
 const initialState: userState = {
   user: null,
   error: null,
+  userList: [],
 };
 const user = createReducer<userState, userAction>(initialState, {
   [actions.CHECK_SUCCESS]: (state, { payload: user }) => ({
@@ -24,5 +25,17 @@ const user = createReducer<userState, userAction>(initialState, {
     ...state,
     user: null,
   }),
+  [actions.GET_USERS]: (state) => ({ ...state, userList: [], error: null }),
+  [actions.GET_USERS_SUCCESS]: (state, { payload: userList }) => ({
+    ...state,
+    userList,
+    error: null,
+  }),
+  [actions.GET_USERS_FAILURE]: (state, { payload: error }) => ({
+    ...state,
+    userList: [],
+    error,
+  }),
 });
+
 export default user;

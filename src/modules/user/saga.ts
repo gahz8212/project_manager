@@ -5,6 +5,15 @@ export function* userSaga() {
   yield takeLatest(actions.CHECK, checkSaga);
   yield takeLatest(actions.LOGOUT, logoutSaga);
   yield takeLatest(actions.CHECK_FAILURE, checkFailureSaga);
+  yield takeLatest(actions.GET_USERS, getUserSaga);
+}
+function* getUserSaga() {
+  try {
+    const response: { data: [] } = yield call(userAPI.getUsers);
+    yield put(actions.getUsers.success(response.data));
+  } catch (e: any) {
+    yield put(actions.getUsers.failure(e));
+  }
 }
 function* checkSaga(action: ReturnType<typeof actions.check.request>) {
   try {

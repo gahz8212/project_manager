@@ -4,14 +4,18 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const path = require("path");
-const http = require("http");
+
 const passportConfig = require("./passport");
 const { sequelize } = require("./models");
 const indexRouter = require("./routes");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/post");
-const WebServer = require("./socket");
+const cors = require("cors");
+const { Server } = require("socket.io");
+const { createServer } = require("http");
+
 const app = express();
+
 passportConfig();
 sequelize
   .sync({ force: false })
@@ -22,6 +26,7 @@ sequelize
     console.log(e);
   });
 app.set("port", process.env.PORT || 4000);
+app.use(cors());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -40,8 +45,19 @@ app.use(passport.session());
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRouter);
-const httpServer = http.createServer(app);
-WebServer(httpServer, app);
-httpServer.listen(app.get("port"), () => {
+
+const server = createServer(app);
+const io = new Server(server);
+app.set("io", io);
+io.on("connection", (socket) => {
+  console.log("socket connect");
+  // socket.on("id", (data) => {
+  //   console.log("id:", data);
+  // });
+  socket.on("disconnect", () => {
+    console.log("disconnect");
+  });
+});
+server.listen(app.get("port"), () => {
   console.log(`${app.get("port")}번 포트에서 서버 대기 중.`);
 });
