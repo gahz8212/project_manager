@@ -25,7 +25,7 @@ const user = createReducer<userState, userAction>(initialState, {
     ...state,
     user: null,
   }),
-  [actions.GET_USERS]: (state) => ({ ...state, userList: [], error: null }),
+
   [actions.GET_USERS_SUCCESS]: (state, { payload: userList }) => ({
     ...state,
     userList,

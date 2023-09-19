@@ -97,23 +97,27 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
       setImageList((prevState) => [...prevState, ...images]);
     }
   }, [images]);
-  const mounted = useRef(false);
+  const mounted = useRef(true);
   useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
+    if (mounted.current) {
+      mounted.current = false;
+      return;
     } else {
       if (images) {
-        console.log(imageList.length);
+        // console.log(imageList.length);
         dispatch(addImage(imageList));
+        mounted.current = true;
       }
     }
   }, [dispatch, images, imageList]);
   useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
+    if (mounted.current) {
+      mounted.current = false;
+      return;
     } else {
       if (error === "로그인이 필요 합니다.") {
         navigate("/");
+        mounted.current = true;
       }
     }
   }, [error, navigate, dispatch]);

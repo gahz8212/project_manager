@@ -3,19 +3,20 @@ import AuthForm from "../../components/auth/AuthForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { initializeForm, changeField, login } from "../../modules/auth";
-import { check } from "../../modules/user";
+import { check, getUsers } from "../../modules/user";
 import { RootState } from "../../modules";
 import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { auth, loading, form, user, error } = useSelector(
+  const { auth, loading, form, user, error, userList } = useSelector(
     (state: RootState) => ({
       auth: state.auth.auth,
       loading: state.auth.loading,
       form: state.auth.login,
       user: state.user.user,
+      userList: state.user.userList,
       error: state.auth.error,
     })
   );
@@ -29,9 +30,12 @@ const LoginForm = () => {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(form);
 
     dispatch(login.request(form));
+
+    setTimeout(() => {
+      dispatch(getUsers.request());
+    }, 1000);
   };
   useEffect(() => {
     if (auth === "login_ok") {
@@ -50,6 +54,15 @@ const LoginForm = () => {
       navigate("/");
     }
   }, [dispatch, navigate, user]);
+  // useEffect(() => {
+  //   if (userList) {
+  //     try {
+  //       localStorage.setItem("userList", JSON.stringify(userList));
+  //     } catch (e) {
+  //       console.error("local storage is not working");
+  //     }
+  //   }
+  // }, [userList]);
   useEffect(() => {
     return () => {
       dispatch(initializeForm("login"));

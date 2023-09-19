@@ -34,7 +34,7 @@ const list = createReducer<listState, listAction>(initialState, {
     ...initialState,
   }),
   [actions.CHANGE_FIELD]: (state, { payload: { option, name, value } }) => {
-    console.log(name, value);
+    // console.log(name, value);
     return {
       ...state,
       [option]: { ...state[option], [name]: value },

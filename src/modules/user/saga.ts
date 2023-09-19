@@ -10,6 +10,7 @@ export function* userSaga() {
 function* getUserSaga() {
   try {
     const response: { data: [] } = yield call(userAPI.getUsers);
+    console.log(response.data);
     yield put(actions.getUsers.success(response.data));
   } catch (e: any) {
     yield put(actions.getUsers.failure(e));

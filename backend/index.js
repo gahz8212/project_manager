@@ -47,7 +47,9 @@ app.use("/auth", authRouter);
 app.use("/post", postRouter);
 
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: { origin: "http://localhost:3000", Credential: true },
+});
 app.set("io", io);
 io.on("connection", (socket) => {
   console.log("socket connect");
