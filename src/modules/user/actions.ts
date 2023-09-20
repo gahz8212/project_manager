@@ -13,7 +13,7 @@ export const check = createAsyncAction(CHECK, CHECK_SUCCESS, CHECK_FAILURE)<
   Error
 >();
 export const tempSetUser = createAction(SET_TEMP_USER, (user) => user)();
-export const logout = createAction(LOGOUT)();
+export const logout = createAction(LOGOUT, (user) => user)();
 export const getUsers = createAsyncAction(
   GET_USERS,
   GET_USERS_SUCCESS,

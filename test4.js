@@ -3,9 +3,8 @@ const arr = ["k", "l", "m"];
 // console.log(arr2);
 
 function f1(target) {
-  const arr2 = arr.map((ar) =>
-    ar === target ? arr.filter((a) => a !== target) : arr
-  );
+  // const arr2 = arr.filter((a) => a !== target);
+  const arr2 = arr.includes(target) ? arr : arr.concat(target);
   return arr2;
 }
 console.log(f1("k"));

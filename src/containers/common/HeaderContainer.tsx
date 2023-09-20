@@ -21,39 +21,55 @@ const HeaderContainer = () => {
 
   const onClick = () => {
     socket.emit("id", user?.id);
-
-    dispatch(logout());
+    // setUserName((prev) => [...prev, "bbb"]);
+    dispatch(logout(user?.name));
+    // setUserName((prev) => prev.filter((p) => p !== user?.name));
+    // console.log(userNames);
   };
-  const once = useRef(true);
-  useEffect(() => {
-    if (once.current) {
-      once.current = false;
-      return;
-    } else {
-      socket.on("login_user", (data: string) => {
-        setUserName((prev) => [...prev, data]);
-      });
 
-      once.current = true;
-    }
-  }, []);
+  const once = useRef(true);
+
+  // useEffect(() => {
+  //   if (once.current) {
+  //     // console.log("시작", userList);
+  //     userList.forEach((list) => {
+  //       const el = Object.values(list);
+  //       console.log(el[0]);
+  //       setUserName((prev) => [...prev, el[0]]);
+  //     });
+  //     once.current = false;
+  //     return;
+  //   } else {
+  //     return;
+  //   }
+  // }, [userList]);
+
+  // useEffect(() => {
+  //   if (once.current) {
+  //     socket.on("login_user", (data: string) => {
+  //       setUserName((prev) => [...prev, data]);
+  //       console.log("login_user", data);
+  //       once.current = false;
+  //     });
+
+  //     socket.on("logout_user", (data: string) => {
+  //       setUserName((prev) => prev.filter((p) => p !== data));
+  //       console.log("logout_user");
+  //       once.current = false;
+  //     });
+  //   } else {
+  //     return;
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (once.current) {
+      console.log(userNames);
       once.current = false;
-      return;
     } else {
-      if (userList) {
-        const arr = [] as string[];
-        userList.forEach((list) => {
-          const el = Object.values(list);
-          arr.push(el[0]);
-        });
-        console.log(arr);
-        setUserName((prev) => [...prev, ...arr]);
-        once.current = true;
-      }
+      return;
     }
-  }, [userList]);
+  }, [userNames]);
   return <Header user={user} onClick={onClick} userNames={userNames}></Header>;
 };
 

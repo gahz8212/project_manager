@@ -35,6 +35,7 @@ const AuthForm: React.FC<Props> = ({
         placeholder="Input email"
         autoComplete="off"
         onChange={onChange}
+        // value="gahz@gmail.com"
       />
       {text === "회원가입" && (
         <div className="join-only">
@@ -70,6 +71,7 @@ const AuthForm: React.FC<Props> = ({
         placeholder="Input password"
         autoComplete="off"
         onChange={onChange}
+        // value="123"
       />
       {error && <div>{error}</div>}
       <button type="submit">{text}</button>

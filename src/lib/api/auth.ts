@@ -10,7 +10,6 @@ export const join = (data: authData) => {
 export const check = () => client.get("/auth/check");
 export const logout = () => client.get("/auth/logout");
 export const getUsers = () => {
-  console.log("getUsers");
   return client.get("/auth/getUsers");
 };
 export type authData = {
