@@ -5,7 +5,7 @@ import "./header.scss";
 type Props = {
   user: { id: number; name: string; rank: string } | null;
   onClick: (e: any) => void;
-  userNames: string[];
+  userNames: { name: string }[];
 };
 const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
   return (
@@ -17,7 +17,7 @@ const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
           </div>
           <div style={{ background: "yellow" }}>
             {userNames.map((username) => (
-              <li key={username}>{username}</li>
+              <li key={username.name}>{username.name}</li>
             ))}
           </div>
         </article>

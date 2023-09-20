@@ -17,7 +17,7 @@ const HeaderContainer = () => {
     userList: state.user.userList,
   }));
 
-  const [userNames, setUserName] = useState([] as string[]);
+  const [userNames, setUserName] = useState([] as { name: string }[]);
 
   const onClick = () => {
     socket.emit("id", user?.id);

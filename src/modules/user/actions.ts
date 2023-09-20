@@ -18,4 +18,4 @@ export const getUsers = createAsyncAction(
   GET_USERS,
   GET_USERS_SUCCESS,
   GET_USERS_FAILURE
-)<undefined, string[], Error>();
+)<undefined, { name: string }[], Error>();
