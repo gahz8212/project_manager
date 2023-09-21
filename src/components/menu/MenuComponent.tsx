@@ -6,7 +6,7 @@ const MenuComponent = () => {
     <div className="menu-wrapper">
       <ul className="menu">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/main">Home</Link>
         </li>
         <li>
           <Link to="/">Relation Setting</Link>

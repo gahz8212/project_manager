@@ -263,24 +263,28 @@
     padding: 20px;
     display: flex;
     justify-content: space-around;
-
     position: relative;
-    // display: inline-block;
+
     li {
+      position: relative;
+      text-align: center;
+      font: bold 20px "arial";
       &::before {
         content: "";
         display: block;
         width: 0%;
-        height: 2px;
-        background-color: black;
+        height: 4px;
+        background-color: green;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: -10px;
+        bottom: -15px;
         transition: 0.4s;
       }
       &:hover::before {
         width: 100%;
+      }
+      Link {
       }
     }
   }
