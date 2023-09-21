@@ -35,7 +35,11 @@ router.post("/login", (req, res) => {
           throw new Error(loginError);
         } else {
           User.update({ status: true }, { where: { id: user.id } });
-          req.app.get("io").emit("login_user", user.name);
+          req.app.get("io").emit("login_user", {
+            id: user.id,
+            name: user.name,
+            rank: user.rank,
+          });
           return res.status(200).json("login_ok");
         }
       });
@@ -56,9 +60,9 @@ router.get("/check", (req, res) => {
 });
 router.get("/logout", (req, res) => {
   try {
-    const { id, name } = req.user;
+    const { id } = req.user;
 
-    req.app.get("io").emit("logout_user", name);
+    req.app.get("io").emit("logout_user", id);
 
     return req.logout((e) => {
       if (e) {
@@ -76,9 +80,9 @@ router.get("/getUsers", async (req, res) => {
   try {
     const users = await User.findAll({
       where: { status: true },
-      attributes: ["name"],
+      attributes: ["id", "name", "rank"],
     });
-    console.log(users);
+    // console.log(users);
     return res.status(200).json(users);
   } catch (e) {
     console.error(e);

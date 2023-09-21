@@ -9,14 +9,8 @@ export function* userSaga() {
 }
 function* getUserSaga() {
   try {
-    const response: { data: { name: string }[] } = yield call(userAPI.getUsers);
-    // console.log(response.data);
-    // // const arr: string[] = [];
-    // response.data.forEach((responsedata) => {
-    //   const el = Object.values(responsedata);
-    //   console.log(el[0]);
-    // });
-
+    const response: { data: { id: number; name: string; rank: string }[] } =
+      yield call(userAPI.getUsers);
     yield put(actions.getUsers.success(response.data));
   } catch (e: any) {
     yield put(actions.getUsers.failure(e));

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SearchForm from "../../components/list/SearchForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
@@ -17,8 +17,10 @@ const SearchContainer = () => {
     "Fac",
     "Pac",
   ] as string[]);
+  const [show, setShow] = useState(false);
   const [searchText, setSearchText] = useState("품명");
 
+  const searchInput = useRef<HTMLInputElement>(null);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target;
     // dispatch(changeField({ name, value }));
@@ -41,7 +43,7 @@ const SearchContainer = () => {
   };
   const onSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // console.log(name, value);
+
     dispatch(changeField({ option: "search", name, value: value === "true" }));
   };
   const onChoice = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,13 +53,16 @@ const SearchContainer = () => {
   };
   const onInputName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // console.log(name, value);
+
     dispatch(changeField({ option: "search", name, value }));
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(search);
+
     dispatch(searchList.request(search));
+    if (searchInput.current) {
+      searchInput.current.value = "";
+    }
   };
 
   useEffect(() => {
@@ -68,7 +73,7 @@ const SearchContainer = () => {
     dispatch(
       changeField({ option: "search", name: "departs", value: departList })
     );
-    // console.log(departList);
+
     if (departList.length >= 4) {
       setIsAllCheck(true);
     } else {
@@ -86,6 +91,9 @@ const SearchContainer = () => {
       onSelect={onSelect}
       onInputName={onInputName}
       onChoice={onChoice}
+      show={show}
+      setShow={setShow}
+      searchInput={searchInput}
     ></SearchForm>
   );
 };

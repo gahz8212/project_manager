@@ -5,7 +5,7 @@ import "./header.scss";
 type Props = {
   user: { id: number; name: string; rank: string } | null;
   onClick: (e: any) => void;
-  userNames: { name: string }[];
+  userNames: { name: string; rank: string }[];
 };
 const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
   return (
@@ -15,11 +15,15 @@ const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
           <div>
             <img src="/logo.png" alt="logo" width="90%" />
           </div>
-          <div style={{ background: "yellow" }}>
-            {userNames.map((username) => (
-              <li key={username.name}>{username.name}</li>
-            ))}
-          </div>
+          {userNames && (
+            <div className="connected-users">
+              {userNames.map((username) => (
+                <li key={username.name}>
+                  {username.name} / {username.rank}
+                </li>
+              ))}
+            </div>
+          )}
         </article>
         <article className="auth">
           {user ? (

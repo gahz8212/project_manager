@@ -21,10 +21,10 @@ const user = createReducer<userState, userAction>(initialState, {
     ...state,
     user,
   }),
-  [actions.LOGOUT]: (state, { payload: user }) => ({
+  [actions.LOGOUT]: (state, { payload: id }) => ({
     ...state,
     user: null,
-    userList: [...state.userList.filter((list) => list !== user)],
+    userList: [...state.userList.filter((list) => list.id !== id)],
   }),
 
   [actions.GET_USERS_SUCCESS]: (state, { payload: userList }) => ({

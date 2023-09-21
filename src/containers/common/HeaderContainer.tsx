@@ -17,50 +17,44 @@ const HeaderContainer = () => {
     userList: state.user.userList,
   }));
 
-  const [userNames, setUserName] = useState([] as { name: string }[]);
+  const [userNames, setUserName] = useState(
+    [] as { id: number; name: string; rank: string }[]
+  );
 
   const onClick = () => {
     socket.emit("id", user?.id);
     // setUserName((prev) => [...prev, "bbb"]);
-    dispatch(logout(user?.name));
-    // setUserName((prev) => prev.filter((p) => p !== user?.name));
+    dispatch(logout(user?.id));
+    setUserName((prev) => prev.filter((p) => p.id !== user?.id));
     // console.log(userNames);
   };
 
   const once = useRef(true);
 
-  // useEffect(() => {
-  //   if (once.current) {
-  //     // console.log("시작", userList);
-  //     userList.forEach((list) => {
-  //       const el = Object.values(list);
-  //       console.log(el[0]);
-  //       setUserName((prev) => [...prev, el[0]]);
-  //     });
-  //     once.current = false;
-  //     return;
-  //   } else {
-  //     return;
-  //   }
-  // }, [userList]);
+  useEffect(() => {
+    setUserName(userList);
+  }, [userList]);
 
-  // useEffect(() => {
-  //   if (once.current) {
-  //     socket.on("login_user", (data: string) => {
-  //       setUserName((prev) => [...prev, data]);
-  //       console.log("login_user", data);
-  //       once.current = false;
-  //     });
+  useEffect(() => {
+    if (once.current) {
+      socket.on(
+        "login_user",
+        (data: { id: number; name: string; rank: string }) => {
+          setUserName((prev) => [...prev, data]);
+          console.log("login_user", data);
+          once.current = false;
+        }
+      );
 
-  //     socket.on("logout_user", (data: string) => {
-  //       setUserName((prev) => prev.filter((p) => p !== data));
-  //       console.log("logout_user");
-  //       once.current = false;
-  //     });
-  //   } else {
-  //     return;
-  //   }
-  // }, []);
+      socket.on("logout_user", (id: number) => {
+        setUserName((prev) => prev.filter((p) => p.id !== id));
+        console.log("logout_user");
+        once.current = false;
+      });
+    } else {
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     if (once.current) {

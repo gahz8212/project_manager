@@ -24,7 +24,7 @@ function getUser() {
 
     store.dispatch(tempSetUser(user));
     store.dispatch(check.request());
-    // store.dispatch(getUsers.request());
+    store.dispatch(getUsers.request());
   } catch (e) {
     console.log("local storage is not working");
   }
