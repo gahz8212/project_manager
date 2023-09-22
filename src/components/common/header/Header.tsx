@@ -18,7 +18,7 @@ const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
           {userNames && (
             <div className="connected-users">
               {userNames.map((username) => (
-                <li key={username.name}>
+                <li key={username.name} className="nameCard">
                   {username.name} / {username.rank}
                 </li>
               ))}

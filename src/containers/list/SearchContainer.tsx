@@ -3,7 +3,11 @@ import SearchForm from "../../components/list/SearchForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { changeField, initializeForm, searchList } from "../../modules/list";
-const SearchContainer = () => {
+type Props = {
+  show: boolean;
+  setShow: (e: boolean) => void;
+};
+const SearchContainer: React.FC<Props> = ({ show, setShow }) => {
   const dispatch = useDispatch();
 
   const { search } = useSelector((state: RootState) => ({
@@ -17,7 +21,7 @@ const SearchContainer = () => {
     "Fac",
     "Pac",
   ] as string[]);
-  const [show, setShow] = useState(false);
+
   const [searchText, setSearchText] = useState("품명");
 
   const searchInput = useRef<HTMLInputElement>(null);
