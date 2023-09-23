@@ -98,14 +98,13 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     }
   }, [images]);
   const mounted = useRef(true);
+
   useEffect(() => {
-    if (mounted.current) {
-      mounted.current = false;
-      return;
-    } else {
-      if (images) {
-        // console.log(imageList.length);
+    if (images) {
+      if (mounted.current) {
         dispatch(addImage(imageList));
+        mounted.current = false;
+      } else {
         mounted.current = true;
       }
     }

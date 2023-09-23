@@ -13,6 +13,7 @@ function* inputImageSaga(
       itemAPI.inputImage,
       action.payload
     );
+    console.log(response.data);
     yield put(actions.inputImage.success(response.data));
   } catch (e: any) {
     console.error(e);

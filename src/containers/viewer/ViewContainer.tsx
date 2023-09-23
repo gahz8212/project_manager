@@ -59,7 +59,7 @@ const ViewContainer: React.FC<Props> = ({
     if (originalItem) {
       dispatch(updateFieldClean());
       // dispatch(updateField(item));
-      setImageList([]);
+      // setImageList([]);
       if (inputRef.current) {
         inputRef.current.value = "";
       }

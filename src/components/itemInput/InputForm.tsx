@@ -66,6 +66,7 @@ const InputForm: React.FC<Props> = ({
                   name="description"
                   onChange={onChange}
                   value={item.description}
+                  readOnly
                 />
               </div>
             </div>

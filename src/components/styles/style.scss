@@ -101,12 +101,13 @@
   transform: translateX(10%) translateY(-120%);
   background: white;
   opacity: 0;
-
+  z-index: 0;
   transition: 0.5s;
   &.open {
     transform: translateX(10%) translateY(0%);
 
     opacity: 1;
+    z-index: 1;
   }
 
   .btn {
@@ -294,24 +295,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 }
-@media screen and (max-width: 768px) {
-  .inputForm {
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-  }
-  .searchWrapper {
-    width: 100%;
-  }
-  .searchBTN {
-    z-index: 1;
-  }
-}
 .viewerBlock {
   position: fixed;
   top: 30%;
   left: -70%;
-  transform: translateX(-20%);
+  transform: translateX(-100%);
   width: 400px;
   border-radius: 8px;
   padding: 10px;
@@ -340,5 +328,19 @@
 
   .buttons {
     text-align: right;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .inputForm {
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+  .searchWrapper {
+    width: 100%;
+  }
+  .searchBTN {
+    z-index: 1;
   }
 }

@@ -31,6 +31,7 @@ const item = createReducer<itemState, itemAction>(initialState, {
     ...state,
     item: { ...state.item, [name]: value },
   }),
+
   [actions.ADD_IMAGE]: (state, { payload: images }) => ({
     ...state,
     item: { ...state.item, images },
