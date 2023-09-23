@@ -77,7 +77,11 @@ router.delete("/remove/:id", isLoggedIn, async (req, res) => {
     // console.log(id);
     await Item.destroy({ where: { id } });
     await Image.destroy({ where: { ItemId: id } });
-    const list = await Item.findAll({ include: { model: Image } });
+    const list = await Item.findAll({
+      where: {},
+      include: { model: Image },
+      order: [["id", "DESC"]],
+    });
     return res.status(200).json(list);
   } catch (e) {
     console.error(e);

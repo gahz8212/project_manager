@@ -53,6 +53,7 @@ const Viewer: React.FC<Props> = ({
           value={item.description}
           onChange={onChange}
           name="description"
+          readOnly
         ></textarea>
       </div>
       <div>

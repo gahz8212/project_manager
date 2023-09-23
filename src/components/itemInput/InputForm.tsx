@@ -20,6 +20,7 @@ type Props = {
   open: boolean;
   isCheckAll: boolean;
   setIsCheckAll: (check: boolean) => void;
+  inputRef: React.RefObject<HTMLInputElement>;
 };
 
 const InputForm: React.FC<Props> = ({
@@ -33,6 +34,7 @@ const InputForm: React.FC<Props> = ({
   open,
   isCheckAll,
   setIsCheckAll,
+  inputRef,
 }) => {
   // console.log(open);
   return (
@@ -45,7 +47,7 @@ const InputForm: React.FC<Props> = ({
                 name="category"
                 id="category"
                 onChange={onChange}
-                defaultValue="소프트웨어"
+                value="소프트웨어"
               >
                 <option value="">분류선택</option>
                 <option value="소프트웨어">소프트웨어</option>
@@ -66,12 +68,16 @@ const InputForm: React.FC<Props> = ({
                   name="description"
                   onChange={onChange}
                   value={item.description}
-                  readOnly
                 />
               </div>
             </div>
             <div className="price">
-              <select name="unit" defaultValue={item.unit} onChange={onChange}>
+              <select
+                name="unit"
+                value={item.unit}
+                defaultValue=""
+                onChange={onChange}
+              >
                 <option value="">unit</option>
                 <option value="$">$</option>
                 <option value="￦">￦</option>
@@ -103,6 +109,7 @@ const InputForm: React.FC<Props> = ({
               multiple
               accept="image/*"
               onChange={onImageInsert}
+              ref={inputRef}
             />
             <div className="imageFrame">
               {item &&

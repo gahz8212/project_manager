@@ -51,19 +51,17 @@ const HeaderContainer = () => {
         console.log("logout_user");
         once.current = false;
       });
-    } else {
-      return;
     }
   }, []);
 
-  useEffect(() => {
-    if (once.current) {
-      console.log(userNames);
-      once.current = false;
-    } else {
-      return;
-    }
-  }, [userNames]);
+  // useEffect(() => {
+  //   if (once.current) {
+  //     console.log(userNames);
+  //     once.current = false;
+  //   } else {
+  //     return;
+  //   }
+  // }, [userNames]);
   return <Header user={user} onClick={onClick} userNames={userNames}></Header>;
 };
 

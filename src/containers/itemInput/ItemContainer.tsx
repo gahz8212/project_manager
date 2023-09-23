@@ -98,45 +98,42 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
     }
   }, [images]);
   const mounted = useRef(true);
-
+  const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (images) {
-      if (mounted.current) {
-        dispatch(addImage(imageList));
-        mounted.current = false;
-      } else {
-        mounted.current = true;
+      dispatch(addImage(imageList));
+      if (inputRef.current) {
+        inputRef.current.value = "";
       }
     }
   }, [dispatch, images, imageList]);
   useEffect(() => {
     if (mounted.current) {
-      mounted.current = false;
-      return;
-    } else {
       if (error === "로그인이 필요 합니다.") {
         navigate("/");
-        mounted.current = true;
+        mounted.current = false;
       }
     }
   }, [error, navigate, dispatch]);
 
   useEffect(() => {
     if (open) {
-      dispatch(initializeForm());
-      setIsCheckAll(false);
+      if (mounted.current) {
+        dispatch(initializeForm());
+        setIsCheckAll(false);
+        mounted.current = false;
+      }
     }
   }, [open, dispatch]);
 
   useEffect(() => {
     if (status === "item_write_ok") {
       formOpen();
-
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 500);
     }
-  }, [navigate, status, formOpen]);
+  }, [status]);
 
   return (
     <InputForm
@@ -150,6 +147,7 @@ const ItemContainer: React.FC<Props> = ({ open, formOpen }) => {
       onImageRemove={onImageRemove}
       onSubmit={onSubmit}
       setIsCheckAll={setIsCheckAll}
+      inputRef={inputRef}
     ></InputForm>
   );
 };

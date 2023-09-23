@@ -35,6 +35,7 @@ const ViewContainer: React.FC<Props> = ({
   }));
   const [Item, setItem] = useState({} as ItemData_list);
   const [imageList, setImageList] = useState([] as { url: string }[]);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onChange = (e: any) => {

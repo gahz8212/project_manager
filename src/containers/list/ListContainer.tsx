@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getList,
@@ -10,6 +10,7 @@ import {
 import ListComponents from "../../components/list/ListComponents";
 import { ItemData_list } from "../../lib/api/list";
 import { RootState } from "../../modules";
+import { initializeForm } from "../../modules/item";
 type Props = {
   children: React.ReactNode;
 };
@@ -25,10 +26,21 @@ const ListContainer: React.FC<Props> = ({ children }) => {
   const [itemID, setItemId] = useState(0);
   const [item, setItem] = useState({} as ItemData_list);
   const [visibleModal, setVisibleModal] = useState(false);
+  const mounted = useRef(true);
+
   const formOpen = () => {
     setOpen(!open);
   };
-
+  useEffect(() => {
+    if (open) {
+      if (mounted.current) {
+        dispatch(initializeForm());
+        mounted.current = false;
+      }
+    } else {
+      mounted.current = true;
+    }
+  }, [open, dispatch]);
   const toggleModal = () => {
     setVisibleModal(!visibleModal);
   };
