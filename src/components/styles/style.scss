@@ -198,11 +198,12 @@
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: rgba(171, 240, 171, 0.2);
+  background-color: rgba(211, 211, 211, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  .confirm {
+  .confirm_remove,
+  .confirm_update {
     background-color: white;
     padding: 50px;
     border-radius: 8px;
@@ -213,6 +214,16 @@
         & {
           margin-left: 10px;
         }
+      }
+    }
+    .confirm_select {
+      background: yellow;
+      display: flex;
+
+      .update_before,
+      .update_after {
+        border: 1px solid black;
+        cursor: pointer;
       }
     }
   }

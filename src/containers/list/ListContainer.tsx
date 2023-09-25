@@ -16,16 +16,19 @@ type Props = {
 };
 const ListContainer: React.FC<Props> = ({ children }) => {
   const dispatch = useDispatch();
-  const { loading, list, error } = useSelector((state: RootState) => ({
-    loading: state.list.loading,
-    list: state.list.list,
-    error: state.list.error,
-  }));
+  const { loading, list, error, originalItem } = useSelector(
+    (state: RootState) => ({
+      loading: state.list.loading,
+      list: state.list.list,
+      error: state.list.error,
+      originalItem: state.list.originalItem,
+    })
+  );
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [itemID, setItemId] = useState(0);
   const [item, setItem] = useState({} as ItemData_list);
-  const [visibleModal, setVisibleModal] = useState(false);
+  const [visibleModal, setVisibleModal] = useState("");
   const mounted = useRef(true);
 
   const formOpen = () => {
@@ -41,8 +44,8 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       mounted.current = true;
     }
   }, [open, dispatch]);
-  const toggleModal = () => {
-    setVisibleModal(!visibleModal);
+  const toggleModal = (option: string) => {
+    setVisibleModal(option);
   };
   const onRead = (id: number) => {
     setShow(!show);
@@ -59,18 +62,20 @@ const ListContainer: React.FC<Props> = ({ children }) => {
 
   const onUpdate = (item: ItemData_list) => {
     setItem(item);
-    toggleModal();
+    toggleModal("update");
   };
   const onUpdateClick = (item: ItemData_list) => {
+    setShow(false);
+    toggleModal("");
     dispatch(updateItem.request(item));
   };
 
   const onRemove = () => {
-    toggleModal();
+    toggleModal("remove");
   };
   const onRemoveClick = (id: number) => {
     setShow(false);
-    toggleModal();
+    toggleModal("");
     dispatch(removeItem.request(id));
   };
 
@@ -95,6 +100,7 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       show={show}
       itemId={itemID}
       item={item}
+      originalItem={originalItem}
       onRead={onRead}
       onUpdate={onUpdate}
       onUpdateClick={onUpdateClick}

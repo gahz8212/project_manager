@@ -14,11 +14,12 @@ type Props = {
   children: React.ReactNode;
   open: boolean;
   show: boolean;
-  visibleModal: boolean;
+  visibleModal: string;
   itemId: number;
   item: ItemData_list;
+  originalItem: ItemData_list;
   formOpen: () => void;
-  toggleModal: () => void;
+  toggleModal: (option: string) => void;
   onRead: (id: number) => void;
   onRemoveClick: (id: number) => void;
   onUpdateClick: (
@@ -38,6 +39,7 @@ const ListComponents: React.FC<Props> = ({
   show,
   itemId,
   item,
+  originalItem,
   visibleModal,
   formOpen,
   onRead,
@@ -67,6 +69,7 @@ const ListComponents: React.FC<Props> = ({
       <ModalForm
         id={itemId}
         item={item}
+        originalItem={originalItem}
         visible={visibleModal}
         toggleModal={toggleModal}
         onRemoveClick={onRemoveClick}
