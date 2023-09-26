@@ -14,9 +14,9 @@ export const updateImage = (images: FormData) => {
   console.log(images);
   return client.post("/update", images);
 };
-export const updateItem = (item: ItemData_list) => {
-  console.log(item);
-  return client.patch(`/update/${item.id}`, item);
+export const updateItem = (newItem: ItemData_list) => {
+  console.log(newItem);
+  return client.patch(`/update/${newItem.id}`, newItem);
 };
 export type SearchData = {
   category: string;

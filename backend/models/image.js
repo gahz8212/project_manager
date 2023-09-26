@@ -4,8 +4,6 @@ module.exports = class Image extends Sequelize.Model {
     return super.init(
       {
         url: { type: Sequelize.STRING(200), allowNull: true },
-        createdAt: { type: "TIMESTAMP" },
-        updatedAt: { type: "TIMESTAMP" },
       },
       {
         sequelize,

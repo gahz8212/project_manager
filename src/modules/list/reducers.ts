@@ -136,9 +136,10 @@ const list = createReducer<listState, listAction>(initialState, {
     ...state,
     loading: true,
   }),
-  [actions.UPDATE_ITEM_SUCCESS]: (state) => ({
+  [actions.UPDATE_ITEM_SUCCESS]: (state, { payload: list }) => ({
     ...state,
     loading: false,
+    list,
     error: null,
   }),
   [actions.UPDATE_ITEM_FAILURE]: (state, { payload: error }) => ({

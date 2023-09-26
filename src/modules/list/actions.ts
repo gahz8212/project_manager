@@ -70,4 +70,4 @@ export const updateItem = createAsyncAction(
   UPDATE_ITEM,
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILURE
-)<ItemData_list, undefined, Error>();
+)<ItemData_list, ListData, Error>();

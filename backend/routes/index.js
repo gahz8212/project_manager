@@ -2,9 +2,10 @@ const Sequelize = require("sequelize");
 const express = require("express");
 const router = express.Router();
 const Op = Sequelize.Op;
-const { Item, Image } = require("../models");
+const { Item, Item_old, Image } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const multer = require("multer");
+
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
@@ -26,6 +27,7 @@ router.get("/list", async (req, res) => {
       include: { model: Image },
       order: [["id", "DESC"]],
     });
+    console.log("getList", list);
     return res.status(200).json(list);
   } catch (e) {
     return res.status(400).json(e.message);
@@ -75,6 +77,7 @@ router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     // console.log(id);
+
     await Item.destroy({ where: { id } });
     await Image.destroy({ where: { ItemId: id } });
     const list = await Item.findAll({
@@ -88,12 +91,11 @@ router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   }
 });
 router.post("/update", upload.array("images"), async (req, res) => {
-  // console.log(req.files);
   try {
     const images = req.files.map((image) => ({
       url: `/img/${image.filename}`,
     }));
-    // console.log(images);
+
     return res.status(200).json(images);
   } catch (e) {
     console.error(e);
@@ -101,7 +103,52 @@ router.post("/update", upload.array("images"), async (req, res) => {
   }
 });
 router.patch("/update/:id", async (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  console.log(id, req.body);
+  try {
+    const id = parseInt(req.params.id, 10);
+    const newItem = req.body;
+    console.log("newItem", newItem);
+    const item = await Item.findOne({
+      where: { id },
+      include: { model: Image },
+    });
+
+    await Item_old.create({
+      category: item.category,
+      name: item.name,
+      description: item.description,
+      unit: item.unit,
+      price: item.price,
+      departs: item.departs,
+      count: item.count,
+      use: item.use,
+      ItemId: id,
+    });
+    await Item.update(
+      {
+        category: newItem.category,
+        name: newItem.name,
+        description: newItem.description,
+        unit: newItem.unit,
+        price: newItem.price,
+        departs: newItem.departs,
+        count: newItem.count,
+        use: newItem.use,
+      },
+      { where: { id } }
+    );
+
+    await Image.destroy({ where: { ItemId: id } });
+    newItem.Images.map(
+      async (image) => await Image.create({ url: image.url, ItemId: id })
+    );
+
+    const list = await Item.findAll({ where: {}, include: { model: Image } });
+
+    console.log("updatedList", list);
+    return res.status(200).json(list);
+  } catch (e) {
+    console.error(e);
+    return res.status(400).json(e);
+  }
 });
 module.exports = router;

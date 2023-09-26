@@ -14,8 +14,6 @@ module.exports = class User extends Sequelize.Model {
           values: ["대표", "부장", "차장", "과장", "대리", "사원", "님"],
         },
         status: { type: Sequelize.BOOLEAN, defaultValue: false },
-        createAt: { type: "TIMESTAMP" },
-        updateAt: { type: "TIMESTAMP" },
         loginAt: { type: "TIMESTAMP" },
         logoutAt: { type: "TIMESTAMP" },
       },

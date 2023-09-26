@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-module.exports = class Item extends Sequelize.Model {
+module.exports = class Item_old extends Sequelize.Model {
   static init(sequelize) {
     return super.init(
       {
@@ -29,25 +29,25 @@ module.exports = class Item extends Sequelize.Model {
         timestamps: true,
         underscored: false,
         paranoid: false,
-        modelName: "Item",
-        tableName: "items",
+        modelName: "Item_old",
+        tableName: "items_old",
         charset: "utf8",
         collate: "utf8_general_ci",
       }
     );
   }
   static associate(db) {
-    db.Item.belongsToMany(db.Item, {
-      foreignKey: "lowerId",
-      as: "Upper",
-      through: "Relation",
-    });
-    db.Item.belongsToMany(db.Item, {
-      foreignKey: "upperId",
-      as: "Lower",
-      through: "Relation",
-    });
-    db.Item.hasMany(db.Image);
-    db.Item.hasMany(db.Item_old);
+    // db.Item_old.belongsToMany(db.Item_old, {
+    //   foreignKey: "lowerId",
+    //   as: "Upper",
+    //   through: "Relation",
+    // });
+    // db.Item_old.belongsToMany(db.Item_old, {
+    //   foreignKey: "upperId",
+    //   as: "Lower",
+    //   through: "Relation",
+    // });
+    // db.Item.hasMany(db.Image);
+    db.Item_old.belongsTo(db.Item);
   }
 };

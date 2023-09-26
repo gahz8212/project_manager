@@ -15,7 +15,11 @@ function* updateItemSaga(
   action: ReturnType<typeof actions.updateItem.request>
 ) {
   try {
-    yield call(listAPI.updateItem, action.payload);
+    const response: { data: ListData } = yield call(
+      listAPI.updateItem,
+      action.payload
+    );
+    yield put(actions.updateItem.success(response.data));
   } catch (e: any) {
     yield put(actions.updateImage.failure(e));
   }
