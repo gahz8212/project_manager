@@ -15,15 +15,18 @@ const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
           <div>
             <img src="/logo.png" alt="logo" width="90%" />
           </div>
-          {userNames && (
-            <div className="connected-users">
-              {userNames.map((username) => (
-                <li key={username.name} className="nameCard">
-                  {username.name} / {username.rank}
-                </li>
+          <div className="connected-users">
+            {userNames &&
+              userNames.map((username) => (
+                <div key={username.name} className="nameCard">
+                  <li>
+                    <Link to="#">
+                      {username.name} / {username.rank}
+                    </Link>
+                  </li>
+                </div>
               ))}
-            </div>
-          )}
+          </div>
         </article>
         <article className="auth">
           {user ? (

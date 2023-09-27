@@ -1,6 +1,6 @@
 import React from "react";
 import { ItemData } from "../../lib/api/item";
-import Loading from "../common/loading/Loading";
+// import Loading from "../common/loading/Loading";
 import CheckboxContainer from "../../containers/checkbox/CheckboxContainer";
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 };
 
 const InputForm: React.FC<Props> = ({
-  loading,
+  // loading,
   onChange,
   onImageInsert,
   onImageRemove,
@@ -72,12 +72,7 @@ const InputForm: React.FC<Props> = ({
               </div>
             </div>
             <div className="price">
-              <select
-                name="unit"
-                value={item.unit}
-                defaultValue=""
-                onChange={onChange}
-              >
+              <select name="unit" value={item.unit} onChange={onChange}>
                 <option value="">unit</option>
                 <option value="$">$</option>
                 <option value="￦">￦</option>

@@ -7,15 +7,15 @@ export const searchList = (conditions: SearchData) => {
 };
 export const readItem = (id: number) => client.get(`/read/${id}`);
 export const removeItem = (id: number) => {
-  console.log("id", id);
+  // console.log("id", id);
   return client.delete(`/remove/${id}`);
 };
 export const updateImage = (images: FormData) => {
-  console.log(images);
+  // console.log(images);
   return client.post("/update", images);
 };
 export const updateItem = (newItem: ItemData_list) => {
-  console.log(newItem);
+  // console.log(newItem);
   return client.patch(`/update/${newItem.id}`, newItem);
 };
 export type SearchData = {

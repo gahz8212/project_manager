@@ -43,7 +43,6 @@ const Viewer: React.FC<Props> = ({
           type="text"
           name="name"
           defaultValue={item.name}
-          value={item.name}
           onChange={onChange}
         />
       </div>
@@ -57,7 +56,6 @@ const Viewer: React.FC<Props> = ({
       </div>
       <div>
         <select name="unit" value={item.unit} onChange={onChange}>
-          {/* <option value="">==unit==</option> */}
           <option value="$">$</option>
           <option value="￦">￦</option>
           <option value="￥">￥</option>
@@ -67,7 +65,6 @@ const Viewer: React.FC<Props> = ({
           type="number"
           min={0}
           name="price"
-          value={item.price}
           defaultValue={item.price}
           onChange={onChange}
           step="0.001"
@@ -79,7 +76,6 @@ const Viewer: React.FC<Props> = ({
           name="count"
           type="number"
           defaultValue={item.count}
-          value={item.count}
           onChange={onChange}
         />
         <select name="departs" value={item.departs} onChange={onChange}>

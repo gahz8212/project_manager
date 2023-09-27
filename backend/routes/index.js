@@ -27,7 +27,7 @@ router.get("/list", async (req, res) => {
       include: { model: Image },
       order: [["id", "DESC"]],
     });
-    console.log("getList", list);
+    // console.log("getList", list);
     return res.status(200).json(list);
   } catch (e) {
     return res.status(400).json(e.message);
@@ -36,7 +36,7 @@ router.get("/list", async (req, res) => {
 router.post("/search", async (req, res) => {
   try {
     const { category, name, unit, departs, use } = req.body;
-    console.log(departs);
+    // console.log(departs);
 
     const list = await Item.findAll({
       // departs: { [Op.in]: departs },
@@ -48,6 +48,7 @@ router.post("/search", async (req, res) => {
       },
       //두개 이상의 조건을 묶을때는 각각의 조건에{}을 두르고 그룹에 []을 두르고 [Op]를 키값으로 ...
       include: { model: Image },
+      order: [["id", "desc"]],
     });
     return res.status(200).json(list);
   } catch (e) {
@@ -76,7 +77,6 @@ router.get("/read/:id", async (req, res) => {
 router.delete("/remove/:id", isLoggedIn, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
-    // console.log(id);
 
     await Item.destroy({ where: { id } });
     await Image.destroy({ where: { ItemId: id } });
@@ -106,10 +106,9 @@ router.patch("/update/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const newItem = req.body;
-    console.log("newItem", newItem);
+
     const item = await Item.findOne({
       where: { id },
-      include: { model: Image },
     });
 
     await Item_old.create({
@@ -138,17 +137,24 @@ router.patch("/update/:id", async (req, res) => {
     );
 
     await Image.destroy({ where: { ItemId: id } });
-    newItem.Images.map(
-      async (image) => await Image.create({ url: image.url, ItemId: id })
+
+    const newImages = await Promise.all(
+      newItem.Images.map((image) =>
+        Image.create({ url: image.url, ItemId: id })
+      )
     );
 
-    const list = await Item.findAll({ where: {}, include: { model: Image } });
-
-    console.log("updatedList", list);
+    // console.log("images", newImages);
+    item.addImages(newImages.map((image) => image[0]));
+    const list = await Item.findAll({
+      where: {},
+      include: { model: Image },
+      order: [["id", "DESC"]],
+    });
     return res.status(200).json(list);
   } catch (e) {
     console.error(e);
-    return res.status(400).json(e);
   }
 });
+
 module.exports = router;

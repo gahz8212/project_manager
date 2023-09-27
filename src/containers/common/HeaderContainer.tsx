@@ -36,22 +36,24 @@ const HeaderContainer = () => {
   }, [userList]);
 
   useEffect(() => {
-    if (once.current) {
-      socket.on(
-        "login_user",
-        (data: { id: number; name: string; rank: string }) => {
+    socket.on(
+      "login_user",
+      (data: { id: number; name: string; rank: string }) => {
+        if (once.current) {
           setUserName((prev) => [...prev, data]);
           console.log("login_user", data);
           once.current = false;
         }
-      );
+      }
+    );
 
-      socket.on("logout_user", (id: number) => {
+    socket.on("logout_user", (id: number) => {
+      if (once.current) {
         setUserName((prev) => prev.filter((p) => p.id !== id));
         console.log("logout_user");
         once.current = false;
-      });
-    }
+      }
+    });
   }, []);
 
   // useEffect(() => {
