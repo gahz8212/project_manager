@@ -1,3 +1,7 @@
-const arr1 = { id: 1, name: "kim" };
-const arr2 = { id: 1, name: "kim" };
-console.log(arr1 === arr2);
+const arrObj = [
+  { id: 1, name: "kim" },
+  { id: 2, name: "lee" },
+];
+const addObj = { add: "address" };
+const newArrObj = arrObj.map((arr) => ({ ...arr, ...addObj }));
+console.log(newArrObj);

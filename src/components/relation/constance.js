@@ -1,0 +1,6 @@
+export const COLUMN_NAMES = {
+  HEADER: "HEADER",
+  UPPER: "UPPER",
+  CURRENT: "CURRENT",
+  LOWER: "LOWER",
+};

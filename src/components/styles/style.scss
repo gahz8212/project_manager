@@ -36,11 +36,11 @@
   }
 
   .space {
-    height: 100px;
-    // background-color: green;
+    height: 170px;
+    // // background-color: green;
     transition: 1s;
     &.show {
-      height: 0px;
+      height: 100px;
     }
   }
 
@@ -231,6 +231,7 @@
 .menu-wrapper {
   width: 100%;
   position: fixed;
+
   .menu {
     margin: auto;
     background: white;
@@ -240,7 +241,7 @@
     transform: translateY(0%);
     transition: 1.2s;
     &.show {
-      transform: translateY(-100%);
+      transform: translateY(100px);
       // opacity: 0;
     }
     li {
@@ -264,6 +265,15 @@
       }
     }
   }
+  // .space {
+  //   height: 100px;
+  //   // background-color: green;
+  //   transition: 1s;
+  //   position: relative;
+  //   &.show {
+  //     height: 0px;
+  //   }
+  // }
   .searchBTN {
     position: fixed;
     z-index: 1;
@@ -342,6 +352,42 @@
   }
 }
 
+.rel_container {
+  // position: relative;
+  width: 100%;
+  .space {
+    height: 170px;
+  }
+  .rel_header {
+    // background-color: gray;
+    // height: 200px;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    .rel_item {
+      border: 1px solid black;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+  .rel_wrapper {
+    display: flex;
+    height: 400px;
+    .rel_upper {
+      flex: 1;
+      background-color: lightgray;
+    }
+    .rel_current {
+      flex: 1;
+      background-color: gray;
+    }
+    .rel_lower {
+      flex: 1;
+      background-color: darkgray;
+    }
+  }
+}
 @media screen and (max-width: 768px) {
   .inputForm {
     margin: 0 auto;

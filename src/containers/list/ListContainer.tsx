@@ -12,9 +12,9 @@ import { ItemData_list } from "../../lib/api/list";
 import { RootState } from "../../modules";
 import { initializeForm } from "../../modules/item";
 type Props = {
-  children: React.ReactNode;
+  searchVisible: boolean;
 };
-const ListContainer: React.FC<Props> = ({ children }) => {
+const ListContainer: React.FC<Props> = ({ searchVisible }) => {
   const dispatch = useDispatch();
   const { loading, list, error, originalItem } = useSelector(
     (state: RootState) => ({
@@ -91,10 +91,10 @@ const ListContainer: React.FC<Props> = ({ children }) => {
 
   return (
     <ListComponents
+      // children={children}
       loading={loading}
       error={error}
       list={list}
-      children={children}
       formOpen={formOpen}
       open={open}
       show={show}
@@ -108,6 +108,7 @@ const ListContainer: React.FC<Props> = ({ children }) => {
       onRemoveClick={onRemoveClick}
       visibleModal={visibleModal}
       toggleModal={toggleModal}
+      searchVisible={searchVisible}
     ></ListComponents>
   );
 };

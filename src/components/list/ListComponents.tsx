@@ -11,13 +11,15 @@ type Props = {
   loading: boolean;
   list: ListData | [];
   error: Error | null;
-  children: React.ReactNode;
+  // children: React.ReactNode;
   open: boolean;
   show: boolean;
   visibleModal: string;
   itemId: number;
   item: ItemData_list;
   originalItem: ItemData_list;
+  searchVisible: boolean;
+
   formOpen: () => void;
   toggleModal: (option: string) => void;
   onRead: (id: number) => void;
@@ -34,7 +36,8 @@ const ListComponents: React.FC<Props> = ({
   loading,
   list,
   error,
-  children,
+  // children,
+  searchVisible,
   open,
   show,
   itemId,
@@ -54,9 +57,9 @@ const ListComponents: React.FC<Props> = ({
 
   return (
     <div className="list-container">
-      <div className="space"></div>
+      <div className={`space ${searchVisible ? "show" : ""}`}></div>
 
-      {children}
+      {/* {children} */}
       {loading && <Loading />}
       <ItemContainer open={open} formOpen={formOpen} />
       <ViewContainer
