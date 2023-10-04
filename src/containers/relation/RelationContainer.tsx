@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getList } from "../../modules/list";
 import { RootState } from "../../modules";
@@ -9,7 +9,7 @@ const RelationContainer = () => {
   const { list } = useSelector((state: RootState) => ({
     list: state.list.list,
   }));
-  const [items, setItems] = useState(list as {}[]);
+
   const mounted = useRef(true);
   useEffect(() => {
     if (mounted.current) {
@@ -18,13 +18,9 @@ const RelationContainer = () => {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    setItems((prevItems) =>
-      prevItems.map((item) => ({ ...item, ...{ column: "HEADER" } }))
-    );
-  }, [list]);
+  const newItems = list.map((item) => ({ ...item, ...{ column: "HEADER" } }));
 
-  return <RelationMain list={items} setItems={setItems}></RelationMain>;
+  return <RelationMain list={newItems}></RelationMain>;
 };
 
 export default RelationContainer;
