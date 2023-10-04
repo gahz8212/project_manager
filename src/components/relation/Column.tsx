@@ -19,7 +19,6 @@ const Column: React.FC<Props> = ({ title, className, children }) => {
       className={className}
       style={{ backgroundColor: isOver ? "rgb(188,251,255)" : undefined }}
     >
-      {title}
       {children}
     </div>
   );

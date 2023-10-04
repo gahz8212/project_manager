@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
 import { ListData } from "../../lib/api/list";
@@ -10,6 +10,7 @@ type Props = {
     category: string;
     name: string;
     description: string;
+    column: string;
     unit: string;
     price: number;
     departs: string;
@@ -27,23 +28,22 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn }) => {
     setItems((prev) =>
       prev.map((pre) => ({
         ...pre,
-        column: item.name === pre.name ? column : pre.column,
+        column: item.itemInfo.name === pre.name ? column : pre.column,
       }))
     );
   };
-  console.log(itemInfo);
+  // console.log(itemInfo);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     item: () => ({ itemInfo, currentColumn }),
 
     end: (item, monitor) => {
-      const dropResult: { dropEffect: string; name: string } | null =
-        monitor.getDropResult();
+      const dropResult: { name: string } | null = monitor.getDropResult();
       // console.log(dropResult);
       if (dropResult) {
         const { name } = dropResult;
-        console.log(name);
+
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
         switch (name) {
           case HEADER:
