@@ -353,38 +353,64 @@
 }
 
 .rel_container {
-  // position: relative;
   width: 100%;
   .space {
     height: 170px;
   }
   .rel_header {
-    // background-color: gray;
-    // height: 200px;
     padding: 10px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-around;
-    .rel_item {
-      border: 1px solid black;
-      border-radius: 4px;
-      cursor: pointer;
+    min-height: 240px;
+  }
+  .rel_item {
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 170px;
+    height: 220px;
+    padding: 10px;
+    background-color: white;
+    .item_info {
+      width: 100%;
+    }
+    .item_image {
+      width: 100%;
+      img {
+        border-radius: 10px;
+        width: 100%;
+        height: 110px;
+        object-fit: cover;
+      }
     }
   }
   .rel_wrapper {
     display: flex;
-    height: 400px;
+    height: 300px;
     .rel_upper {
       flex: 1;
       background-color: lightgray;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: center;
+      align-items: flex-start;
     }
     .rel_current {
       flex: 1;
       background-color: gray;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: center;
+      align-items: flex-start;
     }
     .rel_lower {
       flex: 1;
       background-color: darkgray;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: center;
+      align-items: flex-start;
     }
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ListData } from "../../lib/api/list";
 import Item from "./Item";
 import Column from "./Column";
