@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ListData } from "../../lib/api/list";
 import Item from "./Item";
 import Column from "./Column";
 import { COLUMN_NAMES } from "./constance";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import ItemContainer from "../../containers/itemInput/ItemContainer";
 const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
 type Props = {
   list: ListData;
-  // setItems: React.Dispatch<React.SetStateAction<ListData>>;
+  open: boolean;
+  formOpen: () => void;
 };
-const RelationMain: React.FC<Props> = ({ list }) => {
-  const [items, setItems] = useState(list);
+const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
+  const [items, setItems] = useState(list as ListData);
   const returnItemFromColumn = (columnName: string) => {
     return items
       .filter((item) => item.column === columnName)
@@ -25,9 +27,14 @@ const RelationMain: React.FC<Props> = ({ list }) => {
       ));
   };
 
+  useEffect(() => {
+    setItems(list);
+  }, [list]);
+
   return (
-    <div className="rel_container">
+    <div className="rel-container">
       <div className="space"></div>
+      <ItemContainer open={open} formOpen={formOpen} />
       <DndProvider backend={HTML5Backend}>
         <Column title={HEADER} className="rel_header">
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
@@ -44,6 +51,9 @@ const RelationMain: React.FC<Props> = ({ list }) => {
           </Column>
         </div>
       </DndProvider>
+      <div className={`write ${open ? "rotate" : ""}`}>
+        <button onClick={formOpen}>+</button>
+      </div>
     </div>
   );
 };

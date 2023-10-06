@@ -9,11 +9,10 @@ import {
   changeField,
   inputImage,
   addImage,
-  // removeImage,
   initializeForm,
   inputItem,
 } from "../../modules/item";
-// import { resize } from "../../lib/utils/resize";
+
 type Props = {
   open: boolean;
   formOpen: () => void;

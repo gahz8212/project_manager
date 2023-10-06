@@ -1,26 +1,27 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getList } from "../../modules/list";
 import { RootState } from "../../modules";
-import { ListData } from "../../lib/api/list";
+
 import RelationMain from "../../components/relation/RelationMain";
 const RelationContainer = () => {
   const dispatch = useDispatch();
   const { list } = useSelector((state: RootState) => ({
     list: state.list.list,
   }));
+  const [open, setOpen] = useState(false);
 
-  const mounted = useRef(true);
+  const formOpen = () => {
+    setOpen(!open);
+  };
+
   useEffect(() => {
-    if (mounted.current) {
-      dispatch(getList.request());
-      mounted.current = false;
-    }
+    dispatch(getList.request());
   }, [dispatch]);
 
-  const newItems = list.map((item) => ({ ...item, ...{ column: "HEADER" } }));
-
-  return <RelationMain list={newItems}></RelationMain>;
+  return (
+    <RelationMain list={list} open={open} formOpen={formOpen}></RelationMain>
+  );
 };
 
 export default RelationContainer;

@@ -36,7 +36,6 @@ const InputForm: React.FC<Props> = ({
   setIsCheckAll,
   inputRef,
 }) => {
-  // console.log(open);
   return (
     <div className={`inputForm ${open ? "open" : ""}`}>
       <form className="form" onSubmit={onSubmit}>

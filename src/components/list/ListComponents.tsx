@@ -13,6 +13,7 @@ type Props = {
   error: Error | null;
   // children: React.ReactNode;
   open: boolean;
+  formOpen: () => void;
   show: boolean;
   visibleModal: string;
   itemId: number;
@@ -20,7 +21,6 @@ type Props = {
   originalItem: ItemData_list;
   searchVisible: boolean;
 
-  formOpen: () => void;
   toggleModal: (option: string) => void;
   onRead: (id: number) => void;
   onRemoveClick: (id: number) => void;

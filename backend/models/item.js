@@ -22,6 +22,7 @@ module.exports = class Item extends Sequelize.Model {
           defaultValue: "Off",
         },
         count: { type: Sequelize.INTEGER, allowNull: false, defaultValue: 1 },
+        column: { type: Sequelize.STRING, defaultValue: "HEADER" },
         use: { type: Sequelize.BOOLEAN, defaultValue: true },
       },
       {

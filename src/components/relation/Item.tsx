@@ -28,7 +28,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn }) => {
     setItems((prev) =>
       prev.map((pre) => ({
         ...pre,
-        column: item.itemInfo.name === pre.name ? column : pre.column,
+        column: item.itemInfo.id === pre.id ? column : pre.column,
       }))
     );
   };

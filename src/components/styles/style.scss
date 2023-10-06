@@ -3,38 +3,37 @@
   list-style: none;
 }
 
-.list-container {
-  .write {
-    // background-color: yellow;
-    position: fixed;
-    bottom: 40px;
-    right: 15%;
-    transition: 1s;
-    &.rotate {
-      transform: rotate(360deg);
-    }
-    button {
-      background-color: aqua;
-      border-radius: 50%;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      text-align: right;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font: normal 50px "arial";
-      transition: 0.6s;
-      &:hover {
-        background: darkcyan;
-        color: white;
-        transform: rotate(45deg);
-      }
+.write {
+  // background-color: yellow;
+  position: fixed;
+  bottom: 40px;
+  right: 15%;
+  transition: 1s;
+  &.rotate {
+    transform: rotate(360deg);
+  }
+  button {
+    background-color: aqua;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-align: right;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: normal 50px "arial";
+    transition: 0.6s;
+    &:hover {
+      background: darkcyan;
+      color: white;
+      transform: rotate(45deg);
     }
   }
-
+}
+.list-container {
   .space {
     height: 170px;
     // // background-color: green;
@@ -346,16 +345,112 @@
       }
     }
   }
-
   .buttons {
     text-align: right;
   }
 }
-
-.rel_container {
+.rel-container {
   width: 100%;
   .space {
     height: 170px;
+  }
+  .inputForm {
+    position: fixed;
+    width: 400px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-120%);
+    background: white;
+    opacity: 0;
+    z-index: 0;
+    transition: 0.5s;
+    &.open {
+      left: 50%;
+      transform: translateX(-50%) translateY(0%);
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .btn {
+      text-align: right;
+      button[type="submit"] {
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        margin-top: 1rem;
+        border-radius: 4px;
+        background-color: cyan;
+        transition: 0.4s;
+        &:hover {
+          background-color: darkcyan;
+        }
+      }
+    }
+    .container {
+      border: 1px solid green;
+      // display: flex;
+      // justify-content: space-around;
+      // align-items: flex-start;
+      .left {
+        margin-bottom: 20px;
+        font: normal 16px "arial";
+        .name {
+          select {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+          }
+          input {
+            padding: 0.3rem;
+          }
+          textarea {
+            resize: none;
+          }
+        }
+        .price {
+          select {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+          }
+          input {
+            width: 100px;
+          }
+        }
+      }
+      .category {
+        // padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+
+        .departs {
+          justify-content: space-around;
+        }
+      }
+    }
+
+    .images {
+      width: 100%;
+      text-align: left;
+      label {
+        display: inline-block;
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 8px;
+        background-color: yellowgreen;
+      }
+      input {
+        display: none;
+      }
+      .imageFrame {
+        width: 100%;
+        min-height: 100px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+    }
   }
   .rel_header {
     padding: 10px;
