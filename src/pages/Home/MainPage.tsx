@@ -7,12 +7,14 @@ import MenuContainer from "../../containers/menu/MenuContainer";
 type Props = {
   searchVisible: boolean;
   setSearchVisible: (show: boolean) => void;
+  menuItem:string;
 };
-const MainPage: React.FC<Props> = ({ searchVisible, setSearchVisible }) => {
+const MainPage: React.FC<Props> = ({ searchVisible, setSearchVisible,menuItem }) => {
   return (
     <div>
       <HeaderContainer />
       <MenuContainer
+       menuItem={menuItem}
         searchVisible={searchVisible}
         setSearchVisible={setSearchVisible}
       />

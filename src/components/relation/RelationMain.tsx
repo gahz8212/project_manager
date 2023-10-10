@@ -51,8 +51,14 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
           </Column>
         </div>
       </DndProvider>
+
+      <div>
       <div className={`write ${open ? "rotate" : ""}`}>
         <button onClick={formOpen}>+</button>
+      </div>
+      <div>
+        <button >^</button>
+      </div>
       </div>
     </div>
   );

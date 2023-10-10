@@ -247,20 +247,35 @@
       position: relative;
       text-align: center;
       font: bold 20px "arial";
+      cursor:pointer;
       &::before {
         content: "";
         display: block;
         width: 0%;
         height: 4px;
-        background-color: green;
+        background-color: rgba(146, 233, 211, 0.5);
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
         bottom: -15px;
         transition: 0.4s;
       }
-      &:hover::before {
-        width: 100%;
+      &:hover::before  {
+        width: 110%;
+      }
+      &.selected{
+        transition: 0.4s;
+      &::before {
+        content: "";
+        display: block;
+        width: 110%;
+        height: 4px;
+        background-color: green;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: -15px;
+        }
       }
     }
   }

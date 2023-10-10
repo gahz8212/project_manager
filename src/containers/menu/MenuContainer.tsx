@@ -1,20 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+
 
 import MenuComponent from "../../components/menu/MenuComponent";
 type Props = {
   searchVisible: boolean;
   setSearchVisible: (show: boolean) => void;
+  menuItem:string;
 };
 const MenuContainer: React.FC<Props> = ({
   searchVisible,
   setSearchVisible,
+  menuItem
 }) => {
-  // const [show, setShow] = useState(false);
   return (
     <MenuComponent
       searchVisible={searchVisible}
       setSearchVisible={setSearchVisible}
+      menuItem={menuItem}
+
     ></MenuComponent>
   );
 };

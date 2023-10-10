@@ -5,12 +5,14 @@ import RelationMain from "../../containers/relation/RelationContainer";
 type Props = {
   searchVisible: boolean;
   setSearchVisible: (e: boolean) => void;
+  menuItem:string;
 };
-const Relation: React.FC<Props> = ({ searchVisible, setSearchVisible }) => {
+const Relation: React.FC<Props> = ({ searchVisible, setSearchVisible,menuItem }) => {
   return (
     <div>
       <HeaderContainer />
       <MenuContainer
+      menuItem={menuItem}
         searchVisible={searchVisible}
         setSearchVisible={setSearchVisible}
       />

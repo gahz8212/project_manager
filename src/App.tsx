@@ -19,6 +19,7 @@ const App = () => {
         path="/main"
         element={
           <Main
+          menuItem="main"
             searchVisible={searchVisible}
             setSearchVisible={setSearchVisible}
           />
@@ -28,6 +29,7 @@ const App = () => {
         path="/relation"
         element={
           <Relation
+          menuItem="relation"
             searchVisible={searchVisible}
             setSearchVisible={setSearchVisible}
           />
@@ -37,6 +39,7 @@ const App = () => {
         path="/relation_view"
         element={
           <RelationView
+          menuItem="relation_view"
             searchVisible={searchVisible}
             setSearchVisible={setSearchVisible}
           />
