@@ -65,5 +65,20 @@ const item = createReducer<itemState, itemAction>(initialState, {
     loading: false,
     error,
   }),
+  [actions.RELATE_ITEM]:(state)=>({
+    ...state,loading:true
+  }),
+  [actions.RELATE_ITEM_SUCCESS]:(state,{payload:status})=>({
+    ...state,loading:false,
+    status,
+    error:''
+   
+   
+  }),
+  [actions.RELATE_ITEM_FAILURE]:(state,{payload:error})=>({
+    ...state,loading:false,
+    error
+  })
+  
 });
 export default item;

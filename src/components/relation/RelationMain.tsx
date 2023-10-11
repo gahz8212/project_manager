@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { ListData } from "../../lib/api/list";
 import Item from "./Item";
 import Column from "./Column";
@@ -6,14 +6,17 @@ import { COLUMN_NAMES } from "./constance";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import ItemContainer from "../../containers/itemInput/ItemContainer";
+import { RelData } from "../../lib/api/item";
 const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
 type Props = {
   list: ListData;
   open: boolean;
   formOpen: () => void;
+  makeRelation:(relItem:RelData)=>void
 };
 const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
   const [items, setItems] = useState(list as ListData);
+  const [visible,setVisible]=useState(false)
   const returnItemFromColumn = (columnName: string) => {
     return items
       .filter((item) => item.column === columnName)
@@ -26,11 +29,37 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
         ></Item>
       ));
   };
-
-  useEffect(() => {
-    setItems(list);
-  }, [list]);
-
+const makeRelation=()=>{
+  
+console.log(headersId.current)
+console.log(uppersId.current)
+console.log(currentsId.current)
+console.log(lowersId.current)
+}
+const headersId:React.MutableRefObject<number[]>=useRef([] )
+const uppersId:React.MutableRefObject<number[]>=useRef([] )
+const currentsId:React.MutableRefObject<number[]>=useRef([] )
+const lowersId:React.MutableRefObject<number[]>=useRef([] )
+  useEffect(()=>{
+  const headers=items.filter(item=>item.column==='HEADER')
+  const uppers=items.filter(item=>item.column==='UPPER')
+  const currents=items.filter(item=>item.column==='CURRENT')
+  const lowers=items.filter(item=>item.column==='LOWER')
+headersId.current=headers.map(header=>header.id)
+uppersId.current=uppers.map(upper=>upper.id)
+currentsId.current=currents.map(current=>current.id)
+lowersId.current=lowers.map(lower=>lower.id)
+  // console.log(headers,uppers,currents,lowers)
+  // console.log(currents.length,lowers.length)
+  if(currents.length>0 && lowers.length>0){
+    setVisible(true)
+  }else{
+  setVisible(false)
+}
+},[items])
+useEffect(() => {
+  setItems(list);
+}, [list]);
   return (
     <div className="rel-container">
       <div className="space"></div>
@@ -56,8 +85,8 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
       <div className={`write ${open ? "rotate" : ""}`}>
         <button onClick={formOpen}>+</button>
       </div>
-      <div>
-        <button >^</button>
+      <div className={`relate ${visible ? "visible" : ""}`}>
+        <button onClick={makeRelation}>^</button>
       </div>
       </div>
     </div>

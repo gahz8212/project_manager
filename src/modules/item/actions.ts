@@ -10,6 +10,9 @@ export const INPUT_IMAGE_FAILURE = "item/INPUT_IMAGE_FAILURE";
 export const INPUT_ITEM = "item/INPUT_ITEM";
 export const INPUT_ITEM_SUCCESS = "item/INPUT_ITEM_SUCCESS";
 export const INPUT_ITEM_FAILURE = "item/INPUT_ITEM_FAILURE";
+export const RELATE_ITEM='item/RELATE_ITEM'
+export const RELATE_ITEM_SUCCESS='item/RELATE_ITEM_SUCCESS'
+export const RELATE_ITEM_FAILURE='item/RELATE_ITEM_FAILURE'
 
 export const initializeForm = createAction(INITIALIZE_FORM)();
 export const changeField = createAction(CHANGE_FIELD, ({ name, value }) => ({
@@ -31,3 +34,6 @@ export const inputItem = createAsyncAction(
   INPUT_ITEM_SUCCESS,
   INPUT_ITEM_FAILURE
 )<ItemData, string, string>();
+export const relateItem=createAsyncAction(
+  RELATE_ITEM,RELATE_ITEM_SUCCESS,RELATE_ITEM_FAILURE)
+  <{targetId:number[],sourceId:number[]},string,string>();

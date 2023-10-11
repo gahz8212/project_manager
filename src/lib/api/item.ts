@@ -7,6 +7,9 @@ export const inputItem = (item: ItemData) => {
   console.log(item);
   return client.post("/post/item", item);
 };
+export const relate=(itemId:RelData)=>{
+  return client.post('/relation',itemId);
+}
 export type ItemData = {
   category: string;
   name: string;
@@ -17,3 +20,7 @@ export type ItemData = {
   use: boolean;
   images?: { url: string }[] | null;
 };
+export type RelData={
+  targetId:number[],
+  sourceId:number[]
+}

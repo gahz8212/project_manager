@@ -4,6 +4,18 @@ import * as itemAPI from "../../lib/api/item";
 export function* itemSaga() {
   yield takeLatest(actions.INPUT_IMAGE, inputImageSaga);
   yield takeLatest(actions.INPUT_ITEM, inputItemSaga);
+yield takeLatest(actions.RELATE_ITEM,relationSaga);
+}
+function* relationSaga( action: ReturnType<typeof actions.relateItem.request>){
+try{
+const response:{data:string}=yield call(itemAPI.relate,action.payload);
+yield put(actions.relateItem.success(response.data));
+
+ 
+}catch(e:any){
+console.error(e);
+yield put(actions.relateItem.failure(e.response.data))
+} 
 }
 function* inputImageSaga(
   action: ReturnType<typeof actions.inputImage.request>
@@ -13,7 +25,6 @@ function* inputImageSaga(
       itemAPI.inputImage,
       action.payload
     );
-    console.log(response.data);
     yield put(actions.inputImage.success(response.data));
   } catch (e: any) {
     console.error(e);

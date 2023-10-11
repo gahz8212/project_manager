@@ -156,5 +156,14 @@ router.patch("/update/:id", async (req, res) => {
     console.error(e);
   }
 });
+router.post("/relation", async (req, res) => {
+  try {
+    const { data } = req.body;
+    console.log(data);
+    return res.status(200).json("relate_ok");
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 module.exports = router;
