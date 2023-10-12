@@ -14,7 +14,7 @@ type Props = {
   formOpen: () => void;
   makeRelation:(relItem:RelData)=>void
 };
-const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
+const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation }) => {
   const [items, setItems] = useState(list as ListData);
   const [visible,setVisible]=useState(false)
   const returnItemFromColumn = (columnName: string) => {
@@ -29,13 +29,14 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen }) => {
         ></Item>
       ));
   };
-const makeRelation=()=>{
+// const makeRelation=()=>{
   
-console.log(headersId.current)
-console.log(uppersId.current)
-console.log(currentsId.current)
-console.log(lowersId.current)
-}
+// console.log(headersId.current)
+// console.log(uppersId.current)
+// console.log(currentsId.current)
+// console.log(lowersId.current)
+// }
+
 const headersId:React.MutableRefObject<number[]>=useRef([] )
 const uppersId:React.MutableRefObject<number[]>=useRef([] )
 const currentsId:React.MutableRefObject<number[]>=useRef([] )
@@ -86,7 +87,7 @@ useEffect(() => {
         <button onClick={formOpen}>+</button>
       </div>
       <div className={`relate ${visible ? "visible" : ""}`}>
-        <button onClick={makeRelation}>^</button>
+        <button onClick={()=>makeRelation({targetId:currentsId.current,sourceId:lowersId.current})}>^</button>
       </div>
       </div>
     </div>

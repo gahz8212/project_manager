@@ -144,7 +144,6 @@ router.patch("/update/:id", async (req, res) => {
       )
     );
 
-    // console.log("images", newImages);
     item.addImages(newImages.map((image) => image[0]));
     const list = await Item.findAll({
       where: {},
@@ -158,8 +157,13 @@ router.patch("/update/:id", async (req, res) => {
 });
 router.post("/relation", async (req, res) => {
   try {
-    const { data } = req.body;
-    console.log(data);
+    const { targetId, sourceId } = req.body;
+    // console.log("data", targetId, sourceId);
+    const uppers = await Item.findAll({ where: { id: targetId } });
+    uppers.forEach((upper) =>
+      sourceId.forEach(async (sid) => await upper.addLower(sid))
+    );
+
     return res.status(200).json("relate_ok");
   } catch (e) {
     console.error(e);

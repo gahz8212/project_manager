@@ -8,6 +8,7 @@ yield takeLatest(actions.RELATE_ITEM,relationSaga);
 }
 function* relationSaga( action: ReturnType<typeof actions.relateItem.request>){
 try{
+  // console.log(action.payload)
 const response:{data:string}=yield call(itemAPI.relate,action.payload);
 yield put(actions.relateItem.success(response.data));
 

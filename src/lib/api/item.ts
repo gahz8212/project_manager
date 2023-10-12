@@ -1,13 +1,14 @@
 import client from "./client";
 export const inputImage = (images: FormData) => {
-  console.log(images);
+  // console.log(images);
   return client.post("/post/images", images);
 };
 export const inputItem = (item: ItemData) => {
-  console.log(item);
+  // console.log(item);
   return client.post("/post/item", item);
 };
 export const relate=(itemId:RelData)=>{
+  // console.log('itemData',itemId)
   return client.post('/relation',itemId);
 }
 export type ItemData = {
