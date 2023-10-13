@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const express = require("express");
 const router = express.Router();
 const Op = Sequelize.Op;
-const { Item, Item_old, Image } = require("../models");
+const { Item, Item_old, Image, Relation } = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const multer = require("multer");
 
@@ -164,6 +164,10 @@ router.post("/relation", async (req, res) => {
       sourceId.forEach(async (sid) => await upper.addLower(sid))
     );
 
+    const item = await Item.findAll({
+      include: "Lower",
+    });
+    console.log(item[3].Lower[1].id);
     return res.status(200).json("relate_ok");
   } catch (e) {
     console.error(e);

@@ -1,7 +1,7 @@
-const arrObj = [
-  { id: 1, name: "kim" },
-  { id: 2, name: "lee" },
-];
-const addObj = { add: "address" };
-const newArrObj = arrObj.map((arr) => ({ ...arr, ...addObj }));
-console.log(newArrObj);
+const arr1 = ["4"];
+const arr2 = ["2", "3"];
+const arr = Array(3);
+arr[0] = arr1;
+arr[1] = arr2;
+arr[2] = [...arr1, ...arr2];
+console.log(arr);

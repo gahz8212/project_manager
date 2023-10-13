@@ -36,23 +36,25 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation }) =>
 // console.log(currentsId.current)
 // console.log(lowersId.current)
 // }
-
 const headersId:React.MutableRefObject<number[]>=useRef([] )
 const uppersId:React.MutableRefObject<number[]>=useRef([] )
 const currentsId:React.MutableRefObject<number[]>=useRef([] )
 const lowersId:React.MutableRefObject<number[]>=useRef([] )
+
+const relateCondition=()=>{
+  const result=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
+  // const result=currentsId.current.length>0 && lowersId.current.length>0
+  return result;
+}
+
+
+
   useEffect(()=>{
-  const headers=items.filter(item=>item.column==='HEADER')
-  const uppers=items.filter(item=>item.column==='UPPER')
-  const currents=items.filter(item=>item.column==='CURRENT')
-  const lowers=items.filter(item=>item.column==='LOWER')
-headersId.current=headers.map(header=>header.id)
-uppersId.current=uppers.map(upper=>upper.id)
-currentsId.current=currents.map(current=>current.id)
-lowersId.current=lowers.map(lower=>lower.id)
-  // console.log(headers,uppers,currents,lowers)
-  // console.log(currents.length,lowers.length)
-  if(currents.length>0 && lowers.length>0){
+    headersId.current=items.filter(item=>item.column==='HEADER').map(header=>header.id)
+    uppersId.current=items.filter(item=>item.column==='UPPER').map(upper=>upper.id)
+    currentsId.current=items.filter(item=>item.column==='CURRENT').map(current=>current.id)
+    lowersId.current=items.filter(item=>item.column==='LOWER').map(current=>current.id)
+  if(relateCondition()){
     setVisible(true)
   }else{
   setVisible(false)
