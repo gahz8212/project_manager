@@ -1,10 +1,21 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as actions from "./actions";
 import * as itemAPI from "../../lib/api/item";
+
 export function* itemSaga() {
   yield takeLatest(actions.INPUT_IMAGE, inputImageSaga);
   yield takeLatest(actions.INPUT_ITEM, inputItemSaga);
 yield takeLatest(actions.RELATE_ITEM,relationSaga);
+yield takeLatest(actions.GET_RELATE,getRelateSaga)
+}
+function* getRelateSaga(action:ReturnType<typeof actions.getRelate.request>){
+  try{
+    const response:{data:{upperId:number,lowerId:number}[]}=yield call(itemAPI.getRelate,action.payload)
+  yield put(actions.getRelate.success(response.data))
+  }catch(e:any){
+    console.error(e)
+    yield put(actions.getRelate.failure(e.response))
+  }
 }
 function* relationSaga( action: ReturnType<typeof actions.relateItem.request>){
 try{

@@ -2,7 +2,8 @@ const Sequelize = require("sequelize");
 const express = require("express");
 const router = express.Router();
 const Op = Sequelize.Op;
-const { Item, Item_old, Image, Relation } = require("../models");
+const { Item, Item_old, Image } = require("../models");
+const db = require("../models");
 const { isLoggedIn } = require("./middlewares");
 const multer = require("multer");
 
@@ -158,19 +159,44 @@ router.patch("/update/:id", async (req, res) => {
 router.post("/relation", async (req, res) => {
   try {
     const { targetId, sourceId } = req.body;
-    // console.log("data", targetId, sourceId);
+
     const uppers = await Item.findAll({ where: { id: targetId } });
     uppers.forEach((upper) =>
       sourceId.forEach(async (sid) => await upper.addLower(sid))
     );
 
-    const item = await Item.findAll({
-      include: "Lower",
-    });
-    console.log(item[3].Lower[1].id);
+    // console.log(relate);
+    // const items = await Item.findAll({
+    //   include: [
+    //     { model: Item, as: "Upper" },
+    //     { model: Item, as: "Lower" },
+    //   ],
+    // });
+    // console.log(item[3].Lower[1].id);
+    // const relation = await Relation.findAll();
+    // console.log(relation);
     return res.status(200).json("relate_ok");
   } catch (e) {
     console.error(e);
+  }
+});
+router.get("/getRelation/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    console.log(id);
+    const relate = await db.sequelize.models.Relation.findAll({
+      where: { lowerId: id },
+      attributes: ["upperId", "lowerId"],
+    });
+    if (relate) {
+      console.log(relate);
+      return res.status(200).json(relate);
+    } else {
+      return res.send("success");
+    }
+    // return res.send("success");
+  } catch (e) {
+    return res.status(400).json(e);
   }
 });
 

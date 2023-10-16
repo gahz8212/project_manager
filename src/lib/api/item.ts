@@ -11,6 +11,10 @@ export const relate=(itemId:RelData)=>{
   // console.log('itemData',itemId)
   return client.post('/relation',itemId);
 }
+export const getRelate=(id:number)=>{
+  // console.log('getRelate')
+  return client.get(`/getRelation/${id}`)
+}
 export type ItemData = {
   category: string;
   name: string;

@@ -6,6 +6,7 @@ export type itemState = {
   item: ItemData;
   error: string;
   status: string;
+  relate:{upperId:number,lowerId:number}[]|null;
   images: { url: string }[] | null;
 };
 export type itemAction = ActionType<typeof actions>;

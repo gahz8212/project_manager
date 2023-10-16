@@ -7,6 +7,7 @@ const initialState: itemState = {
   images: null,
   error: "",
   status: "",
+  relate:null,
   item: {
     category: "소프트웨어",
     name: "",
@@ -78,7 +79,18 @@ const item = createReducer<itemState, itemAction>(initialState, {
   [actions.RELATE_ITEM_FAILURE]:(state,{payload:error})=>({
     ...state,loading:false,
     error
-  })
+  }),
+  [actions.GET_RELATE]:(state)=>({
+    ...state,loading:true
+  }),
+  [actions.GET_RELATE_SUCCESS]:(state,{payload:relate})=>({
+    ...state,
+    loading:false,
+    relate
+  }),
+  [actions.GET_RELATE_FAILURE]:(state,{payload:error})=>({
+    ...state,loading:false,error
+  }),
   
 });
 export default item;

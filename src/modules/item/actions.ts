@@ -14,6 +14,10 @@ export const RELATE_ITEM='item/RELATE_ITEM'
 export const RELATE_ITEM_SUCCESS='item/RELATE_ITEM_SUCCESS'
 export const RELATE_ITEM_FAILURE='item/RELATE_ITEM_FAILURE'
 
+export const GET_RELATE='item/GET_RELATE'
+export const GET_RELATE_SUCCESS='item/GET_RELATE_SUCCESS'
+export const GET_RELATE_FAILURE='item/GET_RELATE_FAILURE'
+
 export const initializeForm = createAction(INITIALIZE_FORM)();
 export const changeField = createAction(CHANGE_FIELD, ({ name, value }) => ({
   name,
@@ -37,3 +41,6 @@ export const inputItem = createAsyncAction(
 export const relateItem=createAsyncAction(
   RELATE_ITEM,RELATE_ITEM_SUCCESS,RELATE_ITEM_FAILURE)
   <{targetId:number[],sourceId:number[]},string,string>();
+export const getRelate=createAsyncAction(
+  GET_RELATE,GET_RELATE_SUCCESS,GET_RELATE_FAILURE
+)<number,{upperId:number,lowerId:number}[]|null,string>()
