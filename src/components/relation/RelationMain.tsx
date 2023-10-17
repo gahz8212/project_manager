@@ -12,10 +12,15 @@ type Props = {
   list: ListData;
   open: boolean;
   formOpen: () => void;
-  makeRelation:(relItem:RelData)=>void
-  getRelation:(id:number)=>void
+  makeRelation:(relItem:RelData)=>void;
+  getRelation:(id:number)=>void;
+
+  relate: {
+    upperId: number;
+    lowerId: number;
+}[] | null;
 };
-const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRelation }) => {
+const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRelation,relate }) => {
   const [items, setItems] = useState(list as ListData);
   const [visible,setVisible]=useState(false)
 
@@ -47,22 +52,56 @@ const lowersId:React.MutableRefObject<number[]>=useRef([] )
 const relateCondition=()=>{
   const result=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
   // const result=currentsId.current.length>0 && lowersId.current.length>0
-  return result;
+  //lowersId.current의 요소가 uppersId.current 요소에 있으면 
+  // console.log(currentsId.current,lowersId.current,relate)
+  if(result){
+    searchParent(currentsId.current,lowersId.current)
+    
+  }
+  return true;
 }
 
+const searchParent=(parentNode:number[],childNode:number[])=>{
+  if(relate){
+    let result:boolean=false
+   for(let child of childNode){
+    for(let rel of relate){
+      if(rel.upperId===child){
+        result=true;
+        console.log(child)
+        break;
+      }
+    }
+   }
+   if(result){
+    return;
+   }else{
+    searchParent(childNode,parentNode)
+   }
+    // console.log(relate.length,relate,parentNode,childNode)
+
+    // for(const rel of relate){
+    //   // console.log(rel)
+    //    result=(childNode.map(child=>rel.upperId===child))[0]
+    // }
+    return result;
+  }
+}
 
 
   useEffect(()=>{
     headersId.current=items.filter(item=>item.column==='HEADER').map(header=>header.id)
     uppersId.current=items.filter(item=>item.column==='UPPER').map(upper=>upper.id)
     currentsId.current=items.filter(item=>item.column==='CURRENT').map(current=>current.id)
-    lowersId.current=items.filter(item=>item.column==='LOWER').map(current=>current.id)
+    lowersId.current=items.filter(item=>item.column==='LOWER').map(lower=>lower.id)
+    // console.log(currentsId.current)
   if(relateCondition()){
     setVisible(true)
   }else{
   setVisible(false)
 }
 },[items])
+
 useEffect(() => {
   setItems(list);
 }, [list]);
@@ -71,17 +110,17 @@ useEffect(() => {
       <div className="space"></div>
       {/* <ItemContainer open={open} formOpen={formOpen} /> */}
       <DndProvider backend={HTML5Backend}>
-        <Column relation={getRelation}  title={HEADER} className="rel_header">
+        <Column relate={relate} relation={getRelation}  title={HEADER} className="rel_header">
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
         </Column>
         <div className="rel_wrapper">
-          <Column relation={getRelation} title={UPPER} className="rel_upper">
+          <Column  relate={relate}  relation={getRelation} title={UPPER} className="rel_upper">
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
-          <Column  relation={getRelation} title={CURRENT} className="rel_current">
+          <Column  relate={relate}  relation={getRelation} title={CURRENT} className="rel_current">
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
-          <Column relation={getRelation} title={LOWER} className="rel_lower">
+          <Column  relate={relate}  relation={getRelation} title={LOWER} className="rel_lower">
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
           </Column>
         </div>

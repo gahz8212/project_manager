@@ -185,7 +185,7 @@ router.get("/getRelation/:id", async (req, res) => {
     const id = parseInt(req.params.id, 10);
     console.log(id);
     const relate = await db.sequelize.models.Relation.findAll({
-      where: { lowerId: id },
+      // where: { lowerId: id },
       attributes: ["upperId", "lowerId"],
     });
     if (relate) {

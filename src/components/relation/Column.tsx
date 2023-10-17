@@ -4,22 +4,33 @@ type Props = {
   title: string;
   className: string;
   children: React.ReactNode;
+ 
   relation:(id:number)=>void;
-  
+  relate: {
+    upperId: number;
+    lowerId: number;
+}[] | null
 };
-const Column: React.FC<Props> = ({ title, className, children,relation }) => {
+const Column: React.FC<Props> = ({ title, className, children,relation,relate }) => {
   const [{ isOver,canDrop }, drop] = useDrop(() => ({
     accept: "card",
     drop: (item:any) => {
-      const {itemInfo,currentColumn}=item;
-        // console.log('itemInfo.id',itemInfo.id)
-        // console.log(currentColumn)
-       
-        if(currentColumn==='LOWER')
-        {
-          relation(itemInfo.id)
+      const {itemInfo}=item;
+   
+      relation(itemInfo.id)
+      // console.log('id',itemInfo.id,'relate',relate)
+      // if(title==='CURRENT' )
+      // {
+        // console.log('relate',relate)
 
-        }
+        // console.log(`${itemInfo.id} 가(이) upper로 `)
+        // relate?.forEach(rel=>console.log(rel))
+      // }
+      // else if(title==='LOWER' )
+      // {
+        // console.log(`${itemInfo.id} 가(이) lower로 `)
+        // relate?.map(rel=>console.log(rel))
+        // }
 
       return{ name: title }},
       collect: (monitor) => ({
