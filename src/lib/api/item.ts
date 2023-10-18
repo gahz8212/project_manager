@@ -7,14 +7,14 @@ export const inputItem = (item: ItemData) => {
   // console.log(item);
   return client.post("/post/item", item);
 };
-export const relate=(itemId:RelData)=>{
+export const relate = (itemId: RelData) => {
   // console.log('itemData',itemId)
-  return client.post('/relation',itemId);
-}
-export const getRelate=(id:number)=>{
+  return client.post("/relation", itemId);
+};
+export const getRelate = (id: number) => {
   // console.log('getRelate')
-  return client.get(`/getRelation/${id}`)
-}
+  return client.get(`/getRelation/${id}`);
+};
 export type ItemData = {
   category: string;
   name: string;
@@ -23,9 +23,10 @@ export type ItemData = {
   price?: number;
   departs: { depart: string; count: number }[];
   use: boolean;
+
   images?: { url: string }[] | null;
 };
-export type RelData={
-  targetId:number[],
-  sourceId:number[]
-}
+export type RelData = {
+  targetId: number[];
+  sourceId: number[];
+};

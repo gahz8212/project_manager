@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
 import { ListData } from "../../lib/api/list";
@@ -17,6 +17,7 @@ type Props = {
     departs: string;
     count: number;
     use: boolean;
+    color: string;
     Images:
       | {
           url: string;
@@ -24,8 +25,7 @@ type Props = {
       | null;
   };
 };
-const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
-  
+const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn }) => {
   const setChangeColumn = (item: any, column: string) => {
     setItems((prev) =>
       prev.map((pre) => ({
@@ -33,7 +33,6 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
         column: item.itemInfo.id === pre.id ? column : pre.column,
       }))
     );
-
   };
   // console.log(itemInfo);
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -69,7 +68,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
   }));
   return (
     <div ref={drag}>
-      <div className="rel_item orange">
+      <div className={`rel_item ${itemInfo.id === 1 ? "orange" : ""}`}>
         <div className="item_info">
           <div className="category">{itemInfo.category}</div>
           <div className="name">{itemInfo.name}</div>
