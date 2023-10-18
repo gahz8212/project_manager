@@ -29,7 +29,6 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRe
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
-     
           key={item.id}
           itemInfo={item}
           setItems={setItems}
@@ -37,64 +36,53 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRe
         ></Item>
       ));
   };
-// const makeRelation=()=>{
-  
-// console.log(headersId.current)
-// console.log(uppersId.current)
-// console.log(currentsId.current)
-// console.log(lowersId.current)
-// }
+
 const headersId:React.MutableRefObject<number[]>=useRef([] )
 const uppersId:React.MutableRefObject<number[]>=useRef([] )
 const currentsId:React.MutableRefObject<number[]>=useRef([] )
 const lowersId:React.MutableRefObject<number[]>=useRef([] )
 
 const relateCondition=()=>{
-  const result=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
-  // const result=currentsId.current.length>0 && lowersId.current.length>0
-  //lowersId.current의 요소가 uppersId.current 요소에 있으면 
-  // console.log(currentsId.current,lowersId.current,relate)
-  if(result){
-    searchParent(currentsId.current,lowersId.current)
-    
+  const showButton=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
+
+  let result=lowersId.current.map(lowId=>searchParent(lowId,currentsId.current[0]))
+  let condition=false;
+  for(let i=0;i<result.length;i++){
+    if(typeof result[i]==='object')
+    {
+      condition=false;
+      changeCardColor(result[i].id)
+    break
   }
-  return true;
-}
-
-const searchParent=(parentNode:number[],childNode:number[])=>{
-  if(relate){
-    let result:boolean=false
-   for(let child of childNode){
-    for(let rel of relate){
-      if(rel.upperId===child){
-        result=true;
-        console.log(child)
-        break;
-      }
-    }
-   }
-   if(result){
-    return;
-   }else{
-    searchParent(childNode,parentNode)
-   }
-    // console.log(relate.length,relate,parentNode,childNode)
-
-    // for(const rel of relate){
-    //   // console.log(rel)
-    //    result=(childNode.map(child=>rel.upperId===child))[0]
-    // }
-    return result;
+  else{
+    condition=true
   }
+  }
+  return showButton && condition;
 }
+const changeCardColor=(id:number)=>{
 
+  console.log(items.filter(item=>item.id===id))
+}
+const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
 
+const upper=relate?.filter(rel=>rel.lowerId===value)[0]?.upperId
+if(upper===undefined){
+  return false;
+}
+if(id===upper){
+  return {id}
+}else{
+
+  return searchParent(id,upper)
+}
+}
   useEffect(()=>{
     headersId.current=items.filter(item=>item.column==='HEADER').map(header=>header.id)
     uppersId.current=items.filter(item=>item.column==='UPPER').map(upper=>upper.id)
     currentsId.current=items.filter(item=>item.column==='CURRENT').map(current=>current.id)
     lowersId.current=items.filter(item=>item.column==='LOWER').map(lower=>lower.id)
-    // console.log(currentsId.current)
+
   if(relateCondition()){
     setVisible(true)
   }else{
