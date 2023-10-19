@@ -1,11 +1,11 @@
-import React,{useRef} from "react";
+import React from "react";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
 import { ListData } from "../../lib/api/list";
 type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
-
+  markItems:any[]
   itemInfo: {
     id: number;
     category: string;
@@ -24,7 +24,7 @@ type Props = {
       | null;
   };
 };
-const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
+const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) => {
   
   const setChangeColumn = (item: any, column: string) => {
     setItems((prev) =>
@@ -69,7 +69,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
   }));
   return (
     <div ref={drag}>
-      <div className={`rel_item ${itemInfo.id===1?'orange':''}`}>
+      <div className={`rel_item ${markItems.includes(itemInfo.id)?'orange':''}`}>
         <div className="item_info">
           <div className="category">{itemInfo.category}</div>
           <div className="name">{itemInfo.name}</div>

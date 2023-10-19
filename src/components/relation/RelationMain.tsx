@@ -23,12 +23,13 @@ type Props = {
 const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRelation,relate }) => {
   const [items, setItems] = useState(list as ListData);
   const [visible,setVisible]=useState(false)
-
+const [markItems,setMarkItems]=useState([]as any[])
   const returnItemFromColumn = (columnName: string) => {
     return items
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
+        markItems={markItems}
           key={item.id}
           itemInfo={item}
           setItems={setItems}
@@ -47,22 +48,22 @@ const relateCondition=()=>{
 
   let result=lowersId.current.map(lowId=>searchParent(lowId,currentsId.current[0]))
   let condition=false;
+  setMarkItems([])
   for(let i=0;i<result.length;i++){
     if(typeof result[i]==='object')
     {
       condition=false;
-      changeCardColor(result[i].id)
+      setMarkItems(prev=>[...prev,result[i].id])
     break
   }
   else{
     condition=true
   }
   }
+  console.log(markItems)
   return showButton && condition;
 }
-const changeCardColor=(id:number)=>{
-  console.log(items.filter(item=>item.id===id))
-}
+
 
 
 const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
