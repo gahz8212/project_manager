@@ -37,6 +37,7 @@ export type ListData = {
   count: number;
   use: boolean;
   column: string;
+ 
   Images: { url: string }[] | null;
 }[];
 export type ItemData_list = {

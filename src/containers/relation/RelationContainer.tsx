@@ -21,14 +21,16 @@ const [Relate,setRelate]=useState({} as {upperId:number,lowerId:number}[]|null)
 const makeRelation=(relItem:RelData)=>{
   dispatch(relateItem.request(relItem))
 }
-const getRelation=(id:number)=>{
+const getRelation=()=>{
 
   dispatch(initializeForm());
-  dispatch(getRelate.request(id))
+  dispatch(getRelate.request())
 }
-  useEffect(() => {
-    dispatch(getList.request());
+useEffect(() => {
+  dispatch(getList.request());
+  dispatch(getRelate.request())
   }, [dispatch]);
+
 useEffect(()=>{
 if(relate){
   setRelate(relate)

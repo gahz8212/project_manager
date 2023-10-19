@@ -43,4 +43,4 @@ export const relateItem=createAsyncAction(
   <{targetId:number[],sourceId:number[]},string,string>();
 export const getRelate=createAsyncAction(
   GET_RELATE,GET_RELATE_SUCCESS,GET_RELATE_FAILURE
-)<number,{upperId:number,lowerId:number}[]|null,string>()
+)<undefined,{upperId:number,lowerId:number}[]|null,string>()

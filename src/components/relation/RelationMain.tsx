@@ -13,7 +13,7 @@ type Props = {
   open: boolean;
   formOpen: () => void;
   makeRelation:(relItem:RelData)=>void;
-  getRelation:(id:number)=>void;
+  getRelation:()=>void;
 
   relate: {
     upperId: number;
@@ -46,22 +46,26 @@ const lowersId:React.MutableRefObject<number[]>=useRef([] )
 const relateCondition=()=>{
   const showButton=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
 
-  let result=lowersId.current.map(lowId=>searchParent(lowId,currentsId.current[0]))
+  const searchResult=currentsId.current.map(curId=>lowersId.current.map(lowId=>searchParent(lowId,curId)))
+  const compareResult=compareParent(currentsId.current,lowersId.current)
   let condition=false;
   setMarkItems([])
-  for(let i=0;i<result.length;i++){
-    if(typeof result[i]==='object')
-    {
-      condition=false;
-      setMarkItems(prev=>[...prev,result[i].id])
-    break
-  }
-  else{
-    condition=true
-  }
+  for(let res of searchResult){
+    for(let r of res){
+
+      if(typeof r==='object')
+      {
+        condition=false;
+        setMarkItems(prev=>prev.includes(r.id)?prev:[...prev,r.id])
+        break
+      }
+      else{
+        condition=true
+      }
+    }
   }
   console.log(markItems)
-  return showButton && condition;
+  return showButton && condition&&compareResult;
 }
 
 
@@ -75,9 +79,24 @@ if(upper===undefined){
 if(id===upper){
   return {id}
 }else{
-
   return searchParent(id,upper)
 }
+}
+const compareParent:(cIds:number[],lIds:number[])=>boolean=(cIds:number[],lIds:number[])=>{
+const currents=cIds.map(cId=>findTop(cId))
+const lowers=lIds.map(lId=>findTop(lId))
+console.log(currents,lowers,currents===lowers)
+return currents===lowers;
+}
+
+const findTop:(id:number)=>number=(id:number)=>{
+  const upper=relate?.filter(rel=>rel.lowerId===id)[0]?.upperId
+  if(upper===undefined){
+    return id
+  }else{
+    return findTop(upper)
+  }
+  
 }
   useEffect(()=>{
     headersId.current=items.filter(item=>item.column==='HEADER').map(header=>header.id)

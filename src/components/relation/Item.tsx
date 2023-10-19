@@ -17,6 +17,7 @@ type Props = {
     departs: string;
     count: number;
     use: boolean;
+
     Images:
       | {
           url: string;
@@ -33,7 +34,6 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) =
         column: item.itemInfo.id === pre.id ? column : pre.column,
       }))
     );
-
   };
   // console.log(itemInfo);
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -71,6 +71,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) =
     <div ref={drag}>
       <div className={`rel_item ${markItems.includes(itemInfo.id)?'orange':''}`}>
         <div className="item_info">
+          <div className="id"><strong>{itemInfo.id}</strong></div>
           <div className="category">{itemInfo.category}</div>
           <div className="name">{itemInfo.name}</div>
 
@@ -78,7 +79,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) =
             {itemInfo.unit}
             {itemInfo.price}
           </div>
-          <div className="departs">{itemInfo.departs}</div>
+          {/* <div className="departs">{itemInfo.departs}</div> */}
         </div>
         <div className="item_image">
           {itemInfo.Images && <img src={itemInfo?.Images[0]?.url} alt="" />}

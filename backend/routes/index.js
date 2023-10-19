@@ -180,10 +180,11 @@ router.post("/relation", async (req, res) => {
     console.error(e);
   }
 });
-router.get("/getRelation/:id", async (req, res) => {
+// router.get("/getRelation/:id", async (req, res) => {
+router.get("/getRelation/", async (req, res) => {
   try {
-    const id = parseInt(req.params.id, 10);
-    console.log(id);
+    // const id = parseInt(req.params.id, 10);
+    // console.log(id);
     const relate = await db.sequelize.models.Relation.findAll({
       // where: { lowerId: id },
       attributes: ["upperId", "lowerId"],

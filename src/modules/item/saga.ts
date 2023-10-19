@@ -8,9 +8,9 @@ export function* itemSaga() {
 yield takeLatest(actions.RELATE_ITEM,relationSaga);
 yield takeLatest(actions.GET_RELATE,getRelateSaga)
 }
-function* getRelateSaga(action:ReturnType<typeof actions.getRelate.request>){
+function* getRelateSaga(){
   try{
-    const response:{data:{upperId:number,lowerId:number}[]}=yield call(itemAPI.getRelate,action.payload)
+    const response:{data:{upperId:number,lowerId:number}[]}=yield call(itemAPI.getRelate)
   yield put(actions.getRelate.success(response.data))
   }catch(e:any){
     console.error(e)
