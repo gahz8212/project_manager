@@ -69,7 +69,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn}) => {
   }));
   return (
     <div ref={drag}>
-      <div className="rel_item orange">
+      <div className={`rel_item ${itemInfo.id===1?'orange':''}`}>
         <div className="item_info">
           <div className="category">{itemInfo.category}</div>
           <div className="name">{itemInfo.name}</div>

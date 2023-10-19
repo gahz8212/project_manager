@@ -61,9 +61,10 @@ const relateCondition=()=>{
   return showButton && condition;
 }
 const changeCardColor=(id:number)=>{
-
   console.log(items.filter(item=>item.id===id))
 }
+
+
 const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
 
 const upper=relate?.filter(rel=>rel.lowerId===value)[0]?.upperId
