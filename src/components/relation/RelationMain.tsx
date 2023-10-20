@@ -24,12 +24,14 @@ const RelationMain: React.FC<Props> = ({ list, open, formOpen,makeRelation,getRe
   const [items, setItems] = useState(list as ListData);
   const [visible,setVisible]=useState(false)
 const [markItems,setMarkItems]=useState([]as any[])
+// const [markItems2,setMarkItems2]=useState([]as any[])
   const returnItemFromColumn = (columnName: string) => {
     return items
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
         markItems={markItems}
+        // markItems2={markItems2}
           key={item.id}
           itemInfo={item}
           setItems={setItems}
@@ -44,49 +46,78 @@ const currentsId:React.MutableRefObject<number[]>=useRef([] )
 const lowersId:React.MutableRefObject<number[]>=useRef([] )
 
 const relateCondition=()=>{
+  setMarkItems([])
+  // setMarkItems2([])
   const showButton=(currentsId.current.length>0 && lowersId.current.length>0 && currentsId!==lowersId  )
 
-  const searchResult=currentsId.current.map(curId=>lowersId.current.map(lowId=>searchParent(lowId,curId)))
   const compareResult=compareParent(currentsId.current,lowersId.current)
-  let condition=false;
-  setMarkItems([])
-  for(let res of searchResult){
-    for(let r of res){
+  searchChildren(currentsId.current)
+  // const searchResult=currentsId.current.map(curId=>lowersId.current.map(lowId=>searchParent(lowId,curId)))
+  // let condition=false;
+  // for(let res of searchResult){
+    //   for(let r of res){
 
-      if(typeof r==='object')
-      {
-        condition=false;
-        setMarkItems(prev=>prev.includes(r.id)?prev:[...prev,r.id])
-        break
-      }
-      else{
-        condition=true
-      }
-    }
+  //     if(typeof r==='object')
+  //     {
+    //       condition=false;
+    //       setMarkItems(prev=>prev.includes(r.id)?prev:[...prev,r.id])
+  //       break
+  //     }
+  //     else{
+    //       condition=true
+  //     }
+  //   }
+  // }
+  // console.log(markItems)
+  // return showButton && condition&&compareResult;
+  return showButton &&compareResult;
+}
+const searchChildren=(ids:number[])=>{
+  const current=ids.map(id=>relate?.filter(rel=>rel.upperId===id))
+  const lowers=(current.flat().map(cur=>cur?.lowerId))
+ lowers.map(lower=>getChild(lower)) 
+}
+const getChild=(id:number)=>{
+  const child=relate?.filter(rel=>rel.lowerId===id)
+  if(child===undefined){
+    return id
+  }else{
+    return getChild(child)
   }
-  console.log(markItems)
-  return showButton && condition&&compareResult;
 }
+// const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
+// const upper=relate?.filter(rel=>rel.lowerId===value)[0]?.upperId
+// if(upper===undefined){
+//   return false;
+// }
+// if(id===upper){
+//   return {id}
+// }else{
+//   return searchParent(id,upper)
+// }
+// }
 
-
-
-const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
-
-const upper=relate?.filter(rel=>rel.lowerId===value)[0]?.upperId
-if(upper===undefined){
-  return false;
-}
-if(id===upper){
-  return {id}
-}else{
-  return searchParent(id,upper)
-}
-}
 const compareParent:(cIds:number[],lIds:number[])=>boolean=(cIds:number[],lIds:number[])=>{
 const currents=cIds.map(cId=>findTop(cId))
 const lowers=lIds.map(lId=>findTop(lId))
-console.log(currents,lowers,currents===lowers)
-return currents===lowers;
+// console.log(currents,lowers)
+const results=lowers.map(lower=>currents.map(current=>current===lower)).flat()
+
+let changeId:number[]=[]
+for(let lId of lIds){
+  for(let result of results){
+    if(result===true){
+      changeId.push(lId)
+      break;
+    }
+  }
+}
+// console.log('changeId',changeId)
+for(let id of changeId){
+  setMarkItems(prev=>prev.includes(id)?prev:[...prev,id])
+}
+// console.log('mark',markItems)
+return !results.includes(true);
 }
 
 const findTop:(id:number)=>number=(id:number)=>{

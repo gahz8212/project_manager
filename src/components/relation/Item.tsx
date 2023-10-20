@@ -6,6 +6,7 @@ type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
   markItems:any[]
+  // markItems2:any[]
   itemInfo: {
     id: number;
     category: string;
@@ -69,7 +70,7 @@ const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) =
   }));
   return (
     <div ref={drag}>
-      <div className={`rel_item ${markItems.includes(itemInfo.id)?'orange':''}`}>
+      <div className={`rel_item ${markItems.includes(itemInfo.id)?'orange':''} `}>
         <div className="item_info">
           <div className="id"><strong>{itemInfo.id}</strong></div>
           <div className="category">{itemInfo.category}</div>

@@ -16,9 +16,17 @@ module.exports = () => {
             const result = await bcrypt.compare(password, exUser.password);
             if (result) {
               if (exUser.status) {
-                done(null, false, {
-                  message: "다른 PC에서 로그인 되었습니다.",
-                });
+                if (
+                  new Date(Date.now()).getDate() -
+                    new Date(exUser.loginAt).getDate() >
+                  0
+                ) {
+                  done(null, exUser);
+                } else {
+                  done(null, false, {
+                    message: "다른 PC에서 로그인 되었습니다.",
+                  });
+                }
               } else {
                 done(null, exUser);
               }
