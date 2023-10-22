@@ -10,17 +10,35 @@
 //   }
 // });
 // console.log(result);
-// const datas = [
-//   { u: 1, l: 2 },
-//   { u: 1, l: 3 },
-//   { u: 3, l: 4 },
-//   { u: 4, l: 6 },
-//   { u: 4, l: 5 },
-//   { u: 5, l: 7 },
-// ];
-// const lowIds = [3, 6, 0];
-// const upperId = [1, 2, 3, 4, 5, 6, 7];
 
+// const arr = [1, 2, 3, [4, [5]]];
+// const target = [1, 2];
+// console.log(target.map((t) => arr.includes(t)));
+// console.log(arr.flat());
+const datas = [
+  { u: 1, l: 2 },
+  { u: 1, l: 3 },
+  { u: 3, l: 4 },
+  { u: 4, l: 6 },
+  { u: 4, l: 5 },
+  { u: 5, l: 7 },
+];
+// const lowIds = [3, 6, 0];
+const upperId = [1, 2];
+
+const children = [];
+const getChildren = (ids) => {
+  const uppers = ids.map((id) => datas.filter((data) => data.u === id));
+  const child = uppers.flat().map((upper) => upper.l);
+  children.push(child);
+  if (child.length === 0) {
+    return;
+  }
+  // console.log("child", child);
+  return getChildren(child);
+};
+getChildren(upperId);
+console.log(children.flat());
 // const recursiveFunction = (idx, value) => {
 //   // console.log(idx, value);
 //   const upper = datas.filter((data) => data.l === value)[0]?.u;
@@ -47,8 +65,3 @@
 // }
 // console.log(arr);
 // console.log(result.map((res) => res.idx));
-
-const arr = [1, 2, 3, [4, [5]]];
-// const target = [1, 2];
-// console.log(target.map((t) => arr.includes(t)));
-console.log(arr.flat());
