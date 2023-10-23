@@ -5,7 +5,7 @@ import { ListData } from "../../lib/api/list";
 type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
-  markItems:any[]
+  markItems: any[];
   // markItems2:any[]
   itemInfo: {
     id: number;
@@ -26,8 +26,12 @@ type Props = {
       | null;
   };
 };
-const Item: React.FC<Props> = ({ itemInfo,setItems, currentColumn,markItems}) => {
-  
+const Item: React.FC<Props> = ({
+  itemInfo,
+  setItems,
+  currentColumn,
+  markItems,
+}) => {
   const setChangeColumn = (item: any, column: string) => {
     setItems((prev) =>
       prev.map((pre) => ({
@@ -70,9 +74,15 @@ const Item: React.FC<Props> = ({ itemInfo,setItems, currentColumn,markItems}) =>
   }));
   return (
     <div ref={drag}>
-      <div className={`rel_item ${markItems.includes(itemInfo.id)?'orange':''} `}>
+      <div
+        className={`rel_item ${
+          markItems.includes(itemInfo.id) ? "orange" : ""
+        } `}
+      >
         <div className="item_info">
-          <div className="id"><strong>{itemInfo.id}</strong></div>
+          <div className="id">
+            <strong>{itemInfo.id}</strong>
+          </div>
           <div className="category">{itemInfo.category}</div>
           <div className="name">{itemInfo.name}</div>
 

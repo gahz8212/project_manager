@@ -10,7 +10,7 @@ import { RelData } from "../../lib/api/item";
 const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
 type Props = {
   list: ListData;
-  setList: React.Dispatch<React.SetStateAction<ListData>>;
+  // setList: React.Dispatch<React.SetStateAction<ListData>>;
   open: boolean;
   formOpen: () => void;
   makeRelation: (relItem: RelData) => void;
@@ -25,7 +25,7 @@ type Props = {
 };
 const RelationMain: React.FC<Props> = ({
   list,
-  setList,
+  // setList,
   open,
   formOpen,
   makeRelation,
@@ -67,23 +67,22 @@ const RelationMain: React.FC<Props> = ({
     // const compareResult = compareParent(currentsId.current, lowersId.current);
     searchChildren(currentsId.current);
 
-
-
-    const searchResult=currentsId.current.map(curId=>lowersId.current.map(lowId=>searchParent(lowId,curId)))
-    const family=searchFamily(currentsId.current)
-    console.log(family)
-    let condition=false;
-    for(let res of searchResult){
-      for(let r of res){
-
-        if(typeof r==='object')
-        {
-          condition=false;
-          setMarkItems(prev=>prev.includes(r.id)?prev:[...prev,r.id])
-          break
-        }
-        else{
-          condition=true
+    const searchResult = currentsId.current.map((curId) =>
+      lowersId.current.map((lowId) => searchParent(lowId, curId))
+    );
+    const family = searchFamily(currentsId.current);
+    console.log(family);
+    let condition = false;
+    for (let res of searchResult) {
+      for (let r of res) {
+        if (typeof r === "object") {
+          condition = false;
+          setMarkItems((prev) =>
+            prev.includes(r.id) ? prev : [...prev, r.id]
+          );
+          break;
+        } else {
+          condition = true;
         }
       }
     }
@@ -93,22 +92,26 @@ const RelationMain: React.FC<Props> = ({
   };
   // let children: any[] = [];
 
-  const searchFamily=(currentsId:number[])=>{
-    const parents=currentsId.map(curr=>relate?.filter(rel=>rel.lowerId===curr)).flat()
-    const childrens=currentsId.map(curr=>relate?.filter(rel=>rel.upperId===curr)).flat()
-    const parent=(parents.map(p=>p?.upperId))
-    const child=childrens.map(c=>c?.lowerId)
-console.log('parent',parent[0],'child',child)
+  const searchFamily = (currentsId: number[]) => {
+    const parents = currentsId
+      .map((curr) => relate?.filter((rel) => rel.lowerId === curr))
+      .flat();
+    const childrens = currentsId
+      .map((curr) => relate?.filter((rel) => rel.upperId === curr))
+      .flat();
+    const parent = parents.map((p) => p?.upperId);
+    const child = childrens.map((c) => c?.lowerId);
+    console.log("parent", parent[0], "child", child);
 
+    // setList((prevState) =>
+    //   prevState.map((p) => ({
+    //     ...p,
+    //     column: p.id === parent[0] ? "UPPER" : "HEADER",
+    //   }))
+    // );
 
-setList(prevState=>prevState.map(p=>({...p,column:p.id===parent[0]?'UPPER':'HEADER'})))
-// setItems(prev=>prev)
-// console.log('list',list,'items',items)
-
-
-
-
-  }
+    // console.log('list',list,'items',items)
+  };
   const searchChildren = (ids: (number | undefined)[]) => {
     const current = ids.map((id) =>
       relate?.filter((rel) => rel.upperId === id)
@@ -122,17 +125,20 @@ setList(prevState=>prevState.map(p=>({...p,column:p.id===parent[0]?'UPPER':'HEAD
     searchChildren(lowers);
   };
   // console.log(children);
-  const searchParent:(id: number, value: number) => any=(id:number,value:number)=>{
-  const upper=relate?.filter(rel=>rel.lowerId===value)[0]?.upperId
-  if(upper===undefined){
-    return false;
-  }
-  if(id===upper){
-    return {id}
-  }else{
-    return searchParent(id,upper)
-  }
-  }
+  const searchParent: (id: number, value: number) => any = (
+    id: number,
+    value: number
+  ) => {
+    const upper = relate?.filter((rel) => rel.lowerId === value)[0]?.upperId;
+    if (upper === undefined) {
+      return false;
+    }
+    if (id === upper) {
+      return { id };
+    } else {
+      return searchParent(id, upper);
+    }
+  };
 
   // const compareParent: (cIds: number[], lIds: number[]) => boolean = (
   //   cIds: number[],
@@ -191,9 +197,9 @@ setList(prevState=>prevState.map(p=>({...p,column:p.id===parent[0]?'UPPER':'HEAD
     }
   }, [items]);
 
-  // useEffect(() => {
-  //   setItems(list);
-  // }, [list]);
+  useEffect(() => {
+    setItems(list);
+  }, [list]);
   return (
     <div className="rel-container">
       <div className="space"></div>
