@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getList } from "../../modules/list";
 import { RootState } from "../../modules";
+import { ListData } from "../../lib/api/list";
 import { relateItem ,getRelate,initializeForm} from "../../modules/item";
 import RelationMain from "../../components/relation/RelationMain";
 import { RelData } from "../../lib/api/item";
@@ -14,6 +15,7 @@ const RelationContainer = () => {
     relate:state.item.relate
   }));
   const [open, setOpen] = useState(false);
+  const[items,setList]=useState(list as ListData)
 const [Relate,setRelate]=useState({} as {upperId:number,lowerId:number}[]|null)
   const formOpen = () => {
     setOpen(!open);
@@ -36,10 +38,15 @@ if(relate){
   setRelate(relate)
 };
 },[relate])
+useEffect(()=>{
+  if(list){
+    setList(list)
+  }
+},[list])
   return (
     <>
     {loading&&<Loading/>}
-    <RelationMain list={list} open={open} formOpen={formOpen} makeRelation={makeRelation} getRelation={getRelation} relate={Relate}></RelationMain>
+    <RelationMain list ={items} setList={setList} open={open} formOpen={formOpen} makeRelation={makeRelation} getRelation={getRelation} relate={Relate}></RelationMain>
     </>
   );
 };

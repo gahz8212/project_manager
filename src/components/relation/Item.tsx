@@ -26,7 +26,7 @@ type Props = {
       | null;
   };
 };
-const Item: React.FC<Props> = ({ itemInfo, setItems, currentColumn,markItems}) => {
+const Item: React.FC<Props> = ({ itemInfo,setItems, currentColumn,markItems}) => {
   
   const setChangeColumn = (item: any, column: string) => {
     setItems((prev) =>
