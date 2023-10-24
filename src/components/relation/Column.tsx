@@ -12,10 +12,11 @@ type Props = {
 }[] | null
 };
 const Column: React.FC<Props> = ({ title, className, children,relation,relate }) => {
-  const [{ isOver,canDrop }, drop] = useDrop(() => ({
+  const [{ isOver, }, drop] = useDrop(() => ({
     accept: "card",
     drop: (item:any) => {
-      const {itemInfo}=item;
+      const {itemInfo,currentColumn}=item;
+      // console.log(currentColumn)
    
       relation(itemInfo.id)
       // console.log('id',itemInfo.id,'relate',relate)
@@ -32,10 +33,10 @@ const Column: React.FC<Props> = ({ title, className, children,relation,relate })
         // relate?.map(rel=>console.log(rel))
         // }
 
-      return{ name: title }},
+      return{ name: title,parent:3,child:4 }},
       collect: (monitor) => ({
         isOver: monitor.isOver(),
-        canDrop:monitor.canDrop(),
+        // canDrop:monitor.canDrop(),
       }),
       // canDrop:(item:any)=>{
       //   // const {itemInfo}=item;

@@ -43,13 +43,14 @@ const RelationContainer = () => {
     if (list) {
       setList(list);
     }
+    console.log(list===items)
   }, [list]);
   return (
     <>
       {loading && <Loading />}
       <RelationMain
-        list={list}
-        // setList={setList}
+        list={items}
+        setList={setList}
         open={open}
         formOpen={formOpen}
         makeRelation={makeRelation}

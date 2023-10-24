@@ -33,13 +33,16 @@ const Item: React.FC<Props> = ({
   markItems,
 }) => {
   const setChangeColumn = (item: any, column: string) => {
-    setItems((prev) =>
-      prev.map((pre) => ({
-        ...pre,
-        column: item.itemInfo.id === pre.id ? column : pre.column,
-      }))
-    );
+setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pre.column}))) 
+
+  
   };
+  const setParentColumn=(item:any,parent:number)=>{
+    setItems(prev=>prev.map(pre=>({...pre,column:pre.id===parent?'UPPER':pre.column})))
+  }
+  const setChildColumn=(item:any,child:number)=>{
+    setItems(prev=>prev.map(pre=>({...pre,column:pre.id===child?'LOWER':pre.column})))
+  }
   // console.log(itemInfo);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
@@ -47,10 +50,10 @@ const Item: React.FC<Props> = ({
     item: () => ({ itemInfo, currentColumn }),
 
     end: (item, monitor) => {
-      const dropResult: { name: string } | null = monitor.getDropResult();
+      const dropResult: { name: string,parent:number,child:number } | null = monitor.getDropResult();
       // console.log(dropResult);
       if (dropResult) {
-        const { name } = dropResult;
+        const { name,parent ,child} = dropResult;
 
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
         switch (name) {
@@ -62,6 +65,8 @@ const Item: React.FC<Props> = ({
             break;
           case CURRENT:
             setChangeColumn(item, CURRENT);
+            setParentColumn(item,parent)
+            setChildColumn(item,child)
             break;
           case LOWER:
             setChangeColumn(item, LOWER);

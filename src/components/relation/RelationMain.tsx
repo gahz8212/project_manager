@@ -10,12 +10,11 @@ import { RelData } from "../../lib/api/item";
 const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
 type Props = {
   list: ListData;
-  // setList: React.Dispatch<React.SetStateAction<ListData>>;
+  setList: React.Dispatch<React.SetStateAction<ListData>>;
   open: boolean;
   formOpen: () => void;
   makeRelation: (relItem: RelData) => void;
   getRelation: () => void;
-
   relate:
     | {
         upperId: number;
@@ -25,19 +24,19 @@ type Props = {
 };
 const RelationMain: React.FC<Props> = ({
   list,
-  // setList,
+  setList,
   open,
   formOpen,
   makeRelation,
   getRelation,
   relate,
 }) => {
-  const [items, setItems] = useState(list as ListData);
+  // const [items, setItems] = useState(list as ListData);
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as any[]);
   // const [markItems2,setMarkItems2]=useState([]as any[])
   const returnItemFromColumn = (columnName: string) => {
-    return items
+    return list
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
@@ -45,7 +44,7 @@ const RelationMain: React.FC<Props> = ({
           // markItems2={markItems2}
           key={item.id}
           itemInfo={item}
-          setItems={setItems}
+          setItems={setList}
           currentColumn={item.column}
         ></Item>
       ));
@@ -102,6 +101,7 @@ const RelationMain: React.FC<Props> = ({
     const parent = parents.map((p) => p?.upperId);
     const child = childrens.map((c) => c?.lowerId);
     console.log("parent", parent[0], "child", child);
+// setList((prev)=>prev.map(p=>p))
 
     // setList((prevState) =>
     //   prevState.map((p) => ({
@@ -177,16 +177,16 @@ const RelationMain: React.FC<Props> = ({
   //   }
   // };
   useEffect(() => {
-    headersId.current = items
+    headersId.current = list
       .filter((item) => item.column === "HEADER")
       .map((header) => header.id);
-    uppersId.current = items
+    uppersId.current = list
       .filter((item) => item.column === "UPPER")
       .map((upper) => upper.id);
-    currentsId.current = items
+    currentsId.current = list
       .filter((item) => item.column === "CURRENT")
       .map((current) => current.id);
-    lowersId.current = items
+    lowersId.current = list
       .filter((item) => item.column === "LOWER")
       .map((lower) => lower.id);
 
@@ -195,11 +195,11 @@ const RelationMain: React.FC<Props> = ({
     } else {
       setVisible(false);
     }
-  }, [items]);
-
-  useEffect(() => {
-    setItems(list);
   }, [list]);
+
+  // useEffect(() => {
+  //   setItems(list);
+  // }, []);
   return (
     <div className="rel-container">
       <div className="space"></div>
