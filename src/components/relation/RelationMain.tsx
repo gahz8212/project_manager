@@ -14,7 +14,7 @@ type Props = {
   open: boolean;
   formOpen: () => void;
   makeRelation: (relItem: RelData) => void;
-  getRelation: () => void;
+  // getRelation: () => void;
   relate:
     | {
         upperId: number;
@@ -28,20 +28,22 @@ const RelationMain: React.FC<Props> = ({
   open,
   formOpen,
   makeRelation,
-  getRelation,
+  // getRelation,
   relate,
 }) => {
-  // const [items, setItems] = useState(list as ListData);
+
   const [visible, setVisible] = useState(false);
-  const [markItems, setMarkItems] = useState([] as any[]);
-  // const [markItems2,setMarkItems2]=useState([]as any[])
+  const [markItems, setMarkItems] = useState([] as number[]);
+// const[family,setFamily]=useState({parent:[] as (number|undefined)[],child:[] as (number|undefined)[]})
   const returnItemFromColumn = (columnName: string) => {
     return list
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
           markItems={markItems}
+          // family={family}
           // markItems2={markItems2}
+          relate={relate}
           key={item.id}
           itemInfo={item}
           setItems={setList}
@@ -69,8 +71,8 @@ const RelationMain: React.FC<Props> = ({
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
-    const family = searchFamily(currentsId.current);
-    console.log(family);
+   
+    // console.log(family);
     let condition = false;
     for (let res of searchResult) {
       for (let r of res) {
@@ -91,27 +93,7 @@ const RelationMain: React.FC<Props> = ({
   };
   // let children: any[] = [];
 
-  const searchFamily = (currentsId: number[]) => {
-    const parents = currentsId
-      .map((curr) => relate?.filter((rel) => rel.lowerId === curr))
-      .flat();
-    const childrens = currentsId
-      .map((curr) => relate?.filter((rel) => rel.upperId === curr))
-      .flat();
-    const parent = parents.map((p) => p?.upperId);
-    const child = childrens.map((c) => c?.lowerId);
-    console.log("parent", parent[0], "child", child);
-// setList((prev)=>prev.map(p=>p))
 
-    // setList((prevState) =>
-    //   prevState.map((p) => ({
-    //     ...p,
-    //     column: p.id === parent[0] ? "UPPER" : "HEADER",
-    //   }))
-    // );
-
-    // console.log('list',list,'items',items)
-  };
   const searchChildren = (ids: (number | undefined)[]) => {
     const current = ids.map((id) =>
       relate?.filter((rel) => rel.upperId === id)
@@ -206,35 +188,39 @@ const RelationMain: React.FC<Props> = ({
       {/* <ItemContainer open={open} formOpen={formOpen} /> */}
       <DndProvider backend={HTML5Backend}>
         <Column
-          relate={relate}
-          relation={getRelation}
+        
+          
           title={HEADER}
           className="rel_header"
+       
         >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
         </Column>
         <div className="rel_wrapper">
           <Column
-            relate={relate}
-            relation={getRelation}
+          
+            
             title={UPPER}
             className="rel_upper"
+         
           >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
           <Column
-            relate={relate}
-            relation={getRelation}
+          
+            
             title={CURRENT}
             className="rel_current"
+         
           >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
           <Column
-            relate={relate}
-            relation={getRelation}
+          
+            
             title={LOWER}
             className="rel_lower"
+         
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
           </Column>

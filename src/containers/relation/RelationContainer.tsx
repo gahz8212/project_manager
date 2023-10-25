@@ -45,6 +45,7 @@ const RelationContainer = () => {
     }
     console.log(list===items)
   }, [list]);
+
   return (
     <>
       {loading && <Loading />}
@@ -54,7 +55,7 @@ const RelationContainer = () => {
         open={open}
         formOpen={formOpen}
         makeRelation={makeRelation}
-        getRelation={getRelation}
+        // getRelation={getRelation}
         relate={Relate}
       ></RelationMain>
     </>

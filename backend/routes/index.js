@@ -189,12 +189,12 @@ router.get("/getRelation/", async (req, res) => {
       // where: { lowerId: id },
       attributes: ["upperId", "lowerId"],
     });
-    if (relate) {
-      console.log(relate);
-      return res.status(200).json(relate);
-    } else {
-      return res.send("success");
-    }
+    return res.status(200).json(relate);
+    // if (relate) {
+    //   console.log(relate);
+    // } else {
+    //   return res.send("success");
+    // }
     // return res.send("success");
   } catch (e) {
     return res.status(400).json(e);
