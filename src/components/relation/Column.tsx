@@ -9,7 +9,15 @@ type Props = {
 };
 const Column: React.FC<Props> = ({ title, className, children,}) => {
 
+const findFamily=(currentID:number,relate:{upperId:number,lowerId:number}[]|null)=>{
 
+  if(relate){
+    const parents=relate.filter(rel=>rel.lowerId===currentID).map(rel=>rel.upperId)
+    const children=relate.filter(rel=>rel.upperId===currentID).map(rel=>rel.lowerId)
+
+return {parents,children}
+  }
+}
  
   const [{ isOver, }, drop] = useDrop(() => ({
     accept: "card",
@@ -24,7 +32,6 @@ const Column: React.FC<Props> = ({ title, className, children,}) => {
       departs: string;
       count: number;
       use: boolean;
-  
       Images:
         | {
             url: string;
@@ -34,10 +41,11 @@ const Column: React.FC<Props> = ({ title, className, children,}) => {
       upperId: number;
       lowerId: number;
   }[] | null}) => {
-      const {itemInfo,relate}=item;
-//  console.log(title)
-    // console.log(relate)
-      return({ name: title,relate })},
+      const {itemInfo,relate,currentColumn}=item;
+      console.log(itemInfo.id,currentColumn)
+      const family=findFamily(itemInfo.id,relate)
+
+      return({ name: title,family })},
       collect: (monitor) => ({
         isOver: monitor.isOver(),
     

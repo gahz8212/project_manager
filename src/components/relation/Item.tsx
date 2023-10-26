@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
@@ -7,7 +7,6 @@ type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
   markItems: any[];
-  // family:{parent:(number|undefined)[],child:(number|undefined)[]}
 
   relate: {
     upperId: number;
@@ -24,7 +23,6 @@ type Props = {
     departs: string;
     count: number;
     use: boolean;
-
     Images:
       | {
           url: string;
@@ -47,13 +45,19 @@ setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pr
 
   
   };
-  const setParentColumn=(parent:number)=>{
-    // setItems(prev=>prev.map(pre=>({...pre,column:pre.id===parent?'UPPER':pre.column})))
-    console.log('p',parent)
+  const setFamilyItem=(family:{parents:(number|undefined)[],children:(number|undefined)[]})=>{
+
+    setParentColumn(family.parents);
+    setChildColumn(family.children);
   }
-  const setChildColumn=(child:(number|undefined)[])=>{
-    // setItems(prev=>prev.map(pre=>({...pre,column:pre.id===child?'LOWER':pre.column})))
-    console.log('c',child)
+  const setParentColumn=(parents:(number|undefined)[])=>{
+
+    console.log('p',parents)
+    parents.map(parent=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===parent?'UPPER':pre.column}))))
+  }
+  const setChildColumn=(children:(number|undefined)[])=>{
+    children.map(child=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===child?'LOWER':pre.column}))))
+    console.log('c',children)
   }
   const setResetColumn=()=>{
     setItems(prev=>prev.map(pre=>({...pre,column:'HEADER'})))
@@ -65,14 +69,11 @@ setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pr
     item: () => ({ itemInfo, currentColumn,relate }),
 
     end: (item, monitor) => {
-      // const dropResult: { name: string,family:{parent:(number|undefined)[],child:(number|undefined)[]} } | null = monitor.getDropResult();
-      const dropResult: { name: string,  relate: {
-        upperId: number;
-        lowerId: number;
-    }[] | null}|null = monitor.getDropResult();
-      // console.log(dropResult);
+      const dropResult: { name: string,family:{parents:(number|undefined)[],children:(number|undefined)[]} } | null = monitor.getDropResult();
+
+      
       if (dropResult) {
-        const {name,relate} = dropResult;
+        const {name,family} = dropResult;
  
 
         
@@ -81,18 +82,16 @@ setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pr
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
-            // setResetColumn();
+    
+            setResetColumn();
             break;
           case UPPER:
             setChangeColumn(item, UPPER);
             break;
           case CURRENT:
             setChangeColumn(item, CURRENT);
-         
-              console.log(relate)
-            
-            // setParentColumn(parent)
-            // setChildColumn(family.child)
+            setFamilyItem(family)
+   
             break;
           case LOWER:
             setChangeColumn(item, LOWER);

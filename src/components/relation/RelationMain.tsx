@@ -14,7 +14,7 @@ type Props = {
   open: boolean;
   formOpen: () => void;
   makeRelation: (relItem: RelData) => void;
-  // getRelation: () => void;
+
   relate:
     | {
         upperId: number;
@@ -28,21 +28,20 @@ const RelationMain: React.FC<Props> = ({
   open,
   formOpen,
   makeRelation,
-  // getRelation,
+
   relate,
 }) => {
 
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as number[]);
-// const[family,setFamily]=useState({parent:[] as (number|undefined)[],child:[] as (number|undefined)[]})
+
   const returnItemFromColumn = (columnName: string) => {
     return list
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
           markItems={markItems}
-          // family={family}
-          // markItems2={markItems2}
+
           relate={relate}
           key={item.id}
           itemInfo={item}
@@ -59,20 +58,20 @@ const RelationMain: React.FC<Props> = ({
 
   const relateCondition = () => {
     setMarkItems([]);
-    // setMarkItems2([])
+
     const showButton =
       currentsId.current.length > 0 &&
       lowersId.current.length > 0 &&
       currentsId !== lowersId;
 
-    // const compareResult = compareParent(currentsId.current, lowersId.current);
+
     searchChildren(currentsId.current);
 
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
    
-    // console.log(family);
+  
     let condition = false;
     for (let res of searchResult) {
       for (let r of res) {
@@ -87,11 +86,11 @@ const RelationMain: React.FC<Props> = ({
         }
       }
     }
-    // console.log(markItems)
+
     return showButton && condition;
-    // return showButton && compareResult;
+
   };
-  // let children: any[] = [];
+
 
 
   const searchChildren = (ids: (number | undefined)[]) => {
@@ -102,8 +101,7 @@ const RelationMain: React.FC<Props> = ({
       return ids;
     }
     const lowers = current.flat().map((cur) => cur?.lowerId);
-    // console.log("children", lowers);
-    // children.push(lowers);
+
     searchChildren(lowers);
   };
   // console.log(children);
@@ -179,9 +177,7 @@ const RelationMain: React.FC<Props> = ({
     }
   }, [list]);
 
-  // useEffect(() => {
-  //   setItems(list);
-  // }, []);
+
   return (
     <div className="rel-container">
       <div className="space"></div>
