@@ -9,11 +9,15 @@ type Props = {
 };
 const Column: React.FC<Props> = ({ title, className, children,}) => {
 
-const findFamily=(currentID:number,relate:{upperId:number,lowerId:number}[]|null)=>{
+// const findFamily=(currentIDs:number[]|null,relate:{upperId:number,lowerId:number}[]|null)=>{
+const findFamily=(currentIDs:number,relate:{upperId:number,lowerId:number}[]|null)=>{
 
-  if(relate){
-    const parents=relate.filter(rel=>rel.lowerId===currentID).map(rel=>rel.upperId)
-    const children=relate.filter(rel=>rel.upperId===currentID).map(rel=>rel.lowerId)
+  if(relate && currentIDs){
+    // console.log(currentIDs)
+    const parents=relate.filter(rel=>rel.lowerId===currentIDs).map(rel=>rel.upperId)
+    // const parents=relate?.filter(rel=>currentIDs?.map(currentID=>currentID===rel.lowerId)).map(rel=>rel.upperId)
+    const children=relate.filter(rel=>rel.upperId===currentIDs).map(rel=>rel.lowerId)
+    // const children=relate?.filter(rel=>currentIDs?.map(currentID=>currentID===rel.upperId)).map(rel=>rel.lowerId)
 
 return {parents,children}
   }
@@ -40,12 +44,12 @@ return {parents,children}
     },currentColumn:string,  relate: {
       upperId: number;
       lowerId: number;
-  }[] | null}) => {
-      const {itemInfo,relate,currentColumn}=item;
-      console.log(itemInfo.id,currentColumn)
+  }[],currentsId:number[] | null}) => {
+      const {itemInfo,relate,currentColumn,currentsId}=item;
+      console.log(itemInfo.id,currentsId,currentColumn)
       const family=findFamily(itemInfo.id,relate)
 
-      return({ name: title,family })},
+      return({ name: title,family,currentColumn })},
       collect: (monitor) => ({
         isOver: monitor.isOver(),
     

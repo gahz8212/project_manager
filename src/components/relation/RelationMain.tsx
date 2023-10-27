@@ -41,7 +41,7 @@ const RelationMain: React.FC<Props> = ({
       .map((item) => (
         <Item
           markItems={markItems}
-
+        currentsId={currentsId.current}
           relate={relate}
           key={item.id}
           itemInfo={item}

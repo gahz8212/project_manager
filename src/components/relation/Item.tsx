@@ -7,7 +7,7 @@ type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
   markItems: any[];
-
+currentsId:number[]
   relate: {
     upperId: number;
     lowerId: number;
@@ -32,7 +32,7 @@ type Props = {
 };
 const Item: React.FC<Props> = ({
   itemInfo,
- 
+ currentsId,
   setItems,
   currentColumn,
   markItems,
@@ -42,10 +42,11 @@ const Item: React.FC<Props> = ({
   const setChangeColumn = (item: any, column: string) => {
 
 setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pre.column}))) 
-
+console.log('currentsId',currentsId)
   
   };
   const setFamilyItem=(family:{parents:(number|undefined)[],children:(number|undefined)[]})=>{
+ 
 
     setParentColumn(family.parents);
     setChildColumn(family.children);
@@ -60,21 +61,22 @@ setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pr
     console.log('c',children)
   }
   const setResetColumn=()=>{
+    console.log(currentsId)
     setItems(prev=>prev.map(pre=>({...pre,column:'HEADER'})))
   }
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    item: () => ({ itemInfo, currentColumn,relate }),
+    item: () => ({ itemInfo, currentsId,currentColumn,relate }),
 
     end: (item, monitor) => {
-      const dropResult: { name: string,family:{parents:(number|undefined)[],children:(number|undefined)[]} } | null = monitor.getDropResult();
+      const dropResult: { name: string,family:{parents:(number|undefined)[],children:(number|undefined)[]},title:string,currentColumn:string } | null = monitor.getDropResult();
 
       
       if (dropResult) {
-        const {name,family} = dropResult;
- 
+        const {name,family,currentColumn} = dropResult;
+ console.log(currentColumn,name)
 
         
         
@@ -82,8 +84,10 @@ setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pr
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
-    
-            setResetColumn();
+    if(currentColumn==='CURRENT'&&name==="HEADER"){
+
+      setResetColumn();
+    }
             break;
           case UPPER:
             setChangeColumn(item, UPPER);
