@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { ItemData } from "../../lib/api/item";
 // import Loading from "../common/loading/Loading";
 import CheckboxContainer from "../../containers/checkbox/CheckboxContainer";
@@ -22,7 +22,6 @@ type Props = {
   setIsCheckAll: (check: boolean) => void;
   inputRef: React.RefObject<HTMLInputElement>;
 };
-
 const InputForm: React.FC<Props> = ({
   // loading,
   onChange,
@@ -36,9 +35,40 @@ const InputForm: React.FC<Props> = ({
   setIsCheckAll,
   inputRef,
 }) => {
+  const[originPos,setOriginPos]=useState({x:0,y:0})
+  const[clientPos,setClientPos]=useState({x:0,y:0})
+  const[pos,setPos]=useState({left:0,top:0})
+  const dragStart=(e:any)=>{
+    const originPosTemp={...originPos}
+    originPosTemp['x']=e.target.offsetLeft;
+    originPosTemp['y']=e.target.offsetTop;
+    setOriginPos(originPosTemp)
+    const clientPosTemp={...clientPos}
+    clientPosTemp['x']=e.clientX;
+    clientPosTemp['y']=e.clientY;
+    setClientPos(clientPosTemp)
+  }
+  const drag=(e:any)=>{
+    const posTemp={...pos};
+    posTemp['left']=e.target.offsetLeft+e.clientX-clientPos.x;
+    posTemp['top']=e.target.offsetTop+e.clientY-clientPos.y;
+    setPos(posTemp)
+    const clientPosTemp={...clientPos}
+    clientPosTemp['x']=e.clientX;
+    clientPosTemp['y']=e.clientY;
+    setClientPos(clientPosTemp)
+  }
+  const dragOver=(e:any)=>{
+    e.preventDefault();
+  }
   return (
-    <div className={`inputForm ${open ? "open" : ""}`}>
-      <form className="form" onSubmit={onSubmit}>
+    <div className={`inputForm ${open ? "open" : ""}`} >
+      <form className="form" onSubmit={onSubmit} draggable
+      onDragStart={e=>dragStart(e)}
+      onDrag={e=>drag(e)}
+      onDragOver={e=>dragOver(e)}
+      style={{position:'fixed', background:'white', left:pos.left,top:pos.top}}
+      >
         <div className="container">
           <div className="left">
             <div className="name">

@@ -8,6 +8,10 @@ type Props = {
   userNames: { name: string; rank: string }[];
 };
 const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
+
+
+
+
   return (
     <div className="headerWraper">
       <section>
@@ -15,10 +19,13 @@ const Header: React.FC<Props> = ({ user, onClick, userNames }) => {
           <div>
             <img src="/logo.png" alt="logo" width="90%" />
           </div>
-          <div className="connected-users">
+          <div className="connected-users"
+          >
             {userNames &&
               userNames.map((username) => (
-                <div key={username.name} className="nameCard">
+                <div key={username.name} className="nameCard"
+                
+                >
                   <li>
                     <Link to="#">
                       {username.name} / {username.rank}
