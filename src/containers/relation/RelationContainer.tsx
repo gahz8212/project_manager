@@ -16,34 +16,26 @@ const RelationContainer = () => {
   }));
   const [open, setOpen] = useState(false);
   const [items, setList] = useState(list as ListData);
-  const [Relate, setRelate] = useState(
-    {} as { upperId: number; lowerId: number }[] | null
-  );
+
   const formOpen = () => {
     setOpen(!open);
   };
   const makeRelation = (relItem: RelData) => {
     dispatch(relateItem.request(relItem));
   };
-  const getRelation = () => {
-    dispatch(initializeForm());
-    dispatch(getRelate.request());
-  };
+
   useEffect(() => {
+    dispatch(initializeForm())
     dispatch(getList.request());
     dispatch(getRelate.request());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (relate) {
-      setRelate(relate);
-    }
-  }, [relate]);
+ 
   useEffect(() => {
     if (list) {
       setList(list);
     }
-    console.log(list===items)
+
   }, [list]);
 
   return (
@@ -55,8 +47,8 @@ const RelationContainer = () => {
         open={open}
         formOpen={formOpen}
         makeRelation={makeRelation}
-        // getRelation={getRelation}
-        relate={Relate}
+        relate={relate}
+       
       ></RelationMain>
     </>
   );

@@ -8,10 +8,8 @@ type Props = {
   currentColumn: string;
   markItems: any[];
 currentsId:number[]
-  relate: {
-    upperId: number;
-    lowerId: number;
-}[] | null
+
+family:{parents:number[],children:number[]}|undefined;
   itemInfo: {
     id: number;
     category: string;
@@ -36,29 +34,29 @@ const Item: React.FC<Props> = ({
   setItems,
   currentColumn,
   markItems,
-  relate
+family
+ 
 }) => {
 
-  const setChangeColumn = (item: any, column: string) => {
+const setChangeColumn = (item: any, column: string) => {
+  setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pre.column}))) 
+  console.log('currentsId',currentsId)
 
-setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pre.column}))) 
-console.log('currentsId',currentsId)
-  
   };
-  const setFamilyItem=(family:{parents:(number|undefined)[],children:(number|undefined)[]})=>{
- 
+  
+  const setFamilyItem=()=>{
+  setParentColumn(family?.parents);
+  setChildColumn(family?.children);
 
-    setParentColumn(family.parents);
-    setChildColumn(family.children);
   }
-  const setParentColumn=(parents:(number|undefined)[])=>{
+  const setParentColumn=(parents:number[]|undefined)=>{
 
-    console.log('p',parents)
-    parents.map(parent=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===parent?'UPPER':pre.column}))))
+
+    parents?.map(parent=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===parent?'UPPER':pre.column}))))
   }
-  const setChildColumn=(children:(number|undefined)[])=>{
-    children.map(child=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===child?'LOWER':pre.column}))))
-    console.log('c',children)
+  const setChildColumn=(children:number[]|undefined)=>{
+    children?.map(child=>setItems(prev=>prev.map(pre=>({...pre,column:pre.id===child?'LOWER':pre.column}))))
+
   }
   const setResetColumn=()=>{
     console.log(currentsId)
@@ -68,33 +66,27 @@ console.log('currentsId',currentsId)
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    item: () => ({ itemInfo, currentsId,currentColumn,relate }),
+    item: () => ({ itemInfo, currentsId,currentColumn }),
 
     end: (item, monitor) => {
       const dropResult: { name: string,family:{parents:(number|undefined)[],children:(number|undefined)[]},title:string,currentColumn:string } | null = monitor.getDropResult();
 
       
       if (dropResult) {
-        const {name,family,currentColumn} = dropResult;
- console.log(currentColumn,name)
-
-        
-        
+        const {name,currentColumn} = dropResult;
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
-    if(currentColumn==='CURRENT'&&name==="HEADER"){
-
-      setResetColumn();
-    }
+            if(currentColumn==='CURRENT' && name==="HEADER"){
+              setResetColumn()}
             break;
           case UPPER:
             setChangeColumn(item, UPPER);
             break;
           case CURRENT:
             setChangeColumn(item, CURRENT);
-            setFamilyItem(family)
+            setFamilyItem()
    
             break;
           case LOWER:
@@ -108,6 +100,12 @@ console.log('currentsId',currentsId)
   }));
   return (
     <div ref={drag}>
+
+      <div style={{width:'100%',display:'flex',justifyContent:'space-between'}}>
+
+     <span style={{color:'tomato',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'gray',textAlign:'center',lineHeight:1.8}}>{family?.parents}</span> 
+      <span style={{color:'yellow',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'green',textAlign:'center',lineHeight:1.8}}>{family?.children}</span>
+      </div>
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
