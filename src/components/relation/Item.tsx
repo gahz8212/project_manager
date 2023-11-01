@@ -103,9 +103,9 @@ const setChangeColumn = (item: any, column: string) => {
 
       <div style={{width:'100%',display:'flex',justifyContent:'space-between'}}>
 
-     <span style={{color:'tomato',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'gray',textAlign:'center',lineHeight:1.8}}>{family?.parents}</span> 
-      <span style={{color:'yellow',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'green',textAlign:'center',lineHeight:1.8}}>{family?.children}</span>
-      </div>
+     <span>{family?.parents.map(parent=><span key={parent}style={{fontWeight:'bold',color:'red',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'darkorange',textAlign:'center',lineHeight:1.8}}>{parent}</span> )
+     }</span><span>{family?.children.map(child=><span key={child} style={{fontWeight:'bold',color:'yellow',display:'inline-block',borderRadius:'50%',width:'30px',height:'30px',backgroundColor:'green',textAlign:'center',lineHeight:1.8}}>{child}</span>)
+    }</span></div>
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
