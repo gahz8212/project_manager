@@ -4,11 +4,14 @@ type Props = {
   title: string;
   className: string;
   children: React.ReactNode;
-
+  relate: {
+    upperId: number;
+    lowerId: number;
+}[]|null
 
 };
-const Column: React.FC<Props> = ({ title, className, children}) => {
-
+const Column: React.FC<Props> = ({ title, className, children,relate}) => {
+// console.log(relate)
 
 
  
@@ -34,11 +37,10 @@ const Column: React.FC<Props> = ({ title, className, children}) => {
       upperId: number;
       lowerId: number;
   }[],currentsId:number[] | null}) => {
-      const {currentColumn,}=item;
-  
-
+      const {currentColumn}=item;
+      
+      console.log('relate',relate)
      
-
       return({ name: title,currentColumn })},
       
       collect: (monitor) => ({
@@ -47,7 +49,7 @@ const Column: React.FC<Props> = ({ title, className, children}) => {
       }),
  
 
-  }));
+  }),[relate]);
   return (
     <div
       ref={drop}

@@ -27,6 +27,12 @@ family:{parents:number[],children:number[]}|undefined;
         }[]
       | null;
   };
+  relate:
+  | {
+      upperId: number;
+      lowerId: number;
+    }[]
+  | null;
 };
 const Item: React.FC<Props> = ({
   itemInfo,
@@ -34,19 +40,20 @@ const Item: React.FC<Props> = ({
   setItems,
   currentColumn,
   markItems,
-family
+family,relate
  
 }) => {
 
 const setChangeColumn = (item: any, column: string) => {
   setItems(prev=>prev.map(pre=>({...pre,column:item.itemInfo.id===pre.id?column:pre.column}))) 
-  console.log('currentsId',currentsId)
-
+  // console.log('currentsId',currentsId)
+// setFamilyItem()
   };
   
   const setFamilyItem=()=>{
+    console.log(family)
   setParentColumn(family?.parents);
-  setChildColumn(family?.children);
+  // setChildColumn(family?.children);
 
   }
   const setParentColumn=(parents:number[]|undefined)=>{
@@ -66,7 +73,7 @@ const setChangeColumn = (item: any, column: string) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    item: () => ({ itemInfo, currentsId,currentColumn }),
+    item: () => ({ itemInfo, currentsId,currentColumn,relate }),
 
     end: (item, monitor) => {
       const dropResult: { name: string,family:{parents:(number|undefined)[],children:(number|undefined)[]},title:string,currentColumn:string } | null = monitor.getDropResult();
@@ -78,15 +85,15 @@ const setChangeColumn = (item: any, column: string) => {
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
-            if(currentColumn==='CURRENT' && name==="HEADER"){
-              setResetColumn()}
+            // if(currentColumn==='CURRENT' && name==="HEADER"){
+            //   setResetColumn()}
             break;
           case UPPER:
             setChangeColumn(item, UPPER);
             break;
           case CURRENT:
             setChangeColumn(item, CURRENT);
-            setFamilyItem()
+            // setFamilyItem()
    
             break;
           case LOWER:
@@ -99,7 +106,7 @@ const setChangeColumn = (item: any, column: string) => {
     },
   }));
   return (
-    <div ref={drag}>
+    <div ref={drag} onClick={()=>{alert(relate?.map(rel=>rel.lowerId))}}>
 
       <div style={{width:'100%',display:'flex',justifyContent:'space-between'}}>
 

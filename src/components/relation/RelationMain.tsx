@@ -35,7 +35,7 @@ const RelationMain: React.FC<Props> = ({
 
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as number[]);
-
+const [Relate,setRelate]=useState([{upperId:0,lowerId:0}]  as {upperId:number,lowerId:number}[]|null)
 
   const findFamily=(currentIDs:number,relate:{upperId:number,lowerId:number}[]|null)=>{
 
@@ -61,6 +61,7 @@ const RelationMain: React.FC<Props> = ({
           itemInfo={item}
           setItems={setList}
           currentColumn={item.column}
+          relate={Relate}
         ></Item>
       ));
   };
@@ -191,14 +192,16 @@ const RelationMain: React.FC<Props> = ({
     }
   }, [list]);
 
-
+useEffect(()=>{
+setRelate(relate)
+},[relate])
   return (
     <div className="rel-container">
       <div className="space"></div>
       {/* <ItemContainer open={open} formOpen={formOpen} /> */}
       <DndProvider backend={HTML5Backend}>
         <Column
-        // relate={Relate}
+        relate={Relate}
         // setRelate={setRelate}
           title={HEADER}
           className="rel_header"
@@ -208,7 +211,7 @@ const RelationMain: React.FC<Props> = ({
         </Column>
         <div className="rel_wrapper">
           <Column
-          // relate={Relate}
+          relate={Relate}
           // setRelate={setRelate}
             title={UPPER}
             className="rel_upper"
@@ -217,7 +220,7 @@ const RelationMain: React.FC<Props> = ({
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
           <Column
-          // relate={Relate}
+          relate={Relate}
           // setRelate={setRelate}
             title={CURRENT}
             className="rel_current"
@@ -226,7 +229,7 @@ const RelationMain: React.FC<Props> = ({
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
           <Column
-          // relate={Relate}
+          relate={Relate}
           // setRelate={setRelate}
             title={LOWER}
             className="rel_lower"
