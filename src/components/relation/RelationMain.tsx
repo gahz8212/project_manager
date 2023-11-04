@@ -21,7 +21,21 @@ type Props = {
         lowerId: number;
       }[]
     | null;
- 
+};
+export const findFamily = (
+  currentIDs: number,
+  relate: { upperId: number; lowerId: number }[] | null
+) => {
+  if (relate && currentIDs) {
+    const parents = relate
+      .filter((rel) => rel.lowerId === currentIDs)
+      .map((rel) => rel.upperId);
+    const children = relate
+      .filter((rel) => rel.upperId === currentIDs)
+      .map((rel) => rel.lowerId);
+
+    return { parents, children };
+  }
 };
 const RelationMain: React.FC<Props> = ({
   list,
@@ -30,38 +44,23 @@ const RelationMain: React.FC<Props> = ({
   formOpen,
   makeRelation,
   relate,
-
 }) => {
-
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as number[]);
-const [Relate,setRelate]=useState([{upperId:0,lowerId:0}]  as {upperId:number,lowerId:number}[]|null)
-
-  const findFamily=(currentIDs:number,relate:{upperId:number,lowerId:number}[]|null)=>{
-
-    if(relate && currentIDs){
-  
-      const parents=relate.filter(rel=>rel.lowerId===currentIDs).map(rel=>rel.upperId)
-      const children=relate.filter(rel=>rel.upperId===currentIDs).map(rel=>rel.lowerId)
-  
-  return {parents,children}
-    }
-  }
 
   const returnItemFromColumn = (columnName: string) => {
     return list
       .filter((item) => item.column === columnName)
       .map((item) => (
         <Item
-        
           markItems={markItems}
           currentsId={currentsId.current}
-          family={findFamily(item.id,relate)}
+          familyBall={findFamily(item.id, relate)}
           key={item.id}
           itemInfo={item}
           setItems={setList}
           currentColumn={item.column}
-          relate={Relate}
+          relate={relate}
         ></Item>
       ));
   };
@@ -79,14 +78,12 @@ const [Relate,setRelate]=useState([{upperId:0,lowerId:0}]  as {upperId:number,lo
       lowersId.current.length > 0 &&
       currentsId !== lowersId;
 
-
     searchChildren(currentsId.current);
 
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
-   
-  
+
     let condition = false;
     for (let res of searchResult) {
       for (let r of res) {
@@ -103,10 +100,7 @@ const [Relate,setRelate]=useState([{upperId:0,lowerId:0}]  as {upperId:number,lo
     }
 
     return showButton && condition;
-
   };
-
-
 
   const searchChildren = (ids: (number | undefined)[]) => {
     const current = ids.map((id) =>
@@ -192,48 +186,41 @@ const [Relate,setRelate]=useState([{upperId:0,lowerId:0}]  as {upperId:number,lo
     }
   }, [list]);
 
-useEffect(()=>{
-setRelate(relate)
-},[relate])
   return (
     <div className="rel-container">
       <div className="space"></div>
       {/* <ItemContainer open={open} formOpen={formOpen} /> */}
       <DndProvider backend={HTML5Backend}>
         <Column
-        relate={Relate}
-        // setRelate={setRelate}
+          relate={relate}
+          // setRelate={setRelate}
           title={HEADER}
           className="rel_header"
-       
         >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
         </Column>
         <div className="rel_wrapper">
           <Column
-          relate={Relate}
-          // setRelate={setRelate}
+            relate={relate}
+            // setRelate={setRelate}
             title={UPPER}
             className="rel_upper"
-         
           >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
           <Column
-          relate={Relate}
-          // setRelate={setRelate}
+            relate={relate}
+            // setRelate={setRelate}
             title={CURRENT}
             className="rel_current"
-         
           >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
           <Column
-          relate={Relate}
-          // setRelate={setRelate}
+            relate={relate}
+            // setRelate={setRelate}
             title={LOWER}
             className="rel_lower"
-         
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
           </Column>
