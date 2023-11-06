@@ -59,10 +59,50 @@ const Item: React.FC<Props> = ({
       | { parents: (number | undefined)[]; children: (number | undefined)[] }
       | undefined
   ) => {
-    console.log("family", family);
+    // console.log("family", family);
     setParentColumn(family?.parents);
     setChildColumn(family?.children);
   };
+  const setChild=(children: (number | undefined)[],column:string)=>{
+    children?.map((child) =>
+    setItems((prev) =>
+      prev.map((pre) => ({
+        ...pre,
+        column: pre.id === child ? column : pre.column,
+      }))
+    )
+  );
+  }
+  const setGrandChild=(grandChildren:number[],column:string)=>{
+    grandChildren?.map((children) =>
+    setItems((prev) =>
+      prev.map((pre) => ({
+        ...pre,
+        column: pre.id === children ? column : pre.column,
+      }))
+    )
+  );
+  }
+  const setParent=(parents: (number | undefined)[],column:string)=>{
+    parents?.map((parent) =>
+    setItems((prev) =>
+      prev.map((pre) => ({
+        ...pre,
+        column: pre.id === parent ? column : pre.column,
+      }))
+    )
+  );
+  }
+  const setGrandParent=(grandParents:number[],column:string)=>{
+    grandParents?.map((grandParent) =>
+    setItems((prev) =>
+      prev.map((pre) => ({
+        ...pre,
+        column: pre.id === grandParent ? column : pre.column,
+      }))
+    )
+  );
+  }
   const setParentColumn = (parents: (number | undefined)[] | undefined) => {
     parents?.map((parent) =>
       setItems((prev) =>
@@ -100,22 +140,27 @@ const Item: React.FC<Props> = ({
           parents: (number | undefined)[];
           children: (number | undefined)[];
         };
+        grandParents:number[];
+        grandChildren:number[];
         title: string;
         currentColumn: string;
       } | null = monitor.getDropResult();
 
       if (dropResult) {
-        const { name, currentColumn, family } = dropResult;
+        const { name, currentColumn, family,grandParents,grandChildren } = dropResult;
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
+            console.log(item.itemInfo.id)
             if (currentColumn === "CURRENT" && name === "HEADER") {
-              setResetColumn();
+              // setResetColumn();
             }
             break;
           case UPPER:
             setChangeColumn(item, UPPER);
+            setChild(family.children,CURRENT)
+            setGrandChild(grandChildren,LOWER)
             break;
           case CURRENT:
             setChangeColumn(item, CURRENT);
@@ -124,6 +169,8 @@ const Item: React.FC<Props> = ({
             break;
           case LOWER:
             setChangeColumn(item, LOWER);
+            setParent(family.parents,CURRENT)
+            setGrandParent(grandParents,UPPER)
             break;
           default:
             break;

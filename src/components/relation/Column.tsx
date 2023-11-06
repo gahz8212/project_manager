@@ -14,7 +14,30 @@ type Props = {
 };
 const Column: React.FC<Props> = ({ title, className, children, relate }) => {
   // console.log(relate)
+const findGrandParent=(parents:number[]|undefined)=>{
+let grandParents:number[]=[]
+  if(parents){
+    parents.forEach(parent => {
+      relate?.forEach(rel=>{if(rel.lowerId===parent){
+        grandParents.push(rel.upperId)
+      }})
+    });
+  }
+  return (grandParents)
+}
+const findGrandchildren=(children:number[]|undefined)=>{
+  let grandChildren:number[]=[]
+  if(children){
 
+    children.forEach(child=>{
+      relate?.forEach(rel=>{if(rel.upperId===child){
+        grandChildren.push(rel.lowerId)
+      }})
+    })
+  }
+  
+  return (grandChildren)
+}
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: "card",
@@ -43,16 +66,19 @@ const Column: React.FC<Props> = ({ title, className, children, relate }) => {
         const { currentColumn } = item;
 
         const family = findFamily(item.itemInfo.id, relate);
-        // console.log("item.itemInfo.id", item.itemInfo.id);
-        // console.log("family", family);
-        return { name: title, currentColumn, family };
+  const grandParents=findGrandParent(family?.parents)
+  const grandChildren=findGrandchildren(family?.children)
+  // console.log(grandParents)
+  // console.log(grandChildren)
+ 
+        return { name: title, currentColumn, family,grandParents,grandChildren };
       },
 
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
     }),
-    [relate]
+    [relate]//////////////이런 방법이 존재한다고!
   );
   return (
     <div
