@@ -8,7 +8,8 @@ type Props = {
   currentColumn: string;
   markItems: any[];
   currentsId: number[];
-
+  highLight:number;
+  setHighlight:React.Dispatch<React.SetStateAction<number>>;
   familyBall: { parents: number[]; children: number[] } | undefined;
   itemInfo: {
     id: number;
@@ -42,6 +43,8 @@ const Item: React.FC<Props> = ({
   markItems,
   familyBall,
   relate,
+  highLight,
+  setHighlight
 }) => {
   const setChangeColumn = (item: any, column: string) => {
     setItems((prev) =>
@@ -50,8 +53,6 @@ const Item: React.FC<Props> = ({
         column: item.itemInfo.id === pre.id ? column : pre.column,
       }))
     );
-    // console.log('currentsId',currentsId)
-    // setFamilyItem()
   };
 
   const setFamilyItem = (
@@ -59,7 +60,6 @@ const Item: React.FC<Props> = ({
       | { parents: (number | undefined)[]; children: (number | undefined)[] }
       | undefined
   ) => {
-    // console.log("family", family);
     setParentColumn(family?.parents);
     setChildColumn(family?.children);
   };
@@ -124,7 +124,8 @@ const Item: React.FC<Props> = ({
     );
   };
   const setResetColumn = () => {
-    console.log(currentsId);
+    // console.log(currentsId);
+    // setHighlight(-1)
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
 
@@ -136,6 +137,7 @@ const Item: React.FC<Props> = ({
     end: (item, monitor) => {
       const dropResult: {
         name: string;
+        resetAble:boolean;
         family: {
           parents: (number | undefined)[];
           children: (number | undefined)[];
@@ -144,30 +146,42 @@ const Item: React.FC<Props> = ({
         grandChildren:number[];
         title: string;
         currentColumn: string;
+
       } | null = monitor.getDropResult();
 
       if (dropResult) {
-        const { name, currentColumn, family,grandParents,grandChildren } = dropResult;
+        const { name, currentColumn, family,grandParents,grandChildren,resetAble } = dropResult;
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
+        console.log(resetAble)
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
-            console.log(item.itemInfo.id)
-            if (currentColumn === "CURRENT" && name === "HEADER") {
-              // setResetColumn();
-            }
+          if(resetAble){
+
+            setResetColumn();
+          }
+            
             break;
           case UPPER:
+            if( name===UPPER && (currentColumn===LOWER || currentColumn===CURRENT)){
+              setResetColumn()
+            }
             setChangeColumn(item, UPPER);
             setChild(family.children,CURRENT)
             setGrandChild(grandChildren,LOWER)
             break;
           case CURRENT:
+            if( name===CURRENT && (currentColumn===LOWER || currentColumn===UPPER)){
+              setResetColumn()
+            }
             setChangeColumn(item, CURRENT);
             setFamilyItem(family);
 
             break;
           case LOWER:
+            if( name===LOWER && (currentColumn===CURRENT || currentColumn===UPPER)){
+              setResetColumn()
+            }
             setChangeColumn(item, LOWER);
             setParent(family.parents,CURRENT)
             setGrandParent(grandParents,UPPER)
@@ -236,7 +250,7 @@ const Item: React.FC<Props> = ({
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
-        } `}
+        }${itemInfo.id===highLight?'highLight':''}`}
       >
         <div className="item_info">
           <div className="id">

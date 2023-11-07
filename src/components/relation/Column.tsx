@@ -5,15 +5,18 @@ type Props = {
   title: string;
   className: string;
   children: React.ReactNode;
+  setHighlight:React.Dispatch<React.SetStateAction<number>>;
   relate:
     | {
         upperId: number;
         lowerId: number;
       }[]
     | null;
+    idRef:React.MutableRefObject<number>
 };
-const Column: React.FC<Props> = ({ title, className, children, relate }) => {
+const Column: React.FC<Props> = ({ title, className, children, relate,idRef,setHighlight }) => {
   // console.log(relate)
+//  const idRef=useRef<number>(0)
 const findGrandParent=(parents:number[]|undefined)=>{
 let grandParents:number[]=[]
   if(parents){
@@ -68,17 +71,35 @@ const findGrandchildren=(children:number[]|undefined)=>{
         const family = findFamily(item.itemInfo.id, relate);
   const grandParents=findGrandParent(family?.parents)
   const grandChildren=findGrandchildren(family?.children)
-  // console.log(grandParents)
-  // console.log(grandChildren)
+
+console.log('item.itemInfo.id',item.itemInfo.id)
+console.log('전',idRef.current)
+let resetAble=false
+console.log(currentColumn)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+if(idRef.current!==-1 && title==='HEADER'){
+  resetAble=item.itemInfo.id===idRef.current
+  setHighlight(-1)
+  if(resetAble){
+    idRef.current=-1
+  }
+}else{
+  if(idRef.current===-1)
+  setHighlight(item.itemInfo.id)
+}
+idRef.current=item.itemInfo.id
+console.log('후',idRef.current)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
  
-        return { name: title, currentColumn, family,grandParents,grandChildren };
+        return { name: title, currentColumn, family,grandParents,grandChildren,resetAble };
       },
 
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
     }),
-    [relate]//////////////이런 방법이 존재한다고!
+    [relate,idRef.current]//////////////이런 방법이 존재한다고!
   );
   return (
     <div
@@ -86,6 +107,7 @@ const findGrandchildren=(children:number[]|undefined)=>{
       className={className}
       style={{ backgroundColor: isOver ? "rgb(188,251,255)" : undefined }}
     >
+ 
       {children}
     </div>
   );

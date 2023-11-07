@@ -47,6 +47,7 @@ const RelationMain: React.FC<Props> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as number[]);
+  const [highLight, setHighlight] = useState<number>(-1);
 
   const returnItemFromColumn = (columnName: string) => {
     return list
@@ -61,6 +62,8 @@ const RelationMain: React.FC<Props> = ({
           setItems={setList}
           currentColumn={item.column}
           relate={relate}
+          highLight={highLight}
+          setHighlight={setHighlight}
         ></Item>
       ));
   };
@@ -69,20 +72,27 @@ const RelationMain: React.FC<Props> = ({
   const uppersId: React.MutableRefObject<number[]> = useRef([]);
   const currentsId: React.MutableRefObject<number[]> = useRef([]);
   const lowersId: React.MutableRefObject<number[]> = useRef([]);
+  const idRef=useRef<number>(-1)
 
   const relateCondition = () => {
     setMarkItems([]);
 
     const showButton =
-      currentsId.current.length > 0 &&
-      lowersId.current.length > 0 &&
-      currentsId !== lowersId;
+      (uppersId.current.length > 0 ||
+      currentsId.current.length > 0 ||
+      lowersId.current.length > 0 )
+      &&
+      (currentsId !== lowersId||uppersId!==currentsId||uppersId!==lowersId);
 
     searchChildren(currentsId.current);
+
 
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
+
+// console.log(searchResult)
+
 
     let condition = false;
     for (let res of searchResult) {
@@ -98,8 +108,9 @@ const RelationMain: React.FC<Props> = ({
         }
       }
     }
-
+// console.log('condition',condition)
     return showButton && condition;
+    // return showButton 
   };
 
   const searchChildren = (ids: (number | undefined)[]) => {
@@ -193,33 +204,37 @@ const RelationMain: React.FC<Props> = ({
       <DndProvider backend={HTML5Backend}>
         <Column
           relate={relate}
-          // setRelate={setRelate}
+          idRef={idRef}
           title={HEADER}
+          setHighlight={setHighlight}
           className="rel_header"
-        >
+          >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
         </Column>
         <div className="rel_wrapper">
           <Column
             relate={relate}
-            // setRelate={setRelate}
+            idRef={idRef}
             title={UPPER}
+            setHighlight={setHighlight}
             className="rel_upper"
-          >
+            >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
           <Column
             relate={relate}
-            // setRelate={setRelate}
+            idRef={idRef}
             title={CURRENT}
+            setHighlight={setHighlight}
             className="rel_current"
-          >
+            >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
           <Column
             relate={relate}
-            // setRelate={setRelate}
+            idRef={idRef}
             title={LOWER}
+            setHighlight={setHighlight}
             className="rel_lower"
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
