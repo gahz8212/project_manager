@@ -152,7 +152,7 @@ const Item: React.FC<Props> = ({
       if (dropResult) {
         const { name, currentColumn, family,grandParents,grandChildren,resetAble } = dropResult;
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
-        console.log(resetAble)
+        // console.log(resetAble)
         switch (name) {
           case HEADER:
             setChangeColumn(item, HEADER);
@@ -195,9 +195,9 @@ const Item: React.FC<Props> = ({
   return (
     <div
       ref={drag}
-      onClick={() => {
-        alert(relate?.map((rel) => rel.lowerId));
-      }}
+      // onClick={() => {
+      //   alert(relate?.map((rel) => rel.lowerId));
+      // }}
     >
       <div
         style={{

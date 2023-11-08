@@ -72,23 +72,19 @@ const findGrandchildren=(children:number[]|undefined)=>{
   const grandParents=findGrandParent(family?.parents)
   const grandChildren=findGrandchildren(family?.children)
 
-console.log('item.itemInfo.id',item.itemInfo.id)
-console.log('전',idRef.current)
-let resetAble=false
-console.log(currentColumn)
-////////////////////////////////////////////////////////////////////////////////////////////////////
-if(idRef.current!==-1 && title==='HEADER'){
-  resetAble=item.itemInfo.id===idRef.current
-  setHighlight(-1)
-  if(resetAble){
+
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  let resetAble=false
+  if(idRef.current===-1 ){
+    idRef.current=item.itemInfo.id
+    setHighlight(idRef.current)
+  }else if(idRef.current>-1 && title==='HEADER' && item.itemInfo.id===idRef.current){
+  resetAble=true
     idRef.current=-1
-  }
-}else{
-  if(idRef.current===-1)
-  setHighlight(item.itemInfo.id)
+    setHighlight(-1)
 }
-idRef.current=item.itemInfo.id
-console.log('후',idRef.current)
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
  

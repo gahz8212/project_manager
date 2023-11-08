@@ -108,7 +108,7 @@ const RelationMain: React.FC<Props> = ({
         }
       }
     }
-// console.log('condition',condition)
+console.log('condition',condition)
     return showButton && condition;
     // return showButton 
   };
@@ -124,7 +124,7 @@ const RelationMain: React.FC<Props> = ({
 
     searchChildren(lowers);
   };
-  // console.log(children);
+
   const searchParent: (id: number, value: number) => any = (
     id: number,
     value: number

@@ -63,11 +63,12 @@ const InputForm: React.FC<Props> = ({
   }
   return (
     <div className={`inputForm ${open ? "open" : ""}`} >
-      <form className="form" onSubmit={onSubmit} draggable
-      onDragStart={e=>dragStart(e)}
-      onDrag={e=>drag(e)}
-      onDragOver={e=>dragOver(e)}
-      style={{position:'fixed', background:'white', left:pos.left,top:pos.top}}
+      <form className="form" onSubmit={onSubmit} 
+      // draggable
+      // onDragStart={e=>dragStart(e)}
+      // onDrag={e=>drag(e)}
+      // onDragOver={e=>dragOver(e)}
+      // style={{position:'fixed', background:'white', left:pos.left,top:pos.top}}
       >
         <div className="container">
           <div className="left">
