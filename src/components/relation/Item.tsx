@@ -46,11 +46,11 @@ const Item: React.FC<Props> = ({
   highLight,
   setHighlight
 }) => {
-  const setChangeColumn = (item: any, column: string) => {
+  const setChangeColumn = (id: number|undefined, column: string) => {
     setItems((prev) =>
       prev.map((pre) => ({
         ...pre,
-        column: item.itemInfo.id === pre.id ? column : pre.column,
+        column: id === pre.id ? column : pre.column,
       }))
     );
   };
@@ -154,44 +154,58 @@ const Item: React.FC<Props> = ({
         const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
         // console.log(resetAble)
         switch (name) {
-          case HEADER:
-            setChangeColumn(item, HEADER);
+          case HEADER://목적지:HEADER, 출발지:상관없음
+            setChangeColumn(item.itemInfo.id, HEADER);
+            family.children?.map(child=>setChangeColumn(child, HEADER));
+           
+            console.log(family.children?.[0])
           if(resetAble){
-
             setResetColumn();
           }
             
             break;
-          case UPPER:
-            if( name===UPPER && (currentColumn===LOWER || currentColumn===CURRENT)){
+          case UPPER://목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
+            if(  (currentColumn===LOWER || currentColumn===CURRENT)){
               setResetColumn()
+            }else if(currentColumn===HEADER){
+
             }
-            setChangeColumn(item, UPPER);
+            setChangeColumn(item.itemInfo.id, UPPER);
             setChild(family.children,CURRENT)
             setGrandChild(grandChildren,LOWER)
             break;
-          case CURRENT:
-            if( name===CURRENT && (currentColumn===LOWER || currentColumn===UPPER)){
+          case CURRENT://목적지:CURRENT, 출발지:LOWER || UPPER, 목적:순회
+            if(  (currentColumn===LOWER || currentColumn===UPPER)){
               setResetColumn()
-            }
-            setChangeColumn(item, CURRENT);
-            setFamilyItem(family);
+            }else if(currentColumn===HEADER){
+              // console.log('currentsId.length',currentsId.length)
+              if(currentsId.length<1){
+                setFamilyItem(family);
 
-            break;
-          case LOWER:
-            if( name===LOWER && (currentColumn===CURRENT || currentColumn===UPPER)){
-              setResetColumn()
+              }
+              // alert('item을 추가 합니다.')
+              // setChangeColumn(item.itemInfo.id, CURRENT);
             }
-            setChangeColumn(item, LOWER);
-            setParent(family.parents,CURRENT)
-            setGrandParent(grandParents,UPPER)
+            setChangeColumn(item.itemInfo.id, CURRENT);
+            
+            break;
+            case LOWER://목적지:LOWER, 출발지:UPPER || CURRENT, 목적:순회
+            if(  (currentColumn===CURRENT || currentColumn===UPPER)){
+              setResetColumn()
+              setParent(family.parents,CURRENT)
+              setGrandParent(grandParents,UPPER)
+            }else if(currentColumn===HEADER){
+              // alert('item을 추가 합니다.')
+              
+            }
+            setChangeColumn(item.itemInfo.id, LOWER);
             break;
           default:
             break;
         }
       }
     },
-  }));
+  }),[currentsId]);
   return (
     <div
       ref={drag}

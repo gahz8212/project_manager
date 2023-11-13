@@ -66,9 +66,8 @@ const findGrandchildren=(children:number[]|undefined)=>{
 
         currentsId: number[] | null;
       }) => {
-        const { currentColumn } = item;
-
-        const family = findFamily(item.itemInfo.id, relate);
+  const { currentColumn } = item;
+  const family = findFamily(item.itemInfo.id, relate);
   const grandParents=findGrandParent(family?.parents)
   const grandChildren=findGrandchildren(family?.children)
 
