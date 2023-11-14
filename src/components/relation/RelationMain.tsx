@@ -91,7 +91,7 @@ const RelationMain: React.FC<Props> = ({
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
 
-// console.log(searchResult)
+console.log(searchResult)
 
 
     let condition = false;

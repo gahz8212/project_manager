@@ -1,5 +1,5 @@
 import React from "react";
-
+import { findFamily } from "./RelationMain";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
 import { ListData } from "../../lib/api/list";
@@ -155,10 +155,19 @@ const Item: React.FC<Props> = ({
         // console.log(resetAble)
         switch (name) {
           case HEADER://목적지:HEADER, 출발지:상관없음
-            setChangeColumn(item.itemInfo.id, HEADER);
-            family.children?.map(child=>setChangeColumn(child, HEADER));
+          setChangeColumn(item.itemInfo.id, HEADER);
+          //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
+          // console.log('currentsId',currentsId,item.itemInfo.id)
+          const restChild=currentsId.filter(id=>id!==item.itemInfo.id)
+          // console.log(restChild)
+         ////////////////////////////////////////////////////////////////////
+          setGrandChild(restChild,LOWER)
+
+
+          ////////////////////////////////////////////////////////////////////
+          family.children?.map(child=>setChangeColumn(child, HEADER));
            
-            console.log(family.children?.[0])
+            // console.log(family.children?.[0])
           if(resetAble){
             setResetColumn();
           }
@@ -187,6 +196,7 @@ const Item: React.FC<Props> = ({
               // setChangeColumn(item.itemInfo.id, CURRENT);
             }
             setChangeColumn(item.itemInfo.id, CURRENT);
+            setChild(family.children,LOWER)
             
             break;
             case LOWER://목적지:LOWER, 출발지:UPPER || CURRENT, 목적:순회
