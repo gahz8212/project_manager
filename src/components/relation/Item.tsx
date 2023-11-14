@@ -8,8 +8,8 @@ type Props = {
   currentColumn: string;
   markItems: any[];
   currentsId: number[];
-  highLight:number;
-  setHighlight:React.Dispatch<React.SetStateAction<number>>;
+  highLight: number;
+  setHighlight: React.Dispatch<React.SetStateAction<number>>;
   familyBall: { parents: number[]; children: number[] } | undefined;
   itemInfo: {
     id: number;
@@ -44,9 +44,9 @@ const Item: React.FC<Props> = ({
   familyBall,
   relate,
   highLight,
-  setHighlight
+  setHighlight,
 }) => {
-  const setChangeColumn = (id: number|undefined, column: string) => {
+  const setChangeColumn = (id: number | undefined, column: string) => {
     setItems((prev) =>
       prev.map((pre) => ({
         ...pre,
@@ -63,46 +63,49 @@ const Item: React.FC<Props> = ({
     setParentColumn(family?.parents);
     setChildColumn(family?.children);
   };
-  const setChild=(children: (number | undefined)[],column:string)=>{
+  const setChild = (children: (number | undefined)[], column: string) => {
     children?.map((child) =>
-    setItems((prev) =>
-      prev.map((pre) => ({
-        ...pre,
-        column: pre.id === child ? column : pre.column,
-      }))
-    )
-  );
-  }
-  const setGrandChild=(grandChildren:number[],column:string)=>{
+      setItems((prev) =>
+        prev.map((pre) => ({
+          ...pre,
+          column: pre.id === child ? column : pre.column,
+        }))
+      )
+    );
+  };
+  const setGrandChild = (
+    grandChildren: number[] | undefined,
+    column: string
+  ) => {
     grandChildren?.map((children) =>
-    setItems((prev) =>
-      prev.map((pre) => ({
-        ...pre,
-        column: pre.id === children ? column : pre.column,
-      }))
-    )
-  );
-  }
-  const setParent=(parents: (number | undefined)[],column:string)=>{
+      setItems((prev) =>
+        prev.map((pre) => ({
+          ...pre,
+          column: pre.id === children ? column : pre.column,
+        }))
+      )
+    );
+  };
+  const setParent = (parents: (number | undefined)[], column: string) => {
     parents?.map((parent) =>
-    setItems((prev) =>
-      prev.map((pre) => ({
-        ...pre,
-        column: pre.id === parent ? column : pre.column,
-      }))
-    )
-  );
-  }
-  const setGrandParent=(grandParents:number[],column:string)=>{
+      setItems((prev) =>
+        prev.map((pre) => ({
+          ...pre,
+          column: pre.id === parent ? column : pre.column,
+        }))
+      )
+    );
+  };
+  const setGrandParent = (grandParents: number[], column: string) => {
     grandParents?.map((grandParent) =>
-    setItems((prev) =>
-      prev.map((pre) => ({
-        ...pre,
-        column: pre.id === grandParent ? column : pre.column,
-      }))
-    )
-  );
-  }
+      setItems((prev) =>
+        prev.map((pre) => ({
+          ...pre,
+          column: pre.id === grandParent ? column : pre.column,
+        }))
+      )
+    );
+  };
   const setParentColumn = (parents: (number | undefined)[] | undefined) => {
     parents?.map((parent) =>
       setItems((prev) =>
@@ -129,93 +132,104 @@ const Item: React.FC<Props> = ({
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
 
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: "card",
-    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    item: () => ({ itemInfo, currentsId, currentColumn }),
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: "card",
+      collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+      item: () => ({ itemInfo, currentsId, currentColumn }),
 
-    end: (item, monitor) => {
-      const dropResult: {
-        name: string;
-        resetAble:boolean;
-        family: {
-          parents: (number | undefined)[];
-          children: (number | undefined)[];
-        };
-        grandParents:number[];
-        grandChildren:number[];
-        title: string;
-        currentColumn: string;
+      end: (item, monitor) => {
+        const dropResult: {
+          name: string;
+          resetAble: boolean;
+          family: {
+            parents: (number | undefined)[];
+            children: (number | undefined)[];
+          };
+          grandParents: number[];
+          grandChildren: number[];
+          title: string;
+          currentColumn: string;
+        } | null = monitor.getDropResult();
 
-      } | null = monitor.getDropResult();
+        if (dropResult) {
+          const {
+            name,
+            currentColumn,
+            family,
+            grandParents,
+            grandChildren,
+            resetAble,
+          } = dropResult;
+          const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
+          // console.log(resetAble)
+          switch (name) {
+            case HEADER: //목적지:HEADER, 출발지:상관없음
+              setChangeColumn(item.itemInfo.id, HEADER);
+              family.children?.map((child) => setChangeColumn(child, HEADER));
+              //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
+              // console.log('currentsId',currentsId,item.itemInfo.id)
+              const restChild = currentsId.filter(
+                (id) => id !== item.itemInfo.id
+              );
+              // console.log(restChild)
+              ////////////////////////////////////////////////////////////////////
+              const restChildren = restChild.map((child) =>
+                findFamily(child, relate)
+              );
+              // setGrandChild(restChildren[0]?.children, LOWER);
+              setGrandChild(restChildren[0]?.children, LOWER);
 
-      if (dropResult) {
-        const { name, currentColumn, family,grandParents,grandChildren,resetAble } = dropResult;
-        const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
-        // console.log(resetAble)
-        switch (name) {
-          case HEADER://목적지:HEADER, 출발지:상관없음
-          setChangeColumn(item.itemInfo.id, HEADER);
-          //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
-          // console.log('currentsId',currentsId,item.itemInfo.id)
-          const restChild=currentsId.filter(id=>id!==item.itemInfo.id)
-          // console.log(restChild)
-         ////////////////////////////////////////////////////////////////////
-          setGrandChild(restChild,LOWER)
+              ////////////////////////////////////////////////////////////////////
 
-
-          ////////////////////////////////////////////////////////////////////
-          family.children?.map(child=>setChangeColumn(child, HEADER));
-           
-            // console.log(family.children?.[0])
-          if(resetAble){
-            setResetColumn();
-          }
-            
-            break;
-          case UPPER://목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
-            if(  (currentColumn===LOWER || currentColumn===CURRENT)){
-              setResetColumn()
-            }else if(currentColumn===HEADER){
-
-            }
-            setChangeColumn(item.itemInfo.id, UPPER);
-            setChild(family.children,CURRENT)
-            setGrandChild(grandChildren,LOWER)
-            break;
-          case CURRENT://목적지:CURRENT, 출발지:LOWER || UPPER, 목적:순회
-            if(  (currentColumn===LOWER || currentColumn===UPPER)){
-              setResetColumn()
-            }else if(currentColumn===HEADER){
-              // console.log('currentsId.length',currentsId.length)
-              if(currentsId.length<1){
-                setFamilyItem(family);
-
+              // console.log(family.children?.[0])
+              if (resetAble) {
+                setResetColumn();
               }
-              // alert('item을 추가 합니다.')
-              // setChangeColumn(item.itemInfo.id, CURRENT);
-            }
-            setChangeColumn(item.itemInfo.id, CURRENT);
-            setChild(family.children,LOWER)
-            
-            break;
-            case LOWER://목적지:LOWER, 출발지:UPPER || CURRENT, 목적:순회
-            if(  (currentColumn===CURRENT || currentColumn===UPPER)){
-              setResetColumn()
-              setParent(family.parents,CURRENT)
-              setGrandParent(grandParents,UPPER)
-            }else if(currentColumn===HEADER){
-              // alert('item을 추가 합니다.')
-              
-            }
-            setChangeColumn(item.itemInfo.id, LOWER);
-            break;
-          default:
-            break;
+
+              break;
+            case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
+              if (currentColumn === LOWER || currentColumn === CURRENT) {
+                setResetColumn();
+              } else if (currentColumn === HEADER) {
+              }
+              setChangeColumn(item.itemInfo.id, UPPER);
+              setChild(family.children, CURRENT);
+              setGrandChild(grandChildren, LOWER);
+              break;
+            case CURRENT: //목적지:CURRENT, 출발지:LOWER || UPPER, 목적:순회
+              if (currentColumn === LOWER || currentColumn === UPPER) {
+                setResetColumn();
+              } else if (currentColumn === HEADER) {
+                // console.log('currentsId.length',currentsId.length)
+                if (currentsId.length < 1) {
+                  setFamilyItem(family);
+                }
+                // alert('item을 추가 합니다.')
+                // setChangeColumn(item.itemInfo.id, CURRENT);
+              }
+              setChangeColumn(item.itemInfo.id, CURRENT);
+              setChild(family.children, LOWER);
+
+              break;
+            case LOWER: //목적지:LOWER, 출발지:UPPER || CURRENT, 목적:순회
+              if (currentColumn === CURRENT || currentColumn === UPPER) {
+                setResetColumn();
+                setParent(family.parents, CURRENT);
+                setGrandParent(grandParents, UPPER);
+              } else if (currentColumn === HEADER) {
+                // alert('item을 추가 합니다.')
+              }
+              setChangeColumn(item.itemInfo.id, LOWER);
+              break;
+            default:
+              break;
+          }
         }
-      }
-    },
-  }),[currentsId]);
+      },
+    }),
+    [currentsId]
+  );
   return (
     <div
       ref={drag}
@@ -274,7 +288,7 @@ const Item: React.FC<Props> = ({
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
-        }${itemInfo.id===highLight?'highLight':''}`}
+        }${itemInfo.id === highLight ? "highLight" : ""}`}
       >
         <div className="item_info">
           <div className="id">
