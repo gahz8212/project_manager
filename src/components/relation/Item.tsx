@@ -166,23 +166,38 @@ const Item: React.FC<Props> = ({
           switch (name) {
             case HEADER: //목적지:HEADER, 출발지:상관없음
               setChangeColumn(item.itemInfo.id, HEADER);
-              family.children?.map((child) => setChangeColumn(child, HEADER));
               //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
               // console.log('currentsId',currentsId,item.itemInfo.id)
+              if(currentColumn===CURRENT || currentColumn===UPPER) {
+                family.children?.map((child) => setChangeColumn(child, HEADER));
               const restChild = currentsId.filter(
                 (id) => id !== item.itemInfo.id
               );
-              // console.log(restChild)
-              ////////////////////////////////////////////////////////////////////
+  
               const restChildren = restChild.map((child) =>
                 findFamily(child, relate)
               );
-              // setGrandChild(restChildren[0]?.children, LOWER);
               setGrandChild(restChildren[0]?.children, LOWER);
+           }else if(currentColumn===LOWER){
 
-              ////////////////////////////////////////////////////////////////////
+            
+            //////이게 자꾸 되니까 무서워...
+            const upperid=findFamily(item.itemInfo.id,relate)?.parents
+            if(upperid){
+            // console.log('upperid',upperid[0],'lowerid',item.itemInfo.id)
 
-              // console.log(family.children?.[0])
+
+              const index=upperid.map(id=>relate?.findIndex(rel=>
+                (rel.upperId===id && rel.lowerId===item.itemInfo.id)
+                ))
+                // console.log('index',index,'relate',relate)
+
+              const newRelate=index.map(idx=>{if(idx){return relate?.splice(idx,1)}else{return null}})
+              console.log('newRelate',newRelate)
+                  
+                
+              }
+            }
               if (resetAble) {
                 setResetColumn();
               }
@@ -194,22 +209,26 @@ const Item: React.FC<Props> = ({
               } else if (currentColumn === HEADER) {
               }
               setChangeColumn(item.itemInfo.id, UPPER);
-              setChild(family.children, CURRENT);
               setGrandChild(grandChildren, LOWER);
+              setChild(family.children, CURRENT);
               break;
+
             case CURRENT: //목적지:CURRENT, 출발지:LOWER || UPPER, 목적:순회
-              if (currentColumn === LOWER || currentColumn === UPPER) {
-                setResetColumn();
+            if (currentColumn === LOWER || currentColumn === UPPER) {
+              setResetColumn();
+              setFamilyItem(family);
               } else if (currentColumn === HEADER) {
                 // console.log('currentsId.length',currentsId.length)
-                if (currentsId.length < 1) {
+                if (currentsId.length ===0) {
                   setFamilyItem(family);
+                }else{
+                  setChild(family.children, LOWER);
+                  
                 }
                 // alert('item을 추가 합니다.')
                 // setChangeColumn(item.itemInfo.id, CURRENT);
               }
               setChangeColumn(item.itemInfo.id, CURRENT);
-              setChild(family.children, LOWER);
 
               break;
             case LOWER: //목적지:LOWER, 출발지:UPPER || CURRENT, 목적:순회
