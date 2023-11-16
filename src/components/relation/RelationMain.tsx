@@ -23,7 +23,7 @@ type Props = {
     | null;
 };
 export const findFamily = (
-  currentIDs: number,
+  currentIDs: number | number[] | undefined,
   relate: { upperId: number; lowerId: number }[] | null
 ) => {
   if (relate && currentIDs) {

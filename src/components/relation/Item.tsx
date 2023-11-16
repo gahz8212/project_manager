@@ -131,7 +131,23 @@ const Item: React.FC<Props> = ({
     // setHighlight(-1)
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
+  let resultArray:any =[]
+  const remove_relation=(ids:(number | undefined)[])=>{
+    if(ids.length===0)return;
+   if(ids){
+     const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
+     if(children){
+       remove_relation(children)
+       const newArray=ids.map(id=>children.map(child=>({upperId:id,lowerId:child})))
 
+      resultArray=[]
+        resultArray.push(...newArray.flat())
+
+      return resultArray
+      }
+    }
+
+  }
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "card",
@@ -165,42 +181,45 @@ const Item: React.FC<Props> = ({
           // console.log(resetAble)
           switch (name) {
             case HEADER: //목적지:HEADER, 출발지:상관없음
-              setChangeColumn(item.itemInfo.id, HEADER);
-              //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
-              // console.log('currentsId',currentsId,item.itemInfo.id)
-              if(currentColumn===CURRENT || currentColumn===UPPER) {
-                family.children?.map((child) => setChangeColumn(child, HEADER));
-              const restChild = currentsId.filter(
-                (id) => id !== item.itemInfo.id
-              );
+            //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
+            // console.log('currentsId',currentsId,item.itemInfo.id)
+           /* if(currentColumn===UPPER) {
   
-              const restChildren = restChild.map((child) =>
+                family.children?.map((child) => setChangeColumn(child, HEADER));
+                const restChild = currentsId.filter(
+                (id) => id !== item.itemInfo.id
+                );
+                
+                const restChildren = restChild.map((child) =>
                 findFamily(child, relate)
               );
               setGrandChild(restChildren[0]?.children, LOWER);
-           }else if(currentColumn===LOWER){
+           }else if(currentColumn===CURRENT){
+
+           }
+           else if(currentColumn===LOWER){
 
             
-            //////이게 자꾸 되니까 무서워...
-            const upperid=findFamily(item.itemInfo.id,relate)?.parents
-            if(upperid){
-            // console.log('upperid',upperid[0],'lowerid',item.itemInfo.id)
-
-
-              const index=upperid.map(id=>relate?.findIndex(rel=>
+             //////아이템을 연결 해제 시킬때
+             const upperid=findFamily(item.itemInfo.id,relate)?.parents
+             if(upperid){
+               const index=upperid.map(id=>relate?.findIndex(rel=>
                 (rel.upperId===id && rel.lowerId===item.itemInfo.id)
                 ))
-                // console.log('index',index,'relate',relate)
-
-              const newRelate=index.map(idx=>{if(idx){return relate?.splice(idx,1)}else{return null}})
-              console.log('newRelate',newRelate)
-                  
-                
+                let result=window.confirm(`${currentsId}에서 ${item.itemInfo.id}의 연결을 해제 하나요?`)
+                if(result){
+                  index.reverse();
+                  index.map(idx=>{if(idx){return relate?.splice(idx,1)}else{return relate}})
+                }
               }
             }
-              if (resetAble) {
-                setResetColumn();
-              }
+            setChangeColumn(item.itemInfo.id, HEADER);*/
+
+            const remove_relate=remove_relation([item.itemInfo.id])
+            console.log(remove_relate)
+            if (resetAble) {
+              setResetColumn();
+            }
 
               break;
             case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
@@ -237,7 +256,14 @@ const Item: React.FC<Props> = ({
                 setParent(family.parents, CURRENT);
                 setGrandParent(grandParents, UPPER);
               } else if (currentColumn === HEADER) {
-                // alert('item을 추가 합니다.')
+                if(currentsId.length>0){
+                  const newRelate=currentsId.map(currentId=>({upperId:currentId,lowerId:item.itemInfo.id}))
+                  let result=window.confirm(`${currentsId}에 ${item.itemInfo.id}의 연결을 설정 할까요?`)
+                  if(result){
+                    relate?.push(...newRelate)
+                    setChangeColumn(item.itemInfo.id, LOWER);
+                  }
+                }
               }
               setChangeColumn(item.itemInfo.id, LOWER);
               break;
