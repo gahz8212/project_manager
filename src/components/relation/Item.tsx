@@ -3,11 +3,13 @@ import { findFamily } from "./RelationMain";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
 import { ListData } from "../../lib/api/list";
+import Column from "./Column";
 type Props = {
   setItems: React.Dispatch<React.SetStateAction<ListData>>;
   currentColumn: string;
   markItems: any[];
   currentsId: number[];
+  uppersId: number[];
   highLight: number;
   setHighlight: React.Dispatch<React.SetStateAction<number>>;
   familyBall: { parents: number[]; children: number[] } | undefined;
@@ -38,6 +40,7 @@ type Props = {
 const Item: React.FC<Props> = ({
   itemInfo,
   currentsId,
+  uppersId,
   setItems,
   currentColumn,
   markItems,
@@ -131,23 +134,27 @@ const Item: React.FC<Props> = ({
     // setHighlight(-1)
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
-  let resultArray:any =[]
-  const remove_relation=(ids:(number | undefined)[])=>{
-    if(ids.length===0)return;
-   if(ids){
-     const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
-     if(children){
-       remove_relation(children)
-       const newArray=ids.map(id=>children.map(child=>({upperId:id,lowerId:child})))
 
-      resultArray=[]
-        resultArray.push(...newArray.flat())
-
-      return resultArray
+  let resultArray: any = [];
+  const remove_relation = (ids: (number | undefined)[], column: string) => {
+    if (ids) {
+      const children = ids
+        ?.map((id) => findFamily(id, relate)?.children)
+        .flat();
+      if (Object.keys(children).length === 0) {
+        return;
+      } else {
+        remove_relation(children, column);
+        console.log("children", children);
+        const newArray = ids.map((id) =>
+          children.map((child) => ({ upperId: id, lowerId: child }))
+        );
+        console.log("newArray", newArray.flat());
+        resultArray.push(...newArray.flat());
       }
     }
-
-  }
+    return resultArray;
+  };
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "card",
@@ -181,9 +188,9 @@ const Item: React.FC<Props> = ({
           // console.log(resetAble)
           switch (name) {
             case HEADER: //목적지:HEADER, 출발지:상관없음
-            //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
-            // console.log('currentsId',currentsId,item.itemInfo.id)
-           /* if(currentColumn===UPPER) {
+              //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
+              // console.log('currentsId',currentsId,item.itemInfo.id)
+              /* if(currentColumn===UPPER) {
   
                 family.children?.map((child) => setChangeColumn(child, HEADER));
                 const restChild = currentsId.filter(
@@ -215,11 +222,16 @@ const Item: React.FC<Props> = ({
             }
             setChangeColumn(item.itemInfo.id, HEADER);*/
 
-            const remove_relate=remove_relation([item.itemInfo.id])
-            console.log(remove_relate)
-            if (resetAble) {
-              setResetColumn();
-            }
+              const remove_relate = remove_relation(
+                [item.itemInfo.id],
+                currentColumn
+              );
+
+              console.log(remove_relate);
+
+              if (resetAble) {
+                setResetColumn();
+              }
 
               break;
             case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
@@ -233,16 +245,15 @@ const Item: React.FC<Props> = ({
               break;
 
             case CURRENT: //목적지:CURRENT, 출발지:LOWER || UPPER, 목적:순회
-            if (currentColumn === LOWER || currentColumn === UPPER) {
-              setResetColumn();
-              setFamilyItem(family);
+              if (currentColumn === LOWER || currentColumn === UPPER) {
+                setResetColumn();
+                setFamilyItem(family);
               } else if (currentColumn === HEADER) {
                 // console.log('currentsId.length',currentsId.length)
-                if (currentsId.length ===0) {
+                if (currentsId.length === 0) {
                   setFamilyItem(family);
-                }else{
+                } else {
                   setChild(family.children, LOWER);
-                  
                 }
                 // alert('item을 추가 합니다.')
                 // setChangeColumn(item.itemInfo.id, CURRENT);
@@ -256,11 +267,16 @@ const Item: React.FC<Props> = ({
                 setParent(family.parents, CURRENT);
                 setGrandParent(grandParents, UPPER);
               } else if (currentColumn === HEADER) {
-                if(currentsId.length>0){
-                  const newRelate=currentsId.map(currentId=>({upperId:currentId,lowerId:item.itemInfo.id}))
-                  let result=window.confirm(`${currentsId}에 ${item.itemInfo.id}의 연결을 설정 할까요?`)
-                  if(result){
-                    relate?.push(...newRelate)
+                if (currentsId.length > 0) {
+                  const newRelate = currentsId.map((currentId) => ({
+                    upperId: currentId,
+                    lowerId: item.itemInfo.id,
+                  }));
+                  let result = window.confirm(
+                    `${currentsId}에 ${item.itemInfo.id}의 연결을 설정 할까요?`
+                  );
+                  if (result) {
+                    relate?.push(...newRelate);
                     setChangeColumn(item.itemInfo.id, LOWER);
                   }
                 }
