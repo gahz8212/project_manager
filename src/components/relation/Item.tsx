@@ -10,8 +10,7 @@ type Props = {
   markItems: any[];
   currentsId: number[];
   uppersId: number[];
-  highLight: number;
-  setHighlight: React.Dispatch<React.SetStateAction<number>>;
+
   familyBall: { parents: number[]; children: number[] } | undefined;
   itemInfo: {
     id: number;
@@ -46,8 +45,6 @@ const Item: React.FC<Props> = ({
   markItems,
   familyBall,
   relate,
-  highLight,
-  setHighlight,
 }) => {
   const setChangeColumn = (id: number | undefined, column: string) => {
     setItems((prev) =>
@@ -130,27 +127,41 @@ const Item: React.FC<Props> = ({
     );
   };
   const setResetColumn = () => {
-    // console.log(currentsId);
-    // setHighlight(-1)
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
 
   let resultArray: any = [];
-  const remove_relation = (ids: (number | undefined)[], column: string) => {
+  const remove_relation = (ids: (number | undefined)[]) => {
+    resultArray = [];
     if (ids) {
       const children = ids
         ?.map((id) => findFamily(id, relate)?.children)
         .flat();
+      const parents = ids?.map((id) => findFamily(id, relate)?.parents).flat();
       if (Object.keys(children).length === 0) {
         return;
       } else {
-        remove_relation(children, column);
-        console.log("children", children);
-        const newArray = ids.map((id) =>
-          children.map((child) => ({ upperId: id, lowerId: child }))
+        remove_relation(children);
+        const childArray = ids.map((id) =>
+          children.map((child) => {
+            // console.log(child);
+            const parents = findFamily(child, relate)?.parents;
+            if (parents) {
+              console.log("ids", ids, "parents", parents, "child", child);
+              //////////////////////////////
+              // parents.map((parent) => currentsId.includes(parent));
+              //////////////////////////////////
+            }
+            setChangeColumn(child, "HEADER");
+            return { upperId: id, lowerId: child };
+          })
         );
-        console.log("newArray", newArray.flat());
-        resultArray.push(...newArray.flat());
+        const parentArray = ids.map((id) =>
+          parents.map((parent) => {
+            return { upperId: parent, lowerId: id };
+          })
+        );
+        resultArray.push(...childArray.flat(), ...parentArray.flat());
       }
     }
     return resultArray;
@@ -164,7 +175,7 @@ const Item: React.FC<Props> = ({
       end: (item, monitor) => {
         const dropResult: {
           name: string;
-          resetAble: boolean;
+
           family: {
             parents: (number | undefined)[];
             children: (number | undefined)[];
@@ -176,14 +187,8 @@ const Item: React.FC<Props> = ({
         } | null = monitor.getDropResult();
 
         if (dropResult) {
-          const {
-            name,
-            currentColumn,
-            family,
-            grandParents,
-            grandChildren,
-            resetAble,
-          } = dropResult;
+          const { name, currentColumn, family, grandParents, grandChildren } =
+            dropResult;
           const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
           // console.log(resetAble)
           switch (name) {
@@ -222,17 +227,25 @@ const Item: React.FC<Props> = ({
             }
             setChangeColumn(item.itemInfo.id, HEADER);*/
 
-              const remove_relate = remove_relation(
-                [item.itemInfo.id],
-                currentColumn
-              );
+              const remove_relate = remove_relation([item.itemInfo.id]);
 
-              console.log(remove_relate);
-
-              if (resetAble) {
-                setResetColumn();
+              if (remove_relate) {
+                const index = remove_relate?.map((removes: any) =>
+                  relate?.findIndex(
+                    (rel) =>
+                      removes.upperId === rel.upperId &&
+                      removes.lowerId === rel.lowerId
+                  )
+                );
+                index.sort().reverse();
+                const unique: number[] = index.filter((el: any, i: any) => {
+                  return index.indexOf(el) === i;
+                });
+                unique.map((idx) => relate?.splice(idx, 1));
+                console.log("relate", relate);
               }
 
+              setChangeColumn(item.itemInfo.id, HEADER);
               break;
             case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
               if (currentColumn === LOWER || currentColumn === CURRENT) {
@@ -349,7 +362,7 @@ const Item: React.FC<Props> = ({
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
-        }${itemInfo.id === highLight ? "highLight" : ""}`}
+        }`}
       >
         <div className="item_info">
           <div className="id">

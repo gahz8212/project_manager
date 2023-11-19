@@ -63,8 +63,6 @@ const RelationMain: React.FC<Props> = ({
           setItems={setList}
           currentColumn={item.column}
           relate={relate}
-          highLight={highLight}
-          setHighlight={setHighlight}
         ></Item>
       ));
   };
@@ -206,7 +204,6 @@ const RelationMain: React.FC<Props> = ({
           relate={relate}
           idRef={idRef}
           title={HEADER}
-          setHighlight={setHighlight}
           className="rel_header"
         >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
@@ -216,7 +213,6 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={UPPER}
-            setHighlight={setHighlight}
             className="rel_upper"
           >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
@@ -225,7 +221,6 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={CURRENT}
-            setHighlight={setHighlight}
             className="rel_current"
           >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
@@ -234,7 +229,6 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={LOWER}
-            setHighlight={setHighlight}
             className="rel_lower"
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}

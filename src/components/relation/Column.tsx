@@ -5,42 +5,52 @@ type Props = {
   title: string;
   className: string;
   children: React.ReactNode;
-  setHighlight:React.Dispatch<React.SetStateAction<number>>;
+  // setHighlight:React.Dispatch<React.SetStateAction<number>>;
   relate:
     | {
         upperId: number;
         lowerId: number;
       }[]
     | null;
-    idRef:React.MutableRefObject<number>
+  idRef: React.MutableRefObject<number>;
 };
-const Column: React.FC<Props> = ({ title, className, children, relate,idRef,setHighlight }) => {
+const Column: React.FC<Props> = ({
+  title,
+  className,
+  children,
+  relate,
+  idRef,
+  // setHighlight,
+}) => {
   // console.log(relate)
-//  const idRef=useRef<number>(0)
-const findGrandParent=(parents:number[]|undefined)=>{
-let grandParents:number[]=[]
-  if(parents){
-    parents.forEach(parent => {
-      relate?.forEach(rel=>{if(rel.lowerId===parent){
-        grandParents.push(rel.upperId)
-      }})
-    });
-  }
-  return (grandParents)
-}
-const findGrandchildren=(children:number[]|undefined)=>{
-  let grandChildren:number[]=[]
-  if(children){
+  //  const idRef=useRef<number>(0)
+  const findGrandParent = (parents: number[] | undefined) => {
+    let grandParents: number[] = [];
+    if (parents) {
+      parents.forEach((parent) => {
+        relate?.forEach((rel) => {
+          if (rel.lowerId === parent) {
+            grandParents.push(rel.upperId);
+          }
+        });
+      });
+    }
+    return grandParents;
+  };
+  const findGrandchildren = (children: number[] | undefined) => {
+    let grandChildren: number[] = [];
+    if (children) {
+      children.forEach((child) => {
+        relate?.forEach((rel) => {
+          if (rel.upperId === child) {
+            grandChildren.push(rel.lowerId);
+          }
+        });
+      });
+    }
 
-    children.forEach(child=>{
-      relate?.forEach(rel=>{if(rel.upperId===child){
-        grandChildren.push(rel.lowerId)
-      }})
-    })
-  }
-  
-  return (grandChildren)
-}
+    return grandChildren;
+  };
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: "card",
@@ -66,36 +76,26 @@ const findGrandchildren=(children:number[]|undefined)=>{
 
         // currentsId: number[] | null;
       }) => {
-  const { currentColumn } = item;
+        const { currentColumn } = item;
 
-  const family = findFamily(item.itemInfo.id, relate);
-  const grandParents=findGrandParent(family?.parents)
-  const grandChildren=findGrandchildren(family?.children)
+        const family = findFamily(item.itemInfo.id, relate);
+        const grandParents = findGrandParent(family?.parents);
+        const grandChildren = findGrandchildren(family?.children);
 
-
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  let resetAble=false
-  if(idRef.current===-1 ){
-    idRef.current=item.itemInfo.id
-    setHighlight(idRef.current)
-  }else if(idRef.current>-1 && title==='HEADER' && item.itemInfo.id===idRef.current){
-  resetAble=true
-    idRef.current=-1
-    setHighlight(-1)
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
- 
-        return { name: title, currentColumn, family,grandParents,grandChildren,resetAble };
+        return {
+          name: title,
+          currentColumn,
+          family,
+          grandParents,
+          grandChildren,
+        };
       },
 
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
     }),
-    [relate,idRef.current]//////////////이런 방법이 존재한다고!
+    [relate, idRef.current] //////////////이런 방법이 존재한다고!
   );
   return (
     <div
@@ -103,7 +103,6 @@ const findGrandchildren=(children:number[]|undefined)=>{
       className={className}
       style={{ backgroundColor: isOver ? "rgb(188,251,255)" : undefined }}
     >
- 
       {children}
     </div>
   );
