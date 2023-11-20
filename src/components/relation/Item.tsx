@@ -131,7 +131,6 @@ const Item: React.FC<Props> = ({
   const remove_relation=(ids:(number | undefined)[])=>{
    if(ids){
      const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
-<<<<<<< HEAD
      const parents=ids?.map(id=>findFamily(id,relate)?.parents).flat()
     //  if(Object.keys(children).length===0){return}
     //  else{
@@ -156,15 +155,6 @@ const Item: React.FC<Props> = ({
         resultArray.push( ...parentArray.flat());
      
     }
-=======
-     if(children){
-       remove_relation(children)
-       const newArray=ids.map(id=>children.map(child=>({upperId:id,lowerId:child})))
-
-      resultArray=[]
-        resultArray.push(...newArray.flat())
- 
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
       return resultArray
       }
 

@@ -57,17 +57,14 @@ const RelationMain: React.FC<Props> = ({
           markItems={markItems}
           uppersId={uppersId.current}
           currentsId={currentsId.current}
-          uppersId={lowersId.current}
+          
           familyBall={findFamily(item.id, relate)}
           key={item.id}
           itemInfo={item}
           setItems={setList}
           currentColumn={item.column}
           relate={relate}
-<<<<<<< HEAD
        
-=======
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
         ></Item>
       ));
   };
@@ -209,10 +206,7 @@ const RelationMain: React.FC<Props> = ({
           relate={relate}
           idRef={idRef}
           title={HEADER}
-<<<<<<< HEAD
         
-=======
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
           className="rel_header"
         >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
@@ -222,10 +216,7 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={UPPER}
-<<<<<<< HEAD
            
-=======
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_upper"
           >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
@@ -234,10 +225,7 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={CURRENT}
-<<<<<<< HEAD
           
-=======
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_current"
           >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
@@ -246,10 +234,7 @@ const RelationMain: React.FC<Props> = ({
             relate={relate}
             idRef={idRef}
             title={LOWER}
-<<<<<<< HEAD
           
-=======
->>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_lower"
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
