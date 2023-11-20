@@ -1,32 +1,17 @@
-// function BoardSquare({ x, y, children }) {
-//   const black = (x + y) % 2 === 1;
-//   const [{ isOver }, drop] = useDrop(
-//     () => ({
-//       accept: ItemTypes.KNIGHT,
-//       drop: () => moveKnight(x, y),
-//       collect: (monitor) => ({
-//         isOver: !!monitor.isOver(),
-//       }),
-//     }),
-//     [x, y]
-//   );
-//   return true;
-// }
-// const result = (a) => {
-//   return a + a;
-// };
-// const drop = (func) => {
-//   console.log(func().fun());
-// };
-// const a = 11;
-// const b = 3;
-// drop(() => ({ acc: "상수", fun: () => result(a, b) }), [a, b]);
-const arr = [3, 4, 5];
-const arr2 = arr.filter((ar) => ar !== 3);
-console.log(arr2, arr);
-// arr.forEach((ar, index) => {
-//   if (ar === 3) {
-//     arr.splice(index, 1);
-//   }
-// });
-// console.log(arr);
+const array = [
+  { u: 1, l: 2 },
+  { u: 2, l: 3 },
+];
+// array.push(3);
+const addEl = (num) => {
+  let result = true;
+  for (let arr of array) {
+    if (arr.u === num.u && arr.l === num.l) {
+      result = false;
+      break;
+    }
+  }
+  if (result) array.push(num);
+};
+addEl({ u: 1, l: 2 });
+console.log(array);

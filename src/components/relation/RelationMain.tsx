@@ -57,13 +57,17 @@ const RelationMain: React.FC<Props> = ({
           markItems={markItems}
           uppersId={uppersId.current}
           currentsId={currentsId.current}
+          uppersId={lowersId.current}
           familyBall={findFamily(item.id, relate)}
           key={item.id}
           itemInfo={item}
           setItems={setList}
           currentColumn={item.column}
           relate={relate}
+<<<<<<< HEAD
        
+=======
+>>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
         ></Item>
       ));
   };
@@ -72,27 +76,26 @@ const RelationMain: React.FC<Props> = ({
   const uppersId: React.MutableRefObject<number[]> = useRef([]);
   const currentsId: React.MutableRefObject<number[]> = useRef([]);
   const lowersId: React.MutableRefObject<number[]> = useRef([]);
-  const idRef=useRef<number>(-1)
+  const idRef = useRef<number>(-1);
 
   const relateCondition = () => {
     setMarkItems([]);
 
     const showButton =
       (uppersId.current.length > 0 ||
-      currentsId.current.length > 0 ||
-      lowersId.current.length > 0 )
-      &&
-      (currentsId !== lowersId||uppersId!==currentsId||uppersId!==lowersId);
+        currentsId.current.length > 0 ||
+        lowersId.current.length > 0) &&
+      (currentsId !== lowersId ||
+        uppersId !== currentsId ||
+        uppersId !== lowersId);
 
     searchChildren(currentsId.current);
-
 
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
     );
 
-console.log(searchResult)
-
+    // console.log(searchResult);
 
     let condition = false;
     for (let res of searchResult) {
@@ -108,9 +111,9 @@ console.log(searchResult)
         }
       }
     }
-console.log('condition',condition)
+    console.log("condition", condition);
     return showButton && condition;
-    // return showButton 
+    // return showButton
   };
 
   const searchChildren = (ids: (number | undefined)[]) => {
@@ -206,9 +209,12 @@ console.log('condition',condition)
           relate={relate}
           idRef={idRef}
           title={HEADER}
+<<<<<<< HEAD
         
+=======
+>>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
           className="rel_header"
-          >
+        >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
         </Column>
         <div className="rel_wrapper">
@@ -216,25 +222,34 @@ console.log('condition',condition)
             relate={relate}
             idRef={idRef}
             title={UPPER}
+<<<<<<< HEAD
            
+=======
+>>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_upper"
-            >
+          >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
           </Column>
           <Column
             relate={relate}
             idRef={idRef}
             title={CURRENT}
+<<<<<<< HEAD
           
+=======
+>>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_current"
-            >
+          >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
           </Column>
           <Column
             relate={relate}
             idRef={idRef}
             title={LOWER}
+<<<<<<< HEAD
           
+=======
+>>>>>>> b974c2c375abbee91345b11061f3ba84b65b9cf3
             className="rel_lower"
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}
