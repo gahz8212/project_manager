@@ -48,6 +48,7 @@ const RelationContainer = () => {
         formOpen={formOpen}
         makeRelation={makeRelation}
         relate={relate}
+      
        
       ></RelationMain>
     </>

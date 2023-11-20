@@ -16,23 +16,23 @@ type Props = {
   makeRelation: (relItem: RelData) => void;
 
   relate:
-    | {
+    | ({
         upperId: number;
         lowerId: number;
-      }[]
-    | null;
+      }
+    |undefined)[]|null;
 };
 export const findFamily = (
   currentIDs: number | number[] | undefined,
-  relate: { upperId: number; lowerId: number }[] | null
+  relate: ({upperId:number,lowerId:number}|undefined)[]|null
 ) => {
   if (relate && currentIDs) {
     const parents = relate
-      .filter((rel) => rel.lowerId === currentIDs)
-      .map((rel) => rel.upperId);
+      .filter((rel) => rel?.lowerId === currentIDs)
+      .map((rel) => rel?.upperId);
     const children = relate
-      .filter((rel) => rel.upperId === currentIDs)
-      .map((rel) => rel.lowerId);
+      .filter((rel) => rel?.upperId === currentIDs)
+      .map((rel) => rel?.lowerId);
 
     return { parents, children };
   }
@@ -47,7 +47,7 @@ const RelationMain: React.FC<Props> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [markItems, setMarkItems] = useState([] as number[]);
-  const [highLight, setHighlight] = useState<number>(-1);
+
 
   const returnItemFromColumn = (columnName: string) => {
     return list
@@ -55,6 +55,7 @@ const RelationMain: React.FC<Props> = ({
       .map((item) => (
         <Item
           markItems={markItems}
+          uppersId={uppersId.current}
           currentsId={currentsId.current}
           familyBall={findFamily(item.id, relate)}
           key={item.id}
@@ -62,8 +63,7 @@ const RelationMain: React.FC<Props> = ({
           setItems={setList}
           currentColumn={item.column}
           relate={relate}
-          highLight={highLight}
-          setHighlight={setHighlight}
+       
         ></Item>
       ));
   };
@@ -115,7 +115,7 @@ console.log('condition',condition)
 
   const searchChildren = (ids: (number | undefined)[]) => {
     const current = ids.map((id) =>
-      relate?.filter((rel) => rel.upperId === id)
+      relate?.filter((rel) => rel?.upperId === id)
     );
     if (current.length === 0) {
       return ids;
@@ -129,7 +129,7 @@ console.log('condition',condition)
     id: number,
     value: number
   ) => {
-    const upper = relate?.filter((rel) => rel.lowerId === value)[0]?.upperId;
+    const upper = relate?.filter((rel) => rel?.lowerId === value)[0]?.upperId;
     if (upper === undefined) {
       return false;
     }
@@ -206,7 +206,7 @@ console.log('condition',condition)
           relate={relate}
           idRef={idRef}
           title={HEADER}
-          setHighlight={setHighlight}
+        
           className="rel_header"
           >
           {returnItemFromColumn(COLUMN_NAMES.HEADER)}
@@ -216,7 +216,7 @@ console.log('condition',condition)
             relate={relate}
             idRef={idRef}
             title={UPPER}
-            setHighlight={setHighlight}
+           
             className="rel_upper"
             >
             {returnItemFromColumn(COLUMN_NAMES.UPPER)}
@@ -225,7 +225,7 @@ console.log('condition',condition)
             relate={relate}
             idRef={idRef}
             title={CURRENT}
-            setHighlight={setHighlight}
+          
             className="rel_current"
             >
             {returnItemFromColumn(COLUMN_NAMES.CURRENT)}
@@ -234,7 +234,7 @@ console.log('condition',condition)
             relate={relate}
             idRef={idRef}
             title={LOWER}
-            setHighlight={setHighlight}
+          
             className="rel_lower"
           >
             {returnItemFromColumn(COLUMN_NAMES.LOWER)}

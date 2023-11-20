@@ -8,9 +8,9 @@ type Props = {
   currentColumn: string;
   markItems: any[];
   currentsId: number[];
-  highLight: number;
-  setHighlight: React.Dispatch<React.SetStateAction<number>>;
-  familyBall: { parents: number[]; children: number[] } | undefined;
+  uppersId: number[];
+
+  familyBall: { parents: (number | undefined)[]; children: (number | undefined)[]; } | undefined;
   itemInfo: {
     id: number;
     category: string;
@@ -29,22 +29,18 @@ type Props = {
       | null;
   };
   relate:
-    | {
-        upperId: number;
-        lowerId: number;
-      }[]
-    | null;
+    | ({upperId:number,lowerId:number}|undefined)[]|null
 };
 const Item: React.FC<Props> = ({
   itemInfo,
+  uppersId,
   currentsId,
   setItems,
   currentColumn,
   markItems,
   familyBall,
   relate,
-  highLight,
-  setHighlight,
+
 }) => {
   const setChangeColumn = (id: number | undefined, column: string) => {
     setItems((prev) =>
@@ -127,27 +123,43 @@ const Item: React.FC<Props> = ({
     );
   };
   const setResetColumn = () => {
-    // console.log(currentsId);
-    // setHighlight(-1)
     setItems((prev) => prev.map((pre) => ({ ...pre, column: "HEADER" })));
   };
+
   let resultArray:any =[]
+
   const remove_relation=(ids:(number | undefined)[])=>{
-    if(ids.length===0)return;
    if(ids){
      const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
-     if(children){
-       remove_relation(children)
-       const newArray=ids.map(id=>children.map(child=>({upperId:id,lowerId:child})))
-
-      resultArray=[]
-        resultArray.push(...newArray.flat())
-
+     const parents=ids?.map(id=>findFamily(id,relate)?.parents).flat()
+    //  if(Object.keys(children).length===0){return}
+    //  else{
+      // remove_relation(children);
+      ids.map((id) =>
+        children.map((child) => {
+      
+          const parents = findFamily(child, relate)?.parents;
+          if (parents) {
+            if(parents.length<2){
+              setChangeColumn(child, "HEADER");
+            }
+          }
+          return { upperId: id, lowerId: child };
+        })
+      )
+      const parentArray = ids.map((id) =>
+          parents.map((parent) => {
+            return { upperId: parent, lowerId: id };
+          })
+        );
+        resultArray.push( ...parentArray.flat());
+     
+    }
       return resultArray
       }
-    }
 
-  }
+
+  
   const [{ isDragging }, drag] = useDrag(
     () => ({
       type: "card",
@@ -175,52 +187,45 @@ const Item: React.FC<Props> = ({
             family,
             grandParents,
             grandChildren,
-            resetAble,
+         
           } = dropResult;
           const { HEADER, UPPER, CURRENT, LOWER } = COLUMN_NAMES;
           // console.log(resetAble)
           switch (name) {
             case HEADER: //목적지:HEADER, 출발지:상관없음
-            //현재 currentsId에 남아있는 아이템의 자식중에 child가 있으면 빼줘야지.
-            // console.log('currentsId',currentsId,item.itemInfo.id)
-           /* if(currentColumn===UPPER) {
-  
-                family.children?.map((child) => setChangeColumn(child, HEADER));
-                const restChild = currentsId.filter(
-                (id) => id !== item.itemInfo.id
-                );
-                
-                const restChildren = restChild.map((child) =>
-                findFamily(child, relate)
-              );
-              setGrandChild(restChildren[0]?.children, LOWER);
-           }else if(currentColumn===CURRENT){
-
-           }
-           else if(currentColumn===LOWER){
-
-            
-             //////아이템을 연결 해제 시킬때
-             const upperid=findFamily(item.itemInfo.id,relate)?.parents
-             if(upperid){
-               const index=upperid.map(id=>relate?.findIndex(rel=>
-                (rel.upperId===id && rel.lowerId===item.itemInfo.id)
-                ))
-                let result=window.confirm(`${currentsId}에서 ${item.itemInfo.id}의 연결을 해제 하나요?`)
-                if(result){
-                  index.reverse();
-                  index.map(idx=>{if(idx){return relate?.splice(idx,1)}else{return relate}})
-                }
-              }
+           
+            let column;
+            if(currentColumn===CURRENT){
+               column=uppersId;
+            }else if(currentColumn===LOWER){
+               column=currentsId;
+            }else{
+              column='top'
             }
-            setChangeColumn(item.itemInfo.id, HEADER);*/
 
-            const remove_relate=remove_relation([item.itemInfo.id])
-            console.log(remove_relate)
-            if (resetAble) {
+            if(column==='top'){
               setResetColumn();
+            }else{
+            let result=window.confirm(`${column}에서 ${item.itemInfo.id}의 연결을 해제 하나요?`)
+            if(result){
+            const remove_relate=remove_relation([item.itemInfo.id])
+            if (remove_relate) {
+              const index = remove_relate?.map((removes: any) =>
+                relate?.findIndex(
+                  (rel) =>
+                    removes.upperId === rel?.upperId &&
+                    removes.lowerId === rel?.lowerId
+                )
+              );
+              index.sort().reverse();
+              const unique: number[] = index.filter((el: any, i: any) => {
+                return index.indexOf(el) === i;
+              });
+              unique.map((idx) => relate?.splice(idx, 1));
+              console.log("relate", relate);
             }
-
+            setChangeColumn(item.itemInfo.id, HEADER);
+          }}
               break;
             case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
               if (currentColumn === LOWER || currentColumn === CURRENT) {
@@ -333,7 +338,7 @@ const Item: React.FC<Props> = ({
       <div
         className={`rel_item ${
           markItems.includes(itemInfo.id) ? "orange" : ""
-        }${itemInfo.id === highLight ? "highLight" : ""}`}
+        }`}
       >
         <div className="item_info">
           <div className="id">
