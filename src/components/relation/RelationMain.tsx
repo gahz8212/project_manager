@@ -57,7 +57,7 @@ const RelationMain: React.FC<Props> = ({
           markItems={markItems}
           uppersId={uppersId.current}
           currentsId={currentsId.current}
-          
+          setMarkItems={setMarkItems}
           familyBall={findFamily(item.id, relate)}
           key={item.id}
           itemInfo={item}
@@ -76,7 +76,7 @@ const RelationMain: React.FC<Props> = ({
   const idRef = useRef<number>(-1);
 
   const relateCondition = () => {
-    setMarkItems([]);
+    
 
     const showButton =
       (uppersId.current.length > 0 ||
@@ -86,7 +86,7 @@ const RelationMain: React.FC<Props> = ({
         uppersId !== currentsId ||
         uppersId !== lowersId);
 
-    searchChildren(currentsId.current);
+    searchChildren(uppersId.current);
 
     const searchResult = currentsId.current.map((curId) =>
       lowersId.current.map((lowId) => searchParent(lowId, curId))
@@ -94,22 +94,22 @@ const RelationMain: React.FC<Props> = ({
 
     // console.log(searchResult);
 
-    let condition = false;
-    for (let res of searchResult) {
-      for (let r of res) {
-        if (typeof r === "object") {
-          condition = false;
-          setMarkItems((prev) =>
-            prev.includes(r.id) ? prev : [...prev, r.id]
-          );
-          break;
-        } else {
-          condition = true;
-        }
-      }
-    }
-    console.log("condition", condition);
-    return showButton && condition;
+    // let condition = false;
+    // for (let res of searchResult) {
+    //   for (let r of res) {
+    //     if (typeof r === "object") {
+    //       condition = false;
+    //       setMarkItems((prev) =>
+    //         prev.includes(r.id) ? prev : [...prev, r.id]
+    //       );
+    //       break;
+    //     } else {
+    //       condition = true;
+    //     }
+    //   }
+    // }
+    // console.log("condition", condition);
+    return showButton //&& condition;
     // return showButton
   };
 

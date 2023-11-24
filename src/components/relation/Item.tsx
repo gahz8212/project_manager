@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import { findFamily } from "./RelationMain";
 import { useDrag } from "react-dnd";
 import { COLUMN_NAMES } from "./constance";
@@ -9,7 +9,7 @@ type Props = {
   markItems: any[];
   currentsId: number[];
   uppersId: number[];
-
+  setMarkItems: React.Dispatch<React.SetStateAction<number[]>>;
   familyBall: { parents: (number | undefined)[]; children: (number | undefined)[]; } | undefined;
   itemInfo: {
     id: number;
@@ -36,6 +36,7 @@ const Item: React.FC<Props> = ({
   uppersId,
   currentsId,
   setItems,
+  setMarkItems,
   currentColumn,
   markItems,
   familyBall,
@@ -219,6 +220,7 @@ const Item: React.FC<Props> = ({
 
             if(column==='top'){
               setResetColumn();
+              setMarkItems([]);
             }else{
               if(parentsCount===0 && childrenCount===0){
                 setChangeColumn(item.itemInfo.id,HEADER)
@@ -243,43 +245,75 @@ const Item: React.FC<Props> = ({
               // console.log("relate", relate);
             }
             setChangeColumn(item.itemInfo.id, HEADER);
+            
           }}}
         
               break;
+
+
+
+              
             case UPPER: //목적지:UPPER, 출발지:LOWER || CURRENT, 목적:순회
             if(currentColumn===UPPER){
               break;
             }
             if(currentColumn===HEADER){
-            if(parentsCount===0 && childrenCount===0){// 부모 자식없는 아이템이 왔는데1111111111111111111111111111111111
-              if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로
+            if(parentsCount===0 && childrenCount===0){// 부모 자식없는 아이템
+              if( uppersId.length>0 ){//UPPER가 차 있으면 않으면 CURRENT로
                 setChangeColumn(item.itemInfo.id,CURRENT)
-              }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로 의미 없음
-                setChangeColumn(item.itemInfo.id,LOWER)
-              }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 UPPER로
+              }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
                 setChangeColumn(item.itemInfo.id,UPPER)
               }
-            }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템이 왔는데2222222222222222222222
-              if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로
+            }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템
+              if( uppersId.length>0 ){//UPPER가 차 있으면 않으면 CURRENT로
                 setChangeColumn(item.itemInfo.id,CURRENT)
-              }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로
-                setChangeColumn(item.itemInfo.id,LOWER)
-              }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 UPPER로
+              }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
                 setChangeColumn(item.itemInfo.id,UPPER)
               }
-            }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템이 왔는데333333333333333333333333
+            }else if(parentsCount===0 && childrenCount!==0){//자식이 있고 부모가 없는 아이템
               
-              if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로
+              if( uppersId.length>0 ){////UPPER가 차 있으면 않으면 CURRENT로
+                //아이템의 자식중에 uppersId가 있는 경우
                 setChangeColumn(item.itemInfo.id,CURRENT)
-                setChild(family.children, LOWER);
-              }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로
-                setChangeColumn(item.itemInfo.id,LOWER)
-              }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 UPPER로
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                    break;
+                  }else{
+                    setChild(family.children, LOWER);
+                  }
+              }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
                 setChangeColumn(item.itemInfo.id,UPPER)
                 setGrandChild(grandChildren, LOWER);
                 setChild(family.children, CURRENT);
               }
-            } }else if(currentColumn===CURRENT||currentColumn===LOWER){
+            } 
+            else if(parentsCount!==0 && childrenCount!==0){//자식도 있고 부모도 있는 아이템
+              
+              if( uppersId.length>0 ){////UPPER가 차 있으면 않으면 CURRENT로
+                //아이템의 자식중에 uppersId가 있는 경우
+                setChangeColumn(item.itemInfo.id,CURRENT)
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                  }else{
+
+                    setChild(family.children, LOWER);
+                  }
+                
+              }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
+                setChangeColumn(item.itemInfo.id,UPPER)
+                setGrandChild(grandChildren, LOWER);
+                setChild(family.children, CURRENT);
+              }
+            } 
+          
+          
+          
+          }else if(currentColumn===CURRENT||currentColumn===LOWER){
                   //CURRENT에는 둘 이상의 아이템이 공존할 수 있으므로 (자기 자신과 UPPER의 자식, LOWER의 부모가 있을 수 있다.)
                   //CURRENT가 최상위 부모가 되는 상황이므로 setResetColumn()을 호출한 뒤의 상황이 반영되어야 한다.
                   //초기값은 선택된 아이템만 UPPER로 이동된다.
@@ -296,9 +330,7 @@ const Item: React.FC<Props> = ({
                   else if((parentsCount===0||parentsCount!==0) && childrenCount===0){
                     setResetColumn()
                     setChangeColumn(item.itemInfo.id,UPPER)
-                  }
-           
-               
+                  } 
             }
               break;
               
@@ -307,31 +339,51 @@ const Item: React.FC<Props> = ({
                 break;
               }
                 if(currentColumn===HEADER){
-                  if(parentsCount===0 && childrenCount===0){// 부모 자식없는 아이템이 왔는데1111111111111111111111111111111111
-                    if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로
+                  if(parentsCount===0 && childrenCount===0){// 부모도 없고 자식도 없는 아이템이 왔는데
+                    if( uppersId.length>0 ){//UPPER가 차 있으면 CURRENT로
                       setChangeColumn(item.itemInfo.id,CURRENT)
-                    }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로
-                      setChangeColumn(item.itemInfo.id,LOWER)
-                    }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 UPPER로
+                    }else if(uppersId.length===0 && currentsId.length===0){//UPPER도 비어있고 CURRENT도 비어 있으면 UPPER로
                       setChangeColumn(item.itemInfo.id,UPPER)
                     }
-                  }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템이 왔는데2222222222222222222222
-                    if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로
+                  }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템
+                    if( uppersId.length>0 ){////UPPER가 차 있으면 CURRENT로
                       setChangeColumn(item.itemInfo.id,CURRENT)
-                    }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로
-                      setChangeColumn(item.itemInfo.id,LOWER)
                     }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 CURRENT로 - family를 보려는 의도
                       setChangeColumn(item.itemInfo.id,CURRENT)
                       setParent(family.parents,UPPER)
                     }
-                  }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템이 왔는데333333333333333333333333
+                  }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템
                     
-                    if( uppersId.length>0 ){//UPPER에 누가 있으면 CURRENT로 자식은 LOWER로
+                    if( uppersId.length>0 ){//UPPER가 차 있으면 아이템은 CURRENT로 자식은 LOWER로
                       setChangeColumn(item.itemInfo.id,CURRENT)
-                      setChild(family.children, LOWER);
-                    }else if(uppersId.length===0 && currentsId.length>0){//CURRENT가 상석이면 LOWER로
-                      setChangeColumn(item.itemInfo.id,LOWER)
-                    }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 UPPER로
+                      if(family.children.map(child=>
+                        {if(child){return uppersId.includes(child)}else return false}
+                        )){
+                          setMarkItems(prev=>[...prev,item.itemInfo.id])
+                          
+                        }else{
+                          
+                          setChild(family.children, LOWER);
+                        }
+                    }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
+                      setChangeColumn(item.itemInfo.id,UPPER)
+                      setGrandChild(grandChildren, LOWER);
+                      setChild(family.children, CURRENT);
+                    }
+                  }
+                  else if(parentsCount!==0 && childrenCount!==0){//부모도 있고 자식도 있는 아이템
+                    
+                    if( uppersId.length>0 ){//UPPER가 차 있으면 아이템은 CURRENT로 자식은 LOWER로
+                      setChangeColumn(item.itemInfo.id,CURRENT)
+
+                      if(family.children.map(child=>
+                        {if(child){return uppersId.includes(child)}else return false}
+                        )){
+                          setMarkItems(prev=>[...prev,item.itemInfo.id])
+                        }else{
+                          setChild(family.children, LOWER);
+                        }
+                    }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
                       setChangeColumn(item.itemInfo.id,UPPER)
                       setGrandChild(grandChildren, LOWER);
                       setChild(family.children, CURRENT);
@@ -351,16 +403,16 @@ const Item: React.FC<Props> = ({
                     }
             
                   }else if(parentsCount!==0 && childrenCount===0){//부모만 있는 아이템이 UPPER에서 CURRENT로 왔을 때
-                    if( uppersId.length>0 ){//부모만 있으면
+                    if( uppersId.length>0 ){//UPPER만 차 있으면
                       setChangeColumn(item.itemInfo.id,UPPER)
                     }
         
-                  }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템이 왔는데333333333333333333333333
-                    if(uppersId.length>0 && currentsId.length>0){//자식만 있으면 
+                  }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템
+                    if(uppersId.length>0 && currentsId.length>0){//UPPER와 CURRENT가 모두 차 있을때
                       setChangeColumn(item.itemInfo.id,UPPER)
                     }
-                  } else if(parentsCount!==0 && childrenCount!==0){//부모와 자식이 모두 있는 아이템이 왔는데333333333333333333333333
-                    if(uppersId.length>0 && currentsId.length>0){//CURRENT가 상석이면 UPPER로
+                  } else if(parentsCount!==0 && childrenCount!==0){//부모와 자식이 모두 있는 아이템
+                    if(uppersId.length>0 && currentsId.length>0){//UPPER와 CURRENT가 모두 차 있을때
                       setChangeColumn(item.itemInfo.id,CURRENT)
                       setParent(family.parents,UPPER);
                       setChild(family.children,LOWER)
@@ -406,57 +458,74 @@ const Item: React.FC<Props> = ({
             }else if(parentsCount===0 && childrenCount!==0){//부모 없이 자식만 있는 아이템
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
-                
+
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                  }
               }
               else if(uppersId.length>0 && currentsId.length===0){
-                setChangeColumn(item.itemInfo.id,CURRENT)
                 //만약 이동한 아이템의 자식이 UPPER에 이미 있는 경우
-                
+                setChangeColumn(item.itemInfo.id,CURRENT)
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                    
+                  }else{
+                    setChild(family.children,LOWER)
 
-                  console.log('family.children',family.children,'uppersId',uppersId,)
-
-                
-                if(family.children.map(child=>uppersId.includes())){
-                  setChangeColumn(item.itemInfo.id,UPPER)
-
-                }
-                setChild(family.children,LOWER)
-            
-
-                
+                  }
               }
               else if(uppersId.length===0 && currentsId.length===0){
                 setChangeColumn(item.itemInfo.id,UPPER)
                 setChild(family.children,CURRENT)
                 setGrandChild(grandChildren,LOWER)
-                
               }              
-            }else if(parentsCount!==0 && childrenCount===0){
+            }else if(parentsCount!==0 && childrenCount===0){//부모만 있는 경우
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
                 
               }
-              else if(uppersId.length>0 && currentsId.length===0){
-                setChangeColumn(item.itemInfo.id,CURRENT)
-                
-                
+              else if(uppersId.length>0 && currentsId.length===0){//UPPER만 차 있을때
+                setChangeColumn(item.itemInfo.id,CURRENT) 
               }        
-              else if(uppersId.length===0 && currentsId.length===0){
+              else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 비어있을때
                 setChangeColumn(item.itemInfo.id,UPPER)
-                
+                setChild(family.children,CURRENT)
+                setGrandChild(grandChildren,LOWER)
               }              
-            }else if(parentsCount!==0 && childrenCount!==0){
+            }else if(parentsCount!==0 && childrenCount!==0){//부모도 있고 자식도 있는 경우
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
-                
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                  }else{
+                    setChild(family.children,LOWER)
+
+                  }
               }
               else if(uppersId.length>0 && currentsId.length===0){
                 setChangeColumn(item.itemInfo.id,CURRENT)
-                setChild(family.children,LOWER)
+                if(family.children.map(child=>
+                  {if(child){return uppersId.includes(child)}else return false}
+                  )){
+                    setMarkItems(prev=>[...prev,item.itemInfo.id])
+                  }else{
+                    setChild(family.children,LOWER)
+
+                  }
+                
               }         
-              else if(uppersId.length===0 && currentsId.length===0){}
-              setChangeColumn(item.itemInfo.id,UPPER)
-              setFamilyItem(family)
+              else if(uppersId.length===0 && currentsId.length===0){
+
+                setChangeColumn(item.itemInfo.id,UPPER)
+                setChild(family.children,CURRENT)
+                setGrandChild(grandChildren,LOWER)
+              }
               
             }
               break;
