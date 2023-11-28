@@ -248,11 +248,20 @@ const RelationMain: React.FC<Props> = ({
         </div>
         <div className={`relate ${visible ? "visible" : ""}`}>
           <button
-            onClick={() =>
-              makeRelation({
-                targetId: currentsId.current,
-                sourceId: lowersId.current,
-              })
+            onClick={() =>{
+              // console.log('uppersId',uppersId,'currentsId',currentsId,'lowersId',lowersId)
+              const newRelate1=Array.from(uppersId.current.map(upperId=>currentsId.current.map(currentId=>({upperId,currentId}))).flat())
+              const newRelate2=Array.from(currentsId.current.map(currentId=>lowersId.current.map(lowerId=>({upperId:currentId,currentId:lowerId}))).flat())
+            const newRelate=[...newRelate1,...newRelate2]
+            console.log('relate',relate,'newRelate',newRelate)
+            // const removeRelate=(relate?.map(rel=>newRelate.filter(newRel=>(newRel.upperId!==rel?.upperId)&&(newRel.currentId!==rel?.lowerId))).flat())
+            // console.log('removeRelate',removeRelate)  
+            // relate.forEach(rel=>console.log(rel))
+              //  return makeRelation({
+            //     targetId: currentsId.current,
+            //     sourceId: lowersId.current,
+            //   })
+            }
             }
           >
             ^
