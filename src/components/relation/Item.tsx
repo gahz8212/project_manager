@@ -170,6 +170,48 @@ const Item: React.FC<Props> = ({
     }
       return resultArray
       }
+  const add_relation=(uppersId:number[],lowersId:number)=>{
+    console.log(uppersId,lowersId)
+  //  if(ids){
+  //    const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
+  //    const parents=ids?.map(id=>findFamily(id,relate)?.parents).flat()
+  
+  //     ids?.map((id) =>
+  //       children.map((child) => {
+      
+  //         const parents = findFamily(child, relate)?.parents;
+  //        if(parents){
+  //         const nextParents=parents.filter(parent=>parent!==id)
+  //         if(nextParents.length===0){
+  //           setChangeColumn(child, "HEADER");
+
+  //         }
+  //         console.log('nextParents',nextParents)
+  //         nextParents.forEach(id=>{
+  //           console.log('id',id)
+  //           if(id){ 
+            
+  //          if(currentsId.includes(id)){
+  //         }else{
+  //           setChangeColumn(child, "HEADER")}
+  //         }})
+
+  //         }
+            
+         
+  //         return { upperId: id, lowerId: child };
+  //       })
+  //     )
+  //     const parentArray = ids.map((id) =>
+  //         parents.map((parent) => {
+  //           return { upperId: parent, lowerId: id };
+  //         })
+  //       );
+  //       resultArray.push( ...parentArray.flat());
+     
+  //   }
+      return resultArray
+      }
 
 
   
@@ -278,7 +320,7 @@ const Item: React.FC<Props> = ({
                 family.children.forEach(child=>
                   {
                     if(child){
-                     console.log( 'uppersId.includes(child)',uppersId.includes(child))
+                     
                       if(uppersId.includes(child)){
                         setMarkItems(prev=>[...prev,item.itemInfo.id])
 
@@ -301,7 +343,7 @@ const Item: React.FC<Props> = ({
                 family.children.forEach(child=>
                   {
                     if(child){
-                     console.log( 'uppersId.includes(child)',uppersId.includes(child))
+                     
                       if(uppersId.includes(child)){
                         setMarkItems(prev=>[...prev,item.itemInfo.id])
 
@@ -348,27 +390,32 @@ const Item: React.FC<Props> = ({
                   if(parentsCount===0 && childrenCount===0){// 부모도 없고 자식도 없는 아이템이 왔는데
                     if( uppersId.length>0 ){//UPPER가 차 있으면 CURRENT로
                       setChangeColumn(item.itemInfo.id,CURRENT)
+                      // console.log({uppersId,lowersId:item.itemInfo.id})
+                      add_relation(uppersId,item.itemInfo.id)
                     }else if(uppersId.length===0 && currentsId.length===0){//UPPER도 비어있고 CURRENT도 비어 있으면 UPPER로
                       setChangeColumn(item.itemInfo.id,UPPER)
                     }
                   }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템
                     if( uppersId.length>0 ){////UPPER가 차 있으면 CURRENT로
                       setChangeColumn(item.itemInfo.id,CURRENT)
+                      add_relation(uppersId,item.itemInfo.id)
+                      // console.log({uppersId,lowersId:item.itemInfo.id})
                     }else if(uppersId.length===0 && currentsId.length===0){//아무도 없으면 CURRENT로 - family를 보려는 의도
                       setChangeColumn(item.itemInfo.id,CURRENT)
+                      add_relation(uppersId,item.itemInfo.id)
                       setParent(family.parents,UPPER)
                     }
                   }else if(parentsCount===0 && childrenCount!==0){//부모없이 자식만 있는 아이템
                     
                     if( uppersId.length>0 ){//UPPER가 차 있으면 아이템은 CURRENT로 자식은 LOWER로
                       setChangeColumn(item.itemInfo.id,CURRENT)
+                      add_relation(uppersId,item.itemInfo.id)
+                      // console.log({uppersId,lowersId:item.itemInfo.id})
                       family.children.forEach(child=>
                         {
                           if(child){
-                           console.log( 'uppersId.includes(child)',uppersId.includes(child))
                             if(uppersId.includes(child)){
                               setMarkItems(prev=>[...prev,item.itemInfo.id])
-
                             } 
                           else {
                             setChild(family.children, LOWER);
@@ -384,11 +431,11 @@ const Item: React.FC<Props> = ({
                     
                     if( uppersId.length>0 ){//UPPER가 차 있으면 아이템은 CURRENT로 자식은 LOWER로
                       setChangeColumn(item.itemInfo.id,CURRENT)
-
+                      // console.log({uppersId,lowersId:item.itemInfo.id})
                       family.children.forEach(child=>
                         {
                           if(child){
-                           console.log( 'uppersId.includes(child)',uppersId.includes(child))
+                           
                             if(uppersId.includes(child)){
                               setMarkItems(prev=>[...prev,item.itemInfo.id])
 
@@ -403,6 +450,7 @@ const Item: React.FC<Props> = ({
                       setChild(family.children, CURRENT);
                     }
                   } 
+
                 }
                 else if(currentColumn===UPPER){//아이템이 UPPER에서 왔을때
                   //UPPER에는 둘 이상의 아이템이 공존할 수 없으므로 (자기 자신만 있을 수 있다.)
@@ -463,13 +511,15 @@ const Item: React.FC<Props> = ({
             if(currentColumn===LOWER){
               break;
             }
+            if(currentColumn===HEADER){
             if(parentsCount===0 && childrenCount===0){//부모 자식 없는 아이템
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
+                add_relation(currentsId,item.itemInfo.id)
               }
               else if(uppersId.length>0 && currentsId.length===0){
                 setChangeColumn(item.itemInfo.id,CURRENT)
-                
+                add_relation(uppersId,item.itemInfo.id)
               }
               else if(uppersId.length===0 && currentsId.length===0){
                 setChangeColumn(item.itemInfo.id,UPPER)
@@ -479,22 +529,21 @@ const Item: React.FC<Props> = ({
             }else if(parentsCount===0 && childrenCount!==0){//부모 없이 자식만 있는 아이템
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
-
+                add_relation(currentsId,item.itemInfo.id)
                 family.children.forEach(child=>
                   {
                     if(child){
-                     console.log( 'uppersId.includes(child)',uppersId.includes(child))
+                     
                       if(uppersId.includes(child)){
                         setMarkItems(prev=>[...prev,item.itemInfo.id])
 
                       } 
-                    else {
-                      setChild(family.children, LOWER);
-                  }
+               
                 }})}
               else if(uppersId.length>0 && currentsId.length===0){
                 //만약 이동한 아이템의 자식이 UPPER에 이미 있는 경우
                 setChangeColumn(item.itemInfo.id,CURRENT)
+                add_relation(uppersId,item.itemInfo.id)
                 if(family.children.map(child=>
                   {if(child){return uppersId.includes(child)}else return false}
                   )){
@@ -513,10 +562,11 @@ const Item: React.FC<Props> = ({
             }else if(parentsCount!==0 && childrenCount===0){//부모만 있는 경우
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
-                
+                add_relation(currentsId,item.itemInfo.id)
               }
               else if(uppersId.length>0 && currentsId.length===0){//UPPER만 차 있을때
                 setChangeColumn(item.itemInfo.id,CURRENT) 
+                add_relation(uppersId,item.itemInfo.id)
               }        
               else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 비어있을때
                 setChangeColumn(item.itemInfo.id,UPPER)
@@ -526,10 +576,11 @@ const Item: React.FC<Props> = ({
             }else if(parentsCount!==0 && childrenCount!==0){//부모도 있고 자식도 있는 경우
               if(uppersId.length>0 && currentsId.length>0){
                 setChangeColumn(item.itemInfo.id,LOWER)
+                add_relation(currentsId,item.itemInfo.id)
                 family.children.forEach(child=>
                   {
                     if(child){
-                     console.log( 'uppersId.includes(child)',uppersId.includes(child))
+                     
                       if(uppersId.includes(child)){
                         setMarkItems(prev=>[...prev,item.itemInfo.id])
 
@@ -541,6 +592,7 @@ const Item: React.FC<Props> = ({
               }
               else if(uppersId.length>0 && currentsId.length===0){
                 setChangeColumn(item.itemInfo.id,CURRENT)
+                add_relation(uppersId,item.itemInfo.id)
                 if(family.children.map(child=>
                   {if(child){return uppersId.includes(child)}else return false}
                   )){
@@ -559,6 +611,35 @@ const Item: React.FC<Props> = ({
               }
               
             }
+          }
+          else if(currentColumn===CURRENT){
+            // if(uppersId.length>0 && currentsId.length>1){setChangeColumn(item.itemInfo.id,LOWER)}
+            // else if(uppersId.length>0 && currentsId.length===1){
+            //   setChangeColumn(item.itemInfo.id,CURRENT);
+            //   setChild(family.children,LOWER) }
+            if(parentsCount!==0 && childrenCount!==0){
+              if(uppersId.length>0 && currentsId.length>1){setChangeColumn(item.itemInfo.id,LOWER)}
+              else if(uppersId.length>0 && currentsId.length===1){setChangeColumn(item.itemInfo.id,CURRENT);setChild(family.children,LOWER) }
+            //   // else if(uppersId.length===0 && currentsId.length===0){}}
+            // else if(parentsCount!==0 && childrenCount===0){
+            //    if(uppersId.length>0 && currentsId.length>0){}
+            //    else if(uppersId.length>0 && currentsId.length===1){}
+            //   //  else if(uppersId.length===0 && currentsId.length===0){}}
+            }else if(parentsCount===0 && childrenCount!==0){
+               if(uppersId.length>0 && currentsId.length>0){
+                // setResetColumn();
+                setChangeColumn(item.itemInfo.id,LOWER)}
+               else if(uppersId.length>0 && currentsId.length===1){setChangeColumn(item.itemInfo.id,CURRENT);setChild(family.children,LOWER)}
+              //  else if(uppersId.length===0 && currentsId.length===0){}}
+            // else if(parentsCount===0 && childrenCount===0){
+            //    if(uppersId.length>0 && currentsId.length>0){}
+            //    else if(uppersId.length>0 && currentsId.length===1){}
+            //   //  else if(uppersId.length===0 && currentsId.length===0){}}
+          }else{
+            if(uppersId.length>0 && currentsId.length===1){
+              setChangeColumn(item.itemInfo.id,CURRENT)}
+          }
+        }
               break;
             default:
               break;
