@@ -57,22 +57,24 @@ const RelationMain: React.FC<Props> = ({
           markItems={markItems}
           uppersId={uppersId.current}
           currentsId={currentsId.current}
+          testId={testId}
           setMarkItems={setMarkItems}
           familyBall={findFamily(item.id, relate)}
           key={item.id}
           itemInfo={item}
           setItems={setList}
+          // list={list}
           currentColumn={item.column}
           relate={relate}
        
         ></Item>
       ));
   };
-
-  const headersId: React.MutableRefObject<number[]> = useRef([]);
-  const uppersId: React.MutableRefObject<number[]> = useRef([]);
-  const currentsId: React.MutableRefObject<number[]> = useRef([]);
-  const lowersId: React.MutableRefObject<number[]> = useRef([]);
+const testId=useRef<number[]>([])
+  const headersId = useRef<number[]>([]);
+  const uppersId = useRef<number[]>([]);
+  const currentsId = useRef<number[]>([]);
+  const lowersId = useRef<number[]>([]);
   const idRef = useRef<number>(-1);
 
   const relateCondition = () => {
@@ -177,6 +179,9 @@ const RelationMain: React.FC<Props> = ({
   //   }
   // };
   useEffect(() => {
+    testId.current = list
+      .filter((item) => item.column === "HEADER")
+      .map((header) => header.id);
     headersId.current = list
       .filter((item) => item.column === "HEADER")
       .map((header) => header.id);

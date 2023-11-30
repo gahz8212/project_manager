@@ -72,14 +72,14 @@ const Column: React.FC<Props> = ({
         };
         currentColumn: string;
 
-        // currentsId: number[] | null;
+        testId: React.MutableRefObject<number[]> ;
       }) => {
-        const { currentColumn } = item;
+        const { currentColumn,testId } = item;
 
         const family = findFamily(item.itemInfo.id, relate);
         const grandParents = findGrandParent(family?.parents);
         const grandChildren = findGrandchildren(family?.children);
-
+console.log('testIdss',testId.current.length)
         return {
           name: title,
           currentColumn,

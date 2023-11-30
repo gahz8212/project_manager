@@ -9,6 +9,7 @@ type Props = {
   markItems: any[];
   currentsId: number[];
   uppersId: number[];
+  testId:React.MutableRefObject<number[]>;
   setMarkItems: React.Dispatch<React.SetStateAction<number[]>>;
   familyBall: { parents: (number | undefined)[]; children: (number | undefined)[]; } | undefined;
   itemInfo: {
@@ -35,6 +36,7 @@ const Item: React.FC<Props> = ({
   itemInfo,
   uppersId,
   currentsId,
+  testId,
   setItems,
   setMarkItems,
   currentColumn,
@@ -172,44 +174,9 @@ const Item: React.FC<Props> = ({
       }
   const add_relation=(uppersId:number[],lowersId:number)=>{
     console.log(uppersId,lowersId)
-  //  if(ids){
-  //    const children=ids?.map(id=>findFamily(id,relate)?.children).flat()
-  //    const parents=ids?.map(id=>findFamily(id,relate)?.parents).flat()
-  
-  //     ids?.map((id) =>
-  //       children.map((child) => {
-      
-  //         const parents = findFamily(child, relate)?.parents;
-  //        if(parents){
-  //         const nextParents=parents.filter(parent=>parent!==id)
-  //         if(nextParents.length===0){
-  //           setChangeColumn(child, "HEADER");
+    const nextRelate=uppersId.map(upper=>({upperId:upper,lowerId:lowersId}))
+    relate?.push(...nextRelate)
 
-  //         }
-  //         console.log('nextParents',nextParents)
-  //         nextParents.forEach(id=>{
-  //           console.log('id',id)
-  //           if(id){ 
-            
-  //          if(currentsId.includes(id)){
-  //         }else{
-  //           setChangeColumn(child, "HEADER")}
-  //         }})
-
-  //         }
-            
-         
-  //         return { upperId: id, lowerId: child };
-  //       })
-  //     )
-  //     const parentArray = ids.map((id) =>
-  //         parents.map((parent) => {
-  //           return { upperId: parent, lowerId: id };
-  //         })
-  //       );
-  //       resultArray.push( ...parentArray.flat());
-     
-  //   }
       return resultArray
       }
 
@@ -219,7 +186,7 @@ const Item: React.FC<Props> = ({
     () => ({
       type: "card",
       collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-      item: () => ({ itemInfo, currentsId, currentColumn }),
+      item: () => ({ itemInfo, testId, currentColumn }),
 
       end: (item, monitor) => {
         const dropResult: {
@@ -268,8 +235,8 @@ const Item: React.FC<Props> = ({
                 setChangeColumn(item.itemInfo.id,HEADER)
               }
               else{
-            let result=window.confirm(`${column}에서 ${item.itemInfo.id}의 연결을 해제 하나요?`)
-            if(result){
+            // let result=window.confirm(`${column}에서 ${item.itemInfo.id}의 연결을 해제 하나요?`)
+            // if(result){
             const remove_relate=remove_relation([item.itemInfo.id])
             if (remove_relate) {
               const index = remove_relate?.map((removes: any) =>
@@ -288,7 +255,7 @@ const Item: React.FC<Props> = ({
             }
             setChangeColumn(item.itemInfo.id, HEADER);
             
-          }}}
+          }}
         
               break;
 
@@ -300,11 +267,12 @@ const Item: React.FC<Props> = ({
               break;
             }
             if(currentColumn===HEADER){
-            if(parentsCount===0 && childrenCount===0){// 부모 자식없는 아이템
-              if( uppersId.length>0 ){//UPPER가 차 있으면 않으면 CURRENT로
-                setChangeColumn(item.itemInfo.id,CURRENT)
-              }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
-                setChangeColumn(item.itemInfo.id,UPPER)
+              if(parentsCount===0 && childrenCount===0){// 부모 자식없는 아이템
+                if( uppersId.length>0 ){//UPPER가 차 있으면 CURRENT로
+                  setChangeColumn(item.itemInfo.id,CURRENT)
+                }else if(uppersId.length===0 && currentsId.length===0){//UPPER,CURRENT 모두 비어 있으면 UPPER로
+                  setChangeColumn(item.itemInfo.id,UPPER)
+                  // console.log('list',item)
               }
             }else if(parentsCount!==0 && childrenCount===0){//부모만 있고 자식이 없는 아이템
               if( uppersId.length>0 ){//UPPER가 차 있으면 않으면 CURRENT로
@@ -481,7 +449,8 @@ const Item: React.FC<Props> = ({
                     }
                   } 
                 }
-                else if(currentColumn===LOWER){//아이템이 LOWER에서 왔을때
+                //아이템이 LOWER에서 왔을때
+                else if(currentColumn===LOWER){
                   //LOWER에 아이템이 있다는 것은 이미 UPPER와 CURRENT에 값이 있는 상황(LOWER에는 자기자신과 CURRENT에 부모가 있는 아이템이 있을 수 있다.)
                   //초기값에 부모는 항상 존재하고 자기 자신포함한 다른 아이템이 LOW에 있는 상황
                   //자식만 있는 아이템이면 uppersId>0(항상) currentsId>0 
@@ -511,6 +480,7 @@ const Item: React.FC<Props> = ({
             if(currentColumn===LOWER){
               break;
             }
+            //HEADER=>LOWER
             if(currentColumn===HEADER){
             if(parentsCount===0 && childrenCount===0){//부모 자식 없는 아이템
               if(uppersId.length>0 && currentsId.length>0){
